@@ -71,12 +71,12 @@ class Menu:
 
     def create_products_area(self, parent):
         products_frame = self.frame(parent, 700, 400, '#ffffff')
-        products_frame.pack(side="bottom", fill="both", expand=True)
-
-        product_frame1 = tk.Frame(products_frame, width=200, height=120, bg='#e6e6e6')
-        product_frame1.grid(row=0, column=0, padx=10, pady=10)
-        product_label1 = tk.Label(product_frame1, text="Producto ", bg='#e6e6e6')
-        product_label1.pack(expand=True)
+        products_frame.pack(side="top", fill="both", expand=True) 
+        
+        product_frame1 = tk.Frame(products_frame, width=200, height=120, bg="#e6e6e6")
+        product_frame1.grid(row=0, column=0, padx=10 , pady=10)
+        product_label1 = tk.Label(product_frame1,text="producto ", bg="#e6e6e6" )
+        product_frame1.pack(expand=True)
 
         product_frame2 = tk.Frame(products_frame, width=200, height=120, bg='#e6e6e6')
         product_frame2.grid(row=0, column=1, padx=10, pady=10)
@@ -120,34 +120,35 @@ class Menu:
 
         return products_frame
 
+
     def create_footer(self, parent):
-        products_frame = self.frame(parent, 700, 400, '#ffffff')
-        products_frame.pack(side="bottom", fill="both", expand=True)
+        productsframe = self.frame(parent, 700, 50, '#ffffff')
+        productsframe.pack(side="bottom", fill="both", expand=True)
 
-        button1 = tk.Button(products_frame, text="Home", width=14, height=2, bg='#bfbfbf', fg='#333333')
-        button1.place(x=20, y=390)
+        button1 = tk.Button(productsframe, text="Home", width=14, height=2, bg='#bfbfbf', fg='#333333')
+        button1.place(x=20, y=10)
 
-        button2 = tk.Button(products_frame, text="Apps", width=14, height=2, bg='#bfbfbf', fg='#333333')
-        button2.place(x=150, y=390)
+        button2 = tk.Button(productsframe, text="Apps", width=14, height=2, bg='#bfbfbf', fg='#333333')
+        button2.place(x=150, y=10)
 
-        button3 = tk.Button(products_frame, text="Games", width=14, height=2, bg='#bfbfbf', fg='#333333')
-        button3.place(x=300, y=390)
+        button3 = tk.Button(productsframe, text="Games", width=14, height=2, bg='#bfbfbf', fg='#333333')
+        button3.place(x=300, y=10)
 
-        button4 = tk.Button(products_frame, text="Movies", width=14, height=2, bg='#bfbfbf', fg='#333333')
-        button4.place(x=450, y=390)
+        button4 = tk.Button(productsframe, text="Movies", width=14, height=2, bg='#bfbfbf', fg='#333333')
+        button4.place(x=450, y=10)
 
-        button5 = tk.Button(products_frame, text="Books", width=14, height=2, bg='#bfbfbf', fg='#333333')
-        button5.place(x=600, y=390)
+        button5 = tk.Button(productsframe, text="Books", width=14, height=2, bg='#bfbfbf', fg='#333333')
+        button5.place(x=600, y=10)
 
-        return products_frame
+        return productsframe
 
     def crearinterface(self):
         self.encabezado()
         self.crearmenu(self.master)
         self.crearCategorias(self.master)
         self.Titulocatalogo(self.master)
-        self.create_products_area(self.master)
-        self.create_footer(self.master)
+        self.create_products_area(self.master)  # Ahora se coloca antes
+        self.create_footer(self.master)  # Ahora se coloca después
 
 if __name__ == "__main__":
     root = tk.Tk()
