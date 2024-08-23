@@ -1,11 +1,14 @@
 import tkinter as tk
+from tkinter import ttk
 
 class Menu:
     def __init__(self, master):
         self.master = master
         self.master.title("Menu principal")
         self.master.geometry("1200x800")
-        self.master.configure(bg='#f2f2f2')
+        self.master.configure(bg='#f5f5f5')
+        self.style = ttk.Style()
+        self.style.theme_use('clam')
         self.crearinterface()
 
     def frame(self, parent, width, height, bg):
@@ -14,141 +17,118 @@ class Menu:
         return frame
 
     def encabezado(self):
-        encabezadoframe = self.frame(self.master, 900, 100, '#33daff')
+        encabezadoframe = self.frame(self.master, 1200, 100, '#2c3e50')
         encabezadoframe.pack(side="top", fill="x")
-        encabezadolabel = tk.Label(encabezadoframe, text="Nombre de la empresa", font=("Arial", 24), bg='#d9d9d9')
+        encabezadolabel = tk.Label(encabezadoframe, text="Nombre de la empresa", font=("Helvetica", 24, "bold"), bg='#2c3e50', fg='white')
         encabezadolabel.pack(pady=20)
         return encabezadoframe
 
-    def crearmenu(self, parent):
-        Menuframe = self.frame(parent, 200, 500, '#e6e6e6')
+    def crearMenu(self, parent):
+        Menuframe = self.frame(parent, 250, 600, '#34495e')
         Menuframe.pack(side="left", fill="y")
 
-        button1 = tk.Button(Menuframe, text="Apps", width=20, height=2, bg='#bfbfbf', fg='#333333')
-        button1.place(x=25, y=300)
-        
-        button2 = tk.Button(Menuframe, text="Games", width=20, height=2, bg='#bfbfbf', fg='#333333')
-        button2.place(x=25, y=350)
-        
-        button3 = tk.Button(Menuframe, text="Movies", width=20, height=2, bg='#bfbfbf', fg='#333333')
-        button3.place(x=25, y=400)
-        
-        button4 = tk.Button(Menuframe, text="Books", width=20, height=2, bg='#bfbfbf', fg='#333333')
-        button4.place(x=25, y=450)
-        
-        button5 = tk.Button(Menuframe, text="Newspapers", width=20, height=2, bg='#bfbfbf', fg='#333333')
-        button5.place(x=25, y=500)
+        self.CrearBotonMenu(Menuframe, "Apps", 10)
+        self.CrearBotonMenu(Menuframe, "Games", 60)
+        self.CrearBotonMenu(Menuframe, "Movies", 110)
+        self.CrearBotonMenu(Menuframe, "Books", 160)
+        self.CrearBotonMenu(Menuframe, "Newspapers", 210)
 
         return Menuframe
 
+    def CrearBotonMenu(self, parent, text, y_position):
+        button = tk.Button(parent, text=text, width=25, height=2, bg='#34495e', fg='white', 
+                           activebackground='#2c3e50', activeforeground='white',
+                           bd=0, highlightthickness=0)
+        button.place(x=10, y=y_position)
+
     def crearCategorias(self, parent):
-        categories_frame = self.frame(parent, 700, 50, 'white')
-        categories_frame.pack(side="top", fill="x")
+        CategoriaFrame = self.frame(parent, 950, 50, '#ecf0f1')
+        CategoriaFrame.pack(side="top", fill="x")
 
-        button1 = tk.Button(categories_frame, text="Categoría 1", width=14, height=2, bg='#a6a6a6', fg='#333333')
-        button1.pack(side="left", padx=5, pady=5)
-        
-        button2 = tk.Button(categories_frame, text="Categoría 2", width=14, height=2, bg='#a6a6a6', fg='#333333')
-        button2.pack(side="left", padx=5, pady=5)
-        
-        button3 = tk.Button(categories_frame, text="Categoría 3", width=14, height=2, bg='#a6a6a6', fg='#333333')
-        button3.pack(side="left", padx=5, pady=5)
-        
-        button4 = tk.Button(categories_frame, text="Categoría 4", width=14, height=2, bg='#a6a6a6', fg='#333333')
-        button4.pack(side="left", padx=5, pady=5)
-        
-        button5 = tk.Button(categories_frame, text="Categoría 5", width=14, height=2, bg='#a6a6a6', fg='#333333')
-        button5.pack(side="left", padx=5, pady=5)
+        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 1", 10)
+        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 2", 190)
+        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 3", 370)
+        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 4", 550)
+        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 5", 730)
 
-        return categories_frame
+        return CategoriaFrame
+
+    def CrearCategoriaBoton(self, parent, text, x_position):
+        button = tk.Button(parent, text=text, width=15, height=2, 
+                           bg='#3498db', fg='white', activebackground='#2980b9',
+                           bd=0, highlightthickness=0)
+        button.place(x=x_position, y=5)
 
     def Titulocatalogo(self, parent):
-        catalog_title_frame = self.frame(parent, 700, 50, '#d9d9d9')
-        catalog_title_frame.pack(side="top", fill="x")
-        catalog_title_label = tk.Label(catalog_title_frame, text="Título del Catálogo", font=("Arial", 18), bg='#d9d9d9')
-        catalog_title_label.pack(pady=10)
-        return catalog_title_frame
+        CatalogoTituloFrame = self.frame(parent, 950, 50, '#ecf0f1')
+        CatalogoTituloFrame.pack(side="top", fill="x")
+        CatalogoTituloLabel = tk.Label(CatalogoTituloFrame, text="Catálogo de Productos", font=("Helvetica", 18, "bold"), bg='#ecf0f1')
+        CatalogoTituloLabel.pack(pady=10)
 
-    def create_products_area(self, parent):
-        products_frame = self.frame(parent, 700, 400, '#ffffff')
-        products_frame.pack(side="top", fill="both", expand=True) 
+        ContenedorFrame = tk.Frame(CatalogoTituloFrame, bg='#ecf0f1')
+        ContenedorFrame.pack(side="right", padx=20)
+        ContenedorEntry = tk.Entry(ContenedorFrame, width=30)
+        ContenedorEntry.pack(side="left")
+        BotonB = tk.Button(ContenedorFrame, text="Buscar", bg='#3498db', fg='white')
+        BotonB.pack(side="left", padx=5)
+
+        return CatalogoTituloFrame
+
+    def Productos(self, parent):
+        ProductoFrame = self.frame(parent, 950, 500, '#ecf0f1')
+        ProductoFrame.pack(side="top", fill="both", expand=True)
+
+        self.CrearProducto(ProductoFrame, "Producto 1", 10, 10)
+        self.CrearProducto(ProductoFrame, "Producto 2", 320, 10)
+        self.CrearProducto(ProductoFrame, "Producto 3", 630, 10)
+        self.CrearProducto(ProductoFrame, "Producto 4", 10, 180)
+        self.CrearProducto(ProductoFrame, "Producto 5", 320, 180)
+        self.CrearProducto(ProductoFrame, "Producto 6", 630, 180)
+        self.CrearProducto(ProductoFrame, "Producto 7", 10, 350)
+        self.CrearProducto(ProductoFrame, "Producto 8", 320, 350)
+        self.CrearProducto(ProductoFrame, "Producto 9", 630, 350)
+
+        return ProductoFrame
+
+    def CrearProducto(self, parent, product_name, x_position, y_position):
+        productframe = tk.Frame(parent, width=280, height=150, bg='white', bd=1, relief=tk.RAISED)
+        productframe.place(x=x_position, y=y_position)
         
-        product_frame1 = tk.Frame(products_frame, width=200, height=120, bg="#e6e6e6")
-        product_frame1.grid(row=0, column=0, padx=10 , pady=10)
-        product_label1 = tk.Label(product_frame1,text="producto ", bg="#e6e6e6" )
-        product_label1.pack(expand=True)
+        ProductoImagen = tk.Frame(productframe, width=100, height=100, bg='#bdc3c7')
+        ProductoImagen.pack(side="left", padx=10, pady=10)
+        
+        Info = tk.Frame(productframe, bg='white')
+        Info.pack(side="left", fill="both", expand=True)
+        
+        tk.Label(Info, text=product_name, font=("Helvetica", 12, "bold"), bg='white').pack(anchor="w")
+        tk.Label(Info, text="Descripción breve", bg='white').pack(anchor="w")
+        tk.Label(Info, text="$XX.XX", font=("Helvetica", 10, "bold"), bg='white').pack(anchor="w")
 
-        product_frame2 = tk.Frame(products_frame, width=200, height=120, bg='#e6e6e6')
-        product_frame2.grid(row=0, column=1, padx=10, pady=10)
-        product_label2 = tk.Label(product_frame2, text="Producto ", bg='#e6e6e6')
-        product_label2.pack(expand=True)
+    def CrearBotonesIzquierda(self, parent):
+        IzquierdaFrame = self.frame(parent, 1200, 50, '#2c3e50')
+        IzquierdaFrame.pack(side="bottom", fill="x")
 
-        product_frame3 = tk.Frame(products_frame, width=200, height=120, bg='#e6e6e6')
-        product_frame3.grid(row=0, column=2, padx=10, pady=10)
-        product_label3 = tk.Label(product_frame3, text="Producto", bg='#e6e6e6')
-        product_label3.pack(expand=True)
+        self.CrearIzquierdaBoton(IzquierdaFrame, "Home", 20)
+        self.CrearIzquierdaBoton(IzquierdaFrame, "Apps", 260)
+        self.CrearIzquierdaBoton(IzquierdaFrame, "Games", 500)
+        self.CrearIzquierdaBoton(IzquierdaFrame, "Movies", 740)
+        self.CrearIzquierdaBoton(IzquierdaFrame, "Books", 980)
 
-        product_frame4 = tk.Frame(products_frame, width=200, height=120, bg='#e6e6e6')
-        product_frame4.grid(row=1, column=0, padx=10, pady=10)
-        product_label4 = tk.Label(product_frame4, text="Producto ", bg='#e6e6e6')
-        product_label4.pack(expand=True)
+        return IzquierdaFrame
 
-        product_frame5 = tk.Frame(products_frame, width=200, height=120, bg='#e6e6e6')
-        product_frame5.grid(row=1, column=1, padx=10, pady=10)
-        product_label5 = tk.Label(product_frame5, text="Producto ", bg='#e6e6e6')
-        product_label5.pack(expand=True)
-
-        product_frame6 = tk.Frame(products_frame, width=200, height=120, bg='#e6e6e6')
-        product_frame6.grid(row=1, column=2, padx=10, pady=10)
-        product_label6 = tk.Label(product_frame6, text="Producto ", bg='#e6e6e6')
-        product_label6.pack(expand=True)
-
-        product_frame7 = tk.Frame(products_frame, width=200, height=120, bg='#e6e6e6')
-        product_frame7.grid(row=2, column=0, padx=10, pady=10)
-        product_label7 = tk.Label(product_frame7, text="Producto", bg='#e6e6e6')
-        product_label7.pack(expand=True)
-
-        product_frame8 = tk.Frame(products_frame, width=200, height=120, bg='#e6e6e6')
-        product_frame8.grid(row=2, column=1, padx=10, pady=10)
-        product_label8 = tk.Label(product_frame8, text="Producto", bg='#e6e6e6')
-        product_label8.pack(expand=True)
-
-        product_frame9 = tk.Frame(products_frame, width=200, height=120, bg='#e6e6e6')
-        product_frame9.grid(row=2, column=2, padx=10, pady=10)
-        product_label9 = tk.Label(product_frame9, text="Producto ", bg='#e6e6e6')
-        product_label9.pack(expand=True)
-
-        return products_frame
-
-
-    def create_footer(self, parent):
-        productsframe = self.frame(parent, 700, 50, '#ffffff')
-        productsframe.pack(side="bottom", fill="both", expand=True)
-
-        button1 = tk.Button(productsframe, text="Home", width=14, height=2, bg='#bfbfbf', fg='#333333')
-        button1.place(x=20, y=10)
-
-        button2 = tk.Button(productsframe, text="Apps", width=14, height=2, bg='#bfbfbf', fg='#333333')
-        button2.place(x=150, y=10)
-
-        button3 = tk.Button(productsframe, text="Games", width=14, height=2, bg='#bfbfbf', fg='#333333')
-        button3.place(x=300, y=10)
-
-        button4 = tk.Button(productsframe, text="Movies", width=14, height=2, bg='#bfbfbf', fg='#333333')
-        button4.place(x=450, y=10)
-
-        button5 = tk.Button(productsframe, text="Books", width=14, height=2, bg='#bfbfbf', fg='#333333')
-        button5.place(x=600, y=10)
-
-        return productsframe
+    def CrearIzquierdaBoton(self, parent, text, x_position):
+        button = tk.Button(parent, text=text, bg='#2c3e50', fg='white', 
+                           activebackground='#34495e', activeforeground='white',
+                           bd=0, highlightthickness=0)
+        button.place(x=x_position, y=10)
 
     def crearinterface(self):
         self.encabezado()
-        self.crearmenu(self.master)
+        self.crearMenu(self.master)
         self.crearCategorias(self.master)
         self.Titulocatalogo(self.master)
-        self.create_products_area(self.master)  # Ahora se coloca antes
-        self.create_footer(self.master)  # Ahora se coloca después
+        self.Productos(self.master)
+        self.CrearBotonesIzquierda(self.master)
 
 if __name__ == "__main__":
     root = tk.Tk()
