@@ -76,7 +76,7 @@ class Menu:
         product_frame1 = tk.Frame(products_frame, width=200, height=120, bg="#e6e6e6")
         product_frame1.grid(row=0, column=0, padx=10 , pady=10)
         product_label1 = tk.Label(product_frame1,text="producto ", bg="#e6e6e6" )
-        product_frame1.pack(expand=True)
+        product_label1.pack(expand=True)
 
         product_frame2 = tk.Frame(products_frame, width=200, height=120, bg='#e6e6e6')
         product_frame2.grid(row=0, column=1, padx=10, pady=10)

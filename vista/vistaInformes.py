@@ -130,12 +130,6 @@ class EmpresaInterfaz:
         bBooks=tk.Button(piePagFrame, text="Books")
         bBooks.pack(fill="left", padx=5, pady=5)
 
-
-        botones_footer = ["Home", "Apps", "Games", "Movies", "Books"]
-        for button in botones_footer:
-            btn = tk.Button(piePagFrame, text=button)
-            btn.pack(side="left", padx=5, pady=5)
-
         return piePagFrame
 
 
