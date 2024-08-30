@@ -2,7 +2,8 @@ import tkinter as vistaInicioSesion
 from tkinter import messagebox
 
 class inicioSesionVista:
-    def __init__(self):
+    def __init__(self, controlador):
+        self.controlador = controlador
         self.user = None
         self.contraseña = None
     
@@ -43,12 +44,13 @@ class inicioSesionVista:
         contraseña.place(x=81, y=170, width=240, height=20)
         contraseña.config(bg="#e3e4e9")
         
-        botonInicio = vistaInicioSesion.Button(text= "Iniciar Sesión", font=("Arial", 11), command=self.inicioUsuario())
+        botonInicio = vistaInicioSesion.Button(text= "Iniciar Sesión", font=("Arial", 11), command=self.enviarDatos)
         botonInicio.place(x=200, y=290, width=95, height= 30)
     
-    def iniciar(self):
-        self.inicioSesion = inicioSesionVista()
-        auxFormulario = self.inicioSesion.crearFormulario()
-        contenedor = self.inicioSesion.contenedorModelo(auxFormulario)
-        self.inicioSesion.vistaInicio(contenedor)
-        auxFormulario.mainloop()
+    def enviarDatos(self):
+        datos = {
+            'usuario': self.entryUser.get(),
+            'contraseña': self.entryContraseña.get()
+        }
+        
+        self.controlador.inicioUsuario(datos)

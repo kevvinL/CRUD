@@ -1,21 +1,29 @@
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
 from vista.inicioSesion import inicioSesionVista
 
-class controaldor:
+class controladorInicio:
     def __init__(self):
         pass
     
-    def inicioUsuario(self, datosUsuario):
-        if not (datosUsuario.usaurio and not datosUsuario.contraseña):
-            print("enviar la informacion")
-        
-        print(datosUsuario)
-        #iniciar = 
+    
+    def inicioUsuario(self, datos):
+        if not datos['usuario'] or not datos['contraseña']:
+            print("Usuario o contraseña no pueden estar vacíos")
+        else:
+            print(f"Usuario: {datos['usuario']}, Contraseña: {datos['contraseña']}")
 
     def iniciarVista(self):
-        self.iniciar()
+        self.inicioSesion = inicioSesionVista(controlador=self)
+        auxFormulario = self.inicioSesion.crearFormulario()
+        contenedor = self.inicioSesion.contenedorModelo(auxFormulario)
+        self.inicioSesion.vistaInicio(contenedor)
+        auxFormulario.mainloop()
 
-controlador = controaldor()
-controaldor.iniciarVista()
+controlador = controladorInicio()
+controlador.iniciarVista()
 
 
 
