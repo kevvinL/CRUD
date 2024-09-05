@@ -12,11 +12,11 @@ class EmpresaInterfaz:
         return self.root
 
     def crearCabecera(self, contenedor):
-        # Cabecera
+        #Cabecera
         cabecera = tk.Frame(contenedor, bg="lightgray", height=100)
         cabecera.pack(side="top", fill="x")
 
-        # Nombre de la empresa
+        #Nombre de la empresa
         nombreE = tk.Label(cabecera, text="Nombre de la empresa", font=("Arial", 24), bg="lightgray")
         nombreE.pack(side="left", padx=20, pady=20)
 
@@ -89,7 +89,7 @@ class EmpresaInterfaz:
         return menuFrame
 
     def crearBarraL(self, contenedor):
-        # Barra lateral
+        #Barra lateral
         BarraFrame = tk.Frame(contenedor, bg="gray", width=150)
         BarraFrame.pack(side="left", fill="y")
 
@@ -116,24 +116,23 @@ class EmpresaInterfaz:
         piePagFrame.pack(side="bottom", fill="x")
 
         bHome=tk.Button(piePagFrame, text="Home")
-        bHome.pack(fill="left", padx=5, pady=5)
+        bHome.pack(fill="x", padx=5, pady=5)
 
         bApps=tk.Button(piePagFrame, text="Apps")
-        bApps.pack(fill="left", padx=5, pady=5)
+        bApps.pack(fill="x", padx=5, pady=5)
 
         bGames=tk.Button(piePagFrame, text="Games")
-        bGames.pack(fill="left", padx=5, pady=5)
+        bGames.pack(fill="x", padx=5, pady=5)
 
         bMovies=tk.Button(piePagFrame, text="Movies")
-        bMovies.pack(fill="left", padx=5, pady=5)
+        bMovies.pack(fill="x", padx=5, pady=5)
 
         bBooks=tk.Button(piePagFrame, text="Books")
-        bBooks.pack(fill="left", padx=5, pady=5)
+        bBooks.pack(fill="x", padx=5, pady=5)
 
         return piePagFrame
 
-
-# Crear la aplicación
+#Iniciar ventana
 app = EmpresaInterfaz()
 ventana = app.crearVentana()
 app.crearCabecera(ventana)
@@ -141,5 +140,6 @@ app.crearBarraL(ventana)
 app.crearCuerpo(ventana)
 app.crearPiePagina(ventana)
 
+ventana.mainloop()
 # Ejecutar la aplicación
 ventana.mainloop()

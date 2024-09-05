@@ -1,5 +1,4 @@
-import tkinter as tk
-from tkinter import ttk
+import tkinter as menuvista
 
 class Menu:
     def __init__(self, master):
@@ -7,19 +6,17 @@ class Menu:
         self.master.title("Menu principal")
         self.master.geometry("1200x800")
         self.master.configure(bg='#f5f5f5')
-        self.style = ttk.Style()
-        self.style.theme_use('clam')
         self.crearinterface()
     
     def frame(self, parent, width, height, bg):
-        frame = tk.Frame(parent, width=width, height=height, bg=bg)
+        frame = menuvista.Frame(parent, width=width, height=height, bg=bg)
         frame.pack_propagate(False)
         return frame
 
     def encabezado(self):
         encabezadoframe = self.frame(self.master, 1200, 100, '#2c3e50')
         encabezadoframe.pack(side="top", fill="x")
-        encabezadolabel = tk.Label(encabezadoframe, text="Nombre de la empresa", font=("Helvetica", 24, "bold"), bg='#2c3e50', fg='white')
+        encabezadolabel = menuvista.Label(encabezadoframe, text="Nombre de la empresa", font=("Helvetica", 24, "bold"), bg='#2c3e50', fg='white')
         encabezadolabel.pack(pady=20)
         return encabezadoframe
 
@@ -36,7 +33,7 @@ class Menu:
         return Menuframe
 
     def CrearBotonMenu(self, parent, text, y_position):
-        button = tk.Button(parent, text=text, width=25, height=2, bg='#34495e', fg='white', 
+        button = menuvista.Button(parent, text=text, width=25, height=2, bg='#34495e', fg='white', 
                            activebackground='#2c3e50', activeforeground='white',
                            bd=0, highlightthickness=0)
         button.place(x=10, y=y_position)
@@ -54,7 +51,7 @@ class Menu:
         return CategoriaFrame
 
     def CrearCategoriaBoton(self, parent, text, x_position):
-        button = tk.Button(parent, text=text, width=15, height=2, 
+        button = menuvista.Button(parent, text=text, width=15, height=2, 
                            bg='#3498db', fg='white', activebackground='#2980b9',
                            bd=0, highlightthickness=0)
         button.place(x=x_position, y=5)
@@ -62,14 +59,14 @@ class Menu:
     def Titulocatalogo(self, parent):
         CatalogoTituloFrame = self.frame(parent, 950, 50, '#ecf0f1')
         CatalogoTituloFrame.pack(side="top", fill="x")
-        CatalogoTituloLabel = tk.Label(CatalogoTituloFrame, text="Catálogo de Productos", font=("Helvetica", 18, "bold"), bg='#ecf0f1')
+        CatalogoTituloLabel = menuvista.Label(CatalogoTituloFrame, text="Catálogo de Productos", font=("Helvetica", 18, "bold"), bg='#ecf0f1')
         CatalogoTituloLabel.pack(pady=10)
 
-        ContenedorFrame = tk.Frame(CatalogoTituloFrame, bg='#ecf0f1')
+        ContenedorFrame = menuvista.Frame(CatalogoTituloFrame, bg='#ecf0f1')
         ContenedorFrame.pack(side="right", padx=20)
-        ContenedorEntry = tk.Entry(ContenedorFrame, width=30)
+        ContenedorEntry = menuvista.Entry(ContenedorFrame, width=30)
         ContenedorEntry.pack(side="left")
-        BotonB = tk.Button(ContenedorFrame, text="Buscar", bg='#3498db', fg='white')
+        BotonB = menuvista.Button(ContenedorFrame, text="Buscar", bg='#3498db', fg='white')
         BotonB.pack(side="left", padx=5)
 
         return CatalogoTituloFrame
@@ -91,18 +88,18 @@ class Menu:
         return ProductoFrame
 
     def CrearProducto(self, parent, product_name, x_position, y_position):
-        productframe = tk.Frame(parent, width=280, height=150, bg='white', bd=1, relief=tk.RAISED)
+        productframe = menuvista.Frame(parent, width=280, height=150, bg='white', bd=1, relief=menuvista.RAISED)
         productframe.place(x=x_position, y=y_position)
         
-        ProductoImagen = tk.Frame(productframe, width=100, height=100, bg='#bdc3c7')
+        ProductoImagen = menuvista.Frame(productframe, width=100, height=100, bg='#bdc3c7')
         ProductoImagen.pack(side="left", padx=10, pady=10)
         
-        Info = tk.Frame(productframe, bg='white')
+        Info = menuvista.Frame(productframe, bg='white')
         Info.pack(side="left", fill="both", expand=True)
         
-        tk.Label(Info, text=product_name, font=("Helvetica", 12, "bold"), bg='white').pack(anchor="w")
-        tk.Label(Info, text="Descripción breve", bg='white').pack(anchor="w")
-        tk.Label(Info, text="$XX.XX", font=("Helvetica", 10, "bold"), bg='white').pack(anchor="w")
+        menuvista.Label(Info, text=product_name, font=("Helvetica", 12, "bold"), bg='white').pack(anchor="w")
+        menuvista.Label(Info, text="Descripción breve", bg='white').pack(anchor="w")
+        menuvista.Label(Info, text="$XX.XX", font=("Helvetica", 10, "bold"), bg='white').pack(anchor="w")
 
     def CrearBotonesIzquierda(self, parent):
         IzquierdaFrame = self.frame(parent, 1200, 50, '#2c3e50')
@@ -117,7 +114,7 @@ class Menu:
         return IzquierdaFrame
 
     def CrearIzquierdaBoton(self, parent, text, x_position):
-        button = tk.Button(parent, text=text, bg='#2c3e50', fg='white', 
+        button = menuvista.Button(parent, text=text, bg='#2c3e50', fg='white', 
                            activebackground='#34495e', activeforeground='white',
                            bd=0, highlightthickness=0)
         button.place(x=x_position, y=10)
@@ -131,6 +128,6 @@ class Menu:
         self.CrearBotonesIzquierda(self.master)
 
 if __name__ == "__main__":
-    iniciar = tk.Tk()
+    iniciar = menuvista.Tk()
     menu = Menu(iniciar)
     iniciar.mainloop()
