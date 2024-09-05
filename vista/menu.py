@@ -10,7 +10,7 @@ class Menu:
         self.style = ttk.Style()
         self.style.theme_use('clam')
         self.crearinterface()
-
+    
     def frame(self, parent, width, height, bg):
         frame = tk.Frame(parent, width=width, height=height, bg=bg)
         frame.pack_propagate(False)
@@ -131,6 +131,6 @@ class Menu:
         self.CrearBotonesIzquierda(self.master)
 
 if __name__ == "__main__":
-    root = tk.Tk()
-    menu = Menu(root)
-    root.mainloop()
+    iniciar = tk.Tk()
+    menu = Menu(iniciar)
+    iniciar.mainloop()
