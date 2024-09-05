@@ -1,8 +1,8 @@
 import tkinter as menuvista
 
 class menuInterfaz:
-    def __init__(self, master):
-        self.master = master
+    def __init__(self):
+        self.master = menuvista.Tk()
         self.master.title("Menu principal")
         self.master.geometry("1200x800")
         self.master.configure(bg='#f5f5f5')
@@ -127,8 +127,8 @@ class menuInterfaz:
         self.Productos(self.master)
         self.CrearBotonesIzquierda(self.master)
 
+    def iniciar(self):
+        self.master.mainloop()
 
-if __name__ == "__main__":
-    iniciar = menuvista.Tk()
-    menu = menuInterfaz(iniciar)
-    iniciar.mainloop()
+
+
