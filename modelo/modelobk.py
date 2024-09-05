@@ -2,10 +2,12 @@
 usuarios = [
       {
       "rol": "admin",
+      "usuario": "angieg",
       "contraseña": "anshi"
 },
 {
       "rol": "venta",
+      "usuario": "yuliana",
       "contraseña": "angie"
 }
 ]
@@ -14,6 +16,7 @@ class modelo:
       def inicioSesion(self, datosUsuario):
             if not datosUsuario['usuario'] or not datosUsuario['contraseña']:
                   print("Usuario o contraseña no pueden estar vacíos")
+                  return False
             else:
                   print(f"Usuario: {datosUsuario['usuario']}, Contraseña: {datosUsuario['contraseña']}")  
                   for usuario in usuarios:
@@ -22,4 +25,3 @@ class modelo:
                               return True
                         else:
                               return False
-            

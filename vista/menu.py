@@ -1,6 +1,6 @@
 import tkinter as tk
 
-class Menu:
+class menuInterfaz:
     def __init__(self, master):
         self.master = master
         self.master.title("Menu principal")
@@ -150,7 +150,4 @@ class Menu:
         self.create_products_area(self.master)  # Ahora se coloca antes
         self.create_footer(self.master)  # Ahora se coloca después
 
-if __name__ == "__main__":
-    root = tk.Tk()
-    menu = Menu(root)
-    root.mainloop()
+

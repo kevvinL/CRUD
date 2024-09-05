@@ -1,4 +1,5 @@
 import tkinter as vistaInicioSesion
+from vista.menu import menuInterfaz
 from tkinter import messagebox
 
 class inicioSesionVista:
@@ -53,4 +54,9 @@ class inicioSesionVista:
             'contraseña': self.entryContraseña.get()
         }
         
-        self.controlador.inicioUsuario(datos)
+        verificacion = self.controlador.inicioUsuario(datos)
+        
+        if verificacion == False:
+            messagebox.INFO("Datos incorrectos")
+        else:
+            pass
