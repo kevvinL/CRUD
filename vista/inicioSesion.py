@@ -58,5 +58,4 @@ class inicioSesionVista:
         
         if verificacion == False:
             messagebox.INFO("Datos incorrectos")
-        else:
-            pass
+

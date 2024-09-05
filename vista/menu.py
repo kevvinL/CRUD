@@ -1,8 +1,8 @@
 import tkinter as menuvista
 
 class menuInterfaz:
-    def __init__(self):
-        self.master = menuInterfaz()
+    def __init__(self, master):
+        self.master = master
         self.master.title("Menu principal")
         self.master.geometry("1200x800")
         self.master.configure(bg='#f5f5f5')
