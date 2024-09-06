@@ -1,8 +1,8 @@
 usuarios = [
     {
         "rol": "admin",
-        "usuario": "angieg",
-        "contraseña": "anshi"
+        "usuario": "kevin",
+        "contraseña": "123"
     },
     {
         "rol": "venta",

@@ -1,9 +1,13 @@
-from vista.inicioSesion import inicioSesion
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__),"..")))
+
+from vista.inicioSesion import inicioSesionVista
 from model.modelobk import modelo
 from vista.menu import MenuInterfaz
 
 
-class controlador:
+class controladorinicio:
     def __init__(self):
         self.modelo = modelo()
     
@@ -20,7 +24,7 @@ class controlador:
                 return False
     
     def iniciarVista(self):
-        self.inicioSesion = inicioSesion()
+        self.inicioSesion = inicioSesionVista()
         self.vista = self.inicioSesion.crearFormulario()
         self.contenedorModelo(self.vista)
         self.vista.mainloop()
@@ -29,5 +33,5 @@ class controlador:
         self.menu = MenuInterfaz()
         self.menu.iniciar()
 
-controlador = controlador()
+controlador = controladorinicio()
 controlador.iniciarVista()

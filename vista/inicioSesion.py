@@ -1,8 +1,9 @@
 import tkinter as vistaInicioSesion
 from tkinter import messagebox
 
-class inicioSesion:
-    def init (self):
+class inicioSesionVista:
+    def __init__(self, controlador):
+        self.controlador = controlador
         self.user = None
         self.contraseña = None
     
@@ -22,42 +23,42 @@ class inicioSesion:
     def vistaInicio(self, datoContenedor):
         self.colorLabel = "#396cc0"
         labelTitulo = vistaInicioSesion.Label(datoContenedor, text="Inicio Sesión",font=("Arial", 18))
-        labelTitulo.place(x=110, y= 25, width= 180, height=30)
+        labelTitulo.place(x=110, y=35, width= 180, height=30)
         labelTitulo.config(bg= self.colorLabel )
         
         labelUser = vistaInicioSesion.Label(datoContenedor, text= "User:", font=("Arial", 12))
-        labelUser.place(x=80, y=75, width= 50, height= 20)
+        labelUser.place(x=80, y=90, width= 50, height= 20)
         labelUser.config(bg= self.colorLabel )
         
         self.entryUser = vistaInicioSesion.StringVar()
         user = vistaInicioSesion.Entry(datoContenedor, textvariable=self.entryUser)
-        user.place(x=82, y=95, width=240, height=20)
+        user.place(x=82, y=110, width=240, height=20)
         user.config(bg="#e3e4e9")
         
         labelContraseña =vistaInicioSesion.Label(datoContenedor, text= "Password:", font=("Arial", 12))
-        labelContraseña.place(x=85, y=130, width= 75, height=20)
+        labelContraseña.place(x=85, y=150, width= 75, height=20)
         labelContraseña.config(bg= self.colorLabel )
         
         self.entryContraseña = vistaInicioSesion.StringVar()
-        contraseña = vistaInicioSesion.Entry(datoContenedor, textvariable=self.entryContraseña)
-        contraseña.place(x=81, y=150, width=240, height=20)
+        contraseña = vistaInicioSesion.Entry(datoContenedor, textvariable=self.entryContraseña, font=("Arial", 11), show="*")
+        contraseña.place(x=81, y=170, width=240, height=20)
         contraseña.config(bg="#e3e4e9")
         
-        labelRol = vistaInicioSesion.Label(datoContenedor, text="Usuario Rol:",font=("Arial", 12))
-        labelRol.place(x=85, y=178, width=90, height=30)
-        labelRol.config(bg= self.colorLabel )
+        botonInicio = vistaInicioSesion.Button(text= "Iniciar Sesión", font=("Arial", 11), command=self.enviarDatos)
+        botonInicio.place(x=200, y=290, width=95, height= 30)
+    
+    def enviarDatos(self):
         
-        self.opcionSeleccionada = vistaInicioSesion.StringVar(value="Administrador")
-        radio1 = vistaInicioSesion.Radiobutton(datoContenedor, text="Administrador", variable=self.opcionSeleccionada, value="Administrador")
-        radio2 = vistaInicioSesion.Radiobutton(datoContenedor, text="Vendedor", variable=self.opcionSeleccionada, value="Vendedor")
-        radio1.config(bg=self.colorLabel)
-        radio2.config(bg=self.colorLabel)
-        radio1.place(x=80, y=200)
-        radio2.place(x=190, y=200)
         
-        botonInicio = vistaInicioSesion.Button(text= "Iniciar Sesión", font=("Arial", 11))
-        botonInicio.place(x=200, y=305, width=95, height= 30)
-
+        datos = {
+            'usuario': self.entryUser.get(),
+            'contraseña': self.entryContraseña.get()
+        }
+        
+        if datos['usuario'] != None and datos['contraseña'] != None:
+            verificacion = self.controlador.inicioUsuario(datos)
+            if verificacion == False:
+                messagebox.showinfo("Error", "Datos incorrectos")
 
 #boton desplegable
 """class inicioSesion:
@@ -118,9 +119,3 @@ class inicioSesion:
         
     def cambiarOpcion(self, opcion):
         self.opcionSeleccionada.set(opcion)"""
-
-formulario =inicioSesion()
-auxFormulario = formulario.crearFormulario()
-contenedor = formulario.contenedorModelo(auxFormulario)
-formulario.vistaInicio(contenedor)
-auxFormulario.mainloop()
