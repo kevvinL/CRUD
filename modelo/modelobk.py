@@ -1,15 +1,15 @@
 
 usuarios = [
       {
-      "rol": "admin",
-      "usuario": "angieg",
-      "contraseña": "anshi"
-},
-{
-      "rol": "venta",
-      "usuario": "yuliana",
-      "contraseña": "angie"
-}
+            "rol": "admin",
+            "usuario": "angieg",
+            "contraseña": "anshi"
+      },
+      {
+            "rol": "venta",
+            "usuario": "yuliana",
+            "contraseña": "angie"
+      }
 ]
 
 class modelo:
@@ -18,10 +18,10 @@ class modelo:
                   print("Usuario o contraseña no pueden estar vacíos")
                   return False
             else:
-                  print(f"Usuario: {datosUsuario['usuario']}, Contraseña: {datosUsuario['contraseña']}")  
                   for usuario in usuarios:
-                        if datosUsuario['usuario'] == usuarios['rol'] and datosUsuario['contraseña'] == usuarios['contraseña']:
-                              print("Bienvenido")
-                              return True
+                        if datosUsuario['usuario'] == usuario['usuario'] and datosUsuario['contraseña'] == usuario['contraseña']:
+                              print("Bienvenido", usuario['rol'])
+                              return "verificado"
                         else:
+                              print("Credenciales incorrectas")
                               return False

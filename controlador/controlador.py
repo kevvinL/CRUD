@@ -4,11 +4,11 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from vista.inicioSesion import inicioSesionVista
 from modelo.modelobk import modelo
+from vista.menu import menuInterfaz
 
 class controladorInicio:
     def __init__(self):
         self.modelo = modelo()
-    
     
     def inicioUsuario(self, datos):
         if not datos['usuario'] or not datos['contraseña']:
@@ -16,8 +16,9 @@ class controladorInicio:
         else:
             usuarioEnviar = self.modelo.inicioSesion(datos)
             print(f"Usuario: {datos['usuario']}, Contraseña: {datos['contraseña']}")
-            if usuarioEnviar == True:
-                return True
+            if usuarioEnviar == "verificado":
+                self.inicioSesion.sesion.destroy()
+                self.iniciarMenu
             else:
                 return False
 
@@ -27,9 +28,10 @@ class controladorInicio:
         contenedor = self.inicioSesion.contenedorModelo(auxFormulario)
         self.inicioSesion.vistaInicio(contenedor)
         auxFormulario.mainloop()
+    
+    def iniciarMenu(self):
+        self.menu = menuInterfaz()
+        self.menu.iniciar()
 
 controlador = controladorInicio()
 controlador.iniciarVista()
-
-
-

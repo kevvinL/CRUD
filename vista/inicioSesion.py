@@ -1,5 +1,4 @@
 import tkinter as vistaInicioSesion
-from vista.menu import menuInterfaz
 from tkinter import messagebox
 
 class inicioSesionVista:
@@ -49,13 +48,15 @@ class inicioSesionVista:
         botonInicio.place(x=200, y=290, width=95, height= 30)
     
     def enviarDatos(self):
+        
+        
         datos = {
             'usuario': self.entryUser.get(),
             'contraseña': self.entryContraseña.get()
         }
         
-        verificacion = self.controlador.inicioUsuario(datos)
-        
-        if verificacion == False:
-            messagebox.INFO("Datos incorrectos")
+        if datos['usuario'] != None and datos['contraseña'] != None:
+            verificacion = self.controlador.inicioUsuario(datos)
+            if verificacion == False:
+                messagebox.showinfo("Error", "Datos incorrectos")
 
