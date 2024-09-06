@@ -18,7 +18,7 @@ class controladorInicio:
             print(f"Usuario: {datos['usuario']}, Contraseña: {datos['contraseña']}")
             if usuarioEnviar == "verificado":
                 self.inicioSesion.sesion.destroy()
-                self.iniciarMenu
+                self.iniciarMenu()
             else:
                 return False
 
@@ -35,3 +35,5 @@ class controladorInicio:
 
 controlador = controladorInicio()
 controlador.iniciarVista()
+
+

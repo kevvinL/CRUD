@@ -126,5 +126,8 @@ class menuInterfaz:
         self.Titulocatalogo(self.master)
         self.Productos(self.master)
         self.CrearBotonesIzquierda(self.master)
+    
+    def iniciar(self):
+        self.master.mainloop()
 
 
