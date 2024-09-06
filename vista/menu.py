@@ -1,6 +1,10 @@
 import tkinter as menuvista
 
+<<<<<<< HEAD
 class MenuInterfaz:
+=======
+class menuInterfaz:
+>>>>>>> anshi
     def __init__(self):
         self.master = menuvista.Tk()
         self.master.title("Menu principal")
@@ -34,8 +38,8 @@ class MenuInterfaz:
 
     def CrearBotonMenu(self, parent, text, y_position):
         button = menuvista.Button(parent, text=text, width=25, height=2, bg='#34495e', fg='white', 
-                           activebackground='#2c3e50', activeforeground='white',
-                           bd=0, highlightthickness=0)
+                        activebackground='#2c3e50', activeforeground='white',
+                        bd=0, highlightthickness=0)
         button.place(x=10, y=y_position)
 
     def crearCategorias(self, parent):
@@ -52,8 +56,8 @@ class MenuInterfaz:
 
     def CrearCategoriaBoton(self, parent, text, x_position):
         button = menuvista.Button(parent, text=text, width=15, height=2, 
-                           bg='#3498db', fg='white', activebackground='#2980b9',
-                           bd=0, highlightthickness=0)
+                        bg='#3498db', fg='white', activebackground='#2980b9',
+                        bd=0, highlightthickness=0)
         button.place(x=x_position, y=5)
 
     def Titulocatalogo(self, parent):
@@ -115,8 +119,8 @@ class MenuInterfaz:
 
     def CrearIzquierdaBoton(self, parent, text, x_position):
         button = menuvista.Button(parent, text=text, bg='#2c3e50', fg='white', 
-                           activebackground='#34495e', activeforeground='white',
-                           bd=0, highlightthickness=0)
+                        activebackground='#34495e', activeforeground='white',
+                        bd=0, highlightthickness=0)
         button.place(x=x_position, y=10)
 
     def crearinterface(self):
@@ -126,10 +130,14 @@ class MenuInterfaz:
         self.Titulocatalogo(self.master)
         self.Productos(self.master)
         self.CrearBotonesIzquierda(self.master)
-
+    
     def iniciar(self):
         self.master.mainloop()
 
+<<<<<<< HEAD
 if __name__ == "__main__":
     menu = MenuInterfaz()
     menu.iniciar()
+=======
+
+>>>>>>> anshi

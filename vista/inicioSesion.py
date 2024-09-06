@@ -46,6 +46,7 @@ class inicioSesionVista:
         
         botonInicio = vistaInicioSesion.Button(text= "Iniciar Sesión", font=("Arial", 11), command=self.enviarDatos)
         botonInicio.place(x=200, y=290, width=95, height= 30)
+<<<<<<< HEAD
     
     def enviarDatos(self):
         
@@ -65,20 +66,23 @@ class inicioSesionVista:
     def __init__ (self):
         self.user = None
         self.contraseña = None
+=======
+>>>>>>> anshi
     
-    def crearFormulario(self):
-        self.sesion = vistaInicioSesion.Tk()
-        self.sesion.title("Inicio Sesión")
-        self.sesion.geometry("500x400")
-        self.sesion.config(bg="white")
-        return self.sesion
-    
-    def contenedorModelo (self,datoContenedor):
-        contenedor = vistaInicioSesion.Frame(datoContenedor)
-        contenedor.config(bg="#396cc0", width=400, height=300)
-        contenedor.pack(padx=40, pady=40, side=vistaInicioSesion.LEFT)
-        return contenedor
+    def enviarDatos(self):
+        
+        
+        datos = {
+            'usuario': self.entryUser.get(),
+            'contraseña': self.entryContraseña.get()
+        }
+        
+        if datos['usuario'] != None and datos['contraseña'] != None:
+            verificacion = self.controlador.inicioUsuario(datos)
+            if verificacion == False:
+                messagebox.showinfo("Error", "Datos incorrectos")
 
+<<<<<<< HEAD
     def vistaInicio(self, datoContenedor):
         self.colorLabel = "#396cc0"
         labelTitulo = vistaInicioSesion.Label(datoContenedor, text="Inicio Sesión",font=("Arial", 18))
@@ -119,3 +123,5 @@ class inicioSesionVista:
         
     def cambiarOpcion(self, opcion):
         self.opcionSeleccionada.set(opcion)"""
+=======
+>>>>>>> anshi
