@@ -1,10 +1,6 @@
 import tkinter as menuvista
 
-<<<<<<< HEAD
-class MenuInterfaz:
-=======
 class menuInterfaz:
->>>>>>> anshi
     def __init__(self):
         self.master = menuvista.Tk()
         self.master.title("Menu principal")
@@ -20,7 +16,7 @@ class menuInterfaz:
     def encabezado(self):
         encabezadoframe = self.frame(self.master, 1200, 100, '#2c3e50')
         encabezadoframe.pack(side="top", fill="x")
-        encabezadolabel = menuvista.Label(encabezadoframe, text="Nombre de la empresa", font=("Helvetica", 24, "bold"), bg='#2c3e50', fg='white')
+        encabezadolabel = menuvista.Label(encabezadoframe, text="Nombre de la empresa ", font=("Helvetica", 24, "bold"), bg='#2c3e50', fg='white')
         encabezadolabel.pack(pady=20)
         return encabezadoframe
 
@@ -134,10 +130,3 @@ class menuInterfaz:
     def iniciar(self):
         self.master.mainloop()
 
-<<<<<<< HEAD
-if __name__ == "__main__":
-    menu = MenuInterfaz()
-    menu.iniciar()
-=======
-
->>>>>>> anshi

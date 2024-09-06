@@ -3,8 +3,8 @@ import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
 from vista.inicioSesion import inicioSesionVista
-from modelo.modelobk import modelo
-from vista.menu import menuInterfaz
+from modelo.modelobk import modelo 
+from vista.menu import menuInterfaz 
 
 class controladorInicio:
     def __init__(self):
@@ -16,6 +16,7 @@ class controladorInicio:
         else:
             usuarioEnviar = self.modelo.inicioSesion(datos)
             print(f"Usuario: {datos['usuario']}, Contraseña: {datos['contraseña']}")
+            
             if usuarioEnviar == "verificado":
                 self.inicioSesion.sesion.destroy()
                 self.iniciarMenu()
@@ -35,5 +36,3 @@ class controladorInicio:
 
 controlador = controladorInicio()
 controlador.iniciarVista()
-
-
