@@ -7,7 +7,7 @@ class inicioSesionVista:
         self.controlador = controlador
         self.user = None
         self.contraseña = None
-    
+        
     def crearFormulario(self):
         self.sesion = vistaInicioSesion.Tk()
         self.sesion.title("Inicio Sesión")
