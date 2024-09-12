@@ -1,5 +1,6 @@
 import tkinter as menuvista
 
+
 class menuInterfaz:
     def __init__(self):
         self.master = menuvista.Tk()
@@ -18,7 +19,18 @@ class menuInterfaz:
         encabezadoframe.pack(side="top", fill="x")
         encabezadolabel = menuvista.Label(encabezadoframe, text="Nombre de la empresa ", font=("Helvetica", 24, "bold"), bg='#2c3e50', fg='white')
         encabezadolabel.pack(pady=20)
+        btncerrar = menuvista.Button(encabezadoframe,  text="Cerrar sesion",command=self.cerrarSesion) 
+        btncerrar.place(x=20 , y=20)
         return encabezadoframe
+
+    def cerrarSesion(self):
+        self.master.destroy()
+        from vista.inicioSesion import inicioSesionVista
+        login = inicioSesionVista(self)  
+        sesion = login.crearFormulario()
+        contenedor = login.contenedorModelo(sesion)
+        login.vistaInicio(contenedor)
+        sesion.mainloop()
 
     def crearMenu(self, parent):
         Menuframe = self.frame(parent, 250, 600, '#34495e')
