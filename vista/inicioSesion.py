@@ -5,6 +5,7 @@ from vista.menu import menuInterfaz
 class inicioSesionVista:
     def __init__(self, controlador):
         self.controlador = controlador
+        self.sesion = None
         self.user = None
         self.contraseña = None
         
@@ -59,9 +60,7 @@ class inicioSesionVista:
         if datos['usuario'] and datos['contraseña']:
             verificacion = self.controlador.inicioUsuario(datos)
             if verificacion:
-                # Cerrar la ventana de inicio de sesión
                 self.sesion.destroy()
-                
                 # Abrir el menú principal
                 menu_app = menuInterfaz(verificacion['rol_id'], verificacion['usuario'])
                 menu_app.mostrar_menu()
