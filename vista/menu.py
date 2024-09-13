@@ -1,6 +1,7 @@
 import tkinter as menuvista
-from vista.vistaInventario import Inventario
 from vista.vistaInformes import Menu
+from vista.inventario import GestionProductos
+
 
 class menuInterfaz:
     def __init__(self):
@@ -8,7 +9,7 @@ class menuInterfaz:
         self.master.title("Menu principal")
         self.master.geometry("1200x800")
         self.master.configure(bg='#f5f5f5')
-        self.producto_frame = None  # Para almacenar el frame actual de productos
+        self.producto_frame = None
         self.crearinterface()
 
     def crearinterface(self):
@@ -16,7 +17,7 @@ class menuInterfaz:
         self.crearMenu(self.master)
         self.crearCategorias(self.master)
         self.Titulocatalogo(self.master)
-        self.mostrarProductosCategoria1()  # Muestra los productos de la primera categoría por defecto
+        self.mostrarProductosCategoria1() 
 
     def frame(self, parent, width, height, bg):
         frame = menuvista.Frame(parent, width=width, height=height, bg=bg)
@@ -66,9 +67,10 @@ class menuInterfaz:
                         bd=0, highlightthickness=0 , command=command)
         button.place(x=10, y=y_position)
 
+
     def inventario(self):
         nueva_ventana = menuvista.Tk()
-        menu_informe = Inventario(nueva_ventana)
+        menu_inventario = GestionProductos(nueva_ventana)
         nueva_ventana.mainloop()
 
     def crearCategorias(self, parent):
@@ -82,13 +84,14 @@ class menuInterfaz:
         self.CrearCategoriaBoton(CategoriaFrame, "Inventario", 730 , command=self.inventario)
         return CategoriaFrame
 
+
+
     def CrearCategoriaBoton(self, parent, text, x_position, command=None):
         button = menuvista.Button(parent, text=text, width=15, height=2, 
                                   bg='#3498db', fg='white', activebackground='#2980b9',
                                   bd=0, highlightthickness=0, command=command)
         button.place(x=x_position, y=5)
 
-    # Métodos para mostrar productos según la categoría seleccionada
     def mostrarProductosCategoria1(self):
         self.actualizarProductos([("Pastel de chocolate", "$5000", "Pastel de bizcocho de chocolate con ganache de chocolate", 10, 10), 
                                   ("Producto 2", "$12", "Descripción del producto 2", 320, 10), 
@@ -105,10 +108,9 @@ class menuInterfaz:
         self.actualizarProductos([("Producto 7", "$35", "Descripción del producto 7", 10, 10), 
                                   ("Producto 8", "$40", "Descripción del producto 8", 320, 10)])
 
-    # Método para actualizar el frame de productos
     def actualizarProductos(self, productos):
         if self.producto_frame:
-            self.producto_frame.destroy()  # Elimina el frame anterior de productos
+            self.producto_frame.destroy()
         self.producto_frame = self.frame(self.master, 950, 500, '#ecf0f1')
         self.producto_frame.pack(side="top", fill="both", expand=True)
 

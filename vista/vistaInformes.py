@@ -75,17 +75,15 @@ class Menu:
         return ProductoFrame
 
     def CrearTabla(self, parent, titulo, x_position, y_position):
-        # Creamos el frame para la tabla más grande (800x300)
         tableframe = menuvista.Frame(parent, width=1000, height=300, bg='white', bd=1, relief=menuvista.RAISED)
         tableframe.place(x=x_position, y=y_position)
 
         menuvista.Label(tableframe, text=titulo, font=("Helvetica", 12, "bold"), bg='white').pack(anchor="w")
         
-        # Creamos un Treeview (tabla) con columnas más amplias
         columnas = ("Producto", "Cantidad", "Precio", "Fecha")
-        treeview = ttk.Treeview(tableframe, columns=columnas, show="headings", height=10)  # La tabla tendrá 10 filas visibles
+        treeview = ttk.Treeview(tableframe, columns=columnas, show="headings", height=10) 
 
-        # Definimos los encabezados y ajustamos el ancho de las columnas
+
         treeview.heading("Producto", text="Producto")
         treeview.heading("Cantidad", text="Cantidad")
         treeview.heading("Precio", text="Precio")
@@ -97,7 +95,6 @@ class Menu:
         treeview.column("Precio", anchor='center', width=100)
         treeview.column("Fecha", anchor='center', width=150)
 
-        # Empaquetamos la tabla para que sea visible
         treeview.pack(fill="both", expand=True)
 
         return treeview
