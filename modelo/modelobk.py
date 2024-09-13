@@ -25,6 +25,22 @@ class modelo:
             except mysql.connector.Error as err:
                   print(f"Error: {err}")
                   return False
+      
+      
+      def inventario(self, nombre, precio, fecha):
+            try:
+                  consulta = "INSERT INTO productos (nombre, precio, fecha) VALUES (%s, %s, %s)"
+                  
+                  self.cursor.execute(consulta, (nombre, precio, fecha))
+                  
+                  self.conexion.commit()
+                  
+                  print("Producto insertado correctamente")
+                  return True
+            except mysql.connector.Error as err:
+                  print(f"Error: {err}")
+                  return False
+
 
       def cerrar_conexion(self):
             self.cursor.close()

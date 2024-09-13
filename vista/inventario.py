@@ -21,13 +21,37 @@ class GestionProductos:
         encabezadolabel.pack(pady=20)
         return encabezadoframe
 
+    def crearbotones(self, parent):
+        botonframe = self.frame(parent, 950, 150, '#ecf0f1')
+        botonframe.pack(side="top", fill="x", pady=10)
+
+        self.registrar = menuvista.Button(botonframe, text="Registrar productos" ,width=20, height=3, command=self.registros)
+        self.registrar.place(x=500 , y= 30)
+
+        self.guardar_button = menuvista.Button(botonframe, text="Eliminar", width=20, height=3 ,command=self.guardarProducto)
+        self.guardar_button.place(x=300, y=30)
+
+        self.eliminar_button = menuvista.Button(botonframe, text="Editar",width=20, height=3 ,command=self.eliminarProducto)
+        self.eliminar_button.place(x=700, y=30)
+
+    def registros(self):
+        ventanaregistro = menuvista.Toplevel(self.master)
+        ventanaregistro.title("Registro productos")
+        ventanaregistro.geometry("600x300")
+        ventanaregistro.config(bg="#ecf0f1")
+        
+        self.crearFormulario(ventanaregistro)
+        
     def crearFormulario(self, parent):
         form_frame = self.frame(parent, 950, 150, '#ecf0f1')
-        form_frame.pack(side="top", fill="x", pady=10)
+        form_frame.pack(side="top", fill="both", expand=True, padx=10, pady=10)
+        
+        form_frame.grid_columnconfigure(0, weight=1)
+        form_frame.grid_columnconfigure(1, weight=1)
 
         menuvista.Label(form_frame, text="Nombre:", bg='#ecf0f1').grid(row=0, column=0, padx=10, pady=5, sticky="e")
-        self.nombre_entry = menuvista.Entry(form_frame, width=30)
-        self.nombre_entry.grid(row=0, column=1, padx=10, pady=5)
+        nombre_entry = menuvista.Entry(form_frame, width=30)
+        nombre_entry.grid(row=0, column=1, padx=10, pady=5)
 
         menuvista.Label(form_frame, text="Cantidad:", bg='#ecf0f1').grid(row=1, column=0, padx=10, pady=5, sticky="e")
         self.cantidad_entry = menuvista.Entry(form_frame, width=30)
@@ -41,14 +65,36 @@ class GestionProductos:
         self.fecha_entry = menuvista.Entry(form_frame, width=30)
         self.fecha_entry.grid(row=3, column=1, padx=10, pady=5)
 
-        self.guardar_button = menuvista.Button(form_frame, text="Guardar", command=self.guardarProducto)
-        self.guardar_button.grid(row=4, column=0, columnspan=2, pady=10)
+        self.boton = menuvista.Button(form_frame, text="Guardar", command=self.inventario)
+        self.boton.place(x=230, y=150)
 
-        self.eliminar_button = menuvista.Button(form_frame, text="Eliminar", command=self.eliminarProducto)
-        self.eliminar_button.grid(row=5, column=0, columnspan=2, pady=10)
+    def inventario(self):
+        try:
+            nombre = self.nombre_entry.get()
+            cantidad = self.cantidad_entry.get()
+            precio = self.precio_entry.get()
+            fecha = self.fecha_entry.get()
 
-        self.editar_button = menuvista.Button(form_frame, text="Editar", command=self.editarProducto)
-        self.editar_button.grid(row=6, column=0, columnspan=2, pady=10)
+
+            if not nombre or not cantidad or not precio or not fecha:
+                print("Todos los campos son obligatorios")
+                return False
+
+            cantidad = int(cantidad)
+            precio = float(precio)
+
+            consulta = "INSERT INTO productos (nombre, cantidad, precio, fecha) VALUES (%s, %s, %s, %s)"
+            valores = (nombre, cantidad, precio, fecha)
+
+            self.cursor.execute(consulta, valores)
+            self.conexion.commit()
+
+            print("Producto registrado exitosamente")
+            return True
+
+        except Exception as e:
+            print(f"Error al registrar producto: {e}")
+            return False
 
     def crearTabla(self, parent):
         table_frame = self.frame(parent, 950, 500, '#ecf0f1')
@@ -104,7 +150,7 @@ class GestionProductos:
 
     def crearinterface(self):
         self.encabezado()
-        self.crearFormulario(self.master)
+        self.crearbotones(self.master)
         self.crearTabla(self.master)
 
 if __name__ == "__main__":
