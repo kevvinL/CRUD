@@ -18,7 +18,6 @@ class GestionProductos:
         # Limpiar la tabla antes de volver a cargar los datos
         self.productos_table.delete(*self.productos_table.get_children())
         
-        # Inserta los datos en la tabla
         for producto in productos:
             nombreP, cantidad, precio, fecha = producto.values()  # Extrae los valores del diccionario
             self.productos_table.insert("", "end", values=(nombreP, cantidad, precio, fecha))
@@ -45,7 +44,7 @@ class GestionProductos:
         self.guardar_button = menuvista.Button(botonframe, text="Eliminar", width=20, height=3, command=self.eliminarProducto)
         self.guardar_button.place(x=300, y=30)
 
-        self.eliminar_button = menuvista.Button(botonframe, text="Editar", width=20, height=3)
+        self.eliminar_button = menuvista.Button(botonframe, text="Editar", width=20, height=3 , command=self.editarProducto)
         self.eliminar_button.place(x=700, y=30)
 
     def abrirVentanaRegistro(self):
@@ -139,6 +138,76 @@ class GestionProductos:
                 print("Error al eliminar el producto de la base de datos.")
         else:
             print("Selecciona un producto para eliminar.")
+
+    def editarProducto(self):
+        selected_item = self.productos_table.selection()
+        
+        if selected_item:
+            # Obtener los datos del producto seleccionado
+            item = self.productos_table.item(selected_item)
+            producto_nombre, cantidad, precio, fecha = item['values']
+            
+            # Abrir la ventana de edición
+            self.ventanaedicion = menuvista.Toplevel(self.master)
+            self.ventanaedicion.title("Editar producto")
+            self.ventanaedicion.geometry("600x300")
+            self.ventanaedicion.config(bg="#ecf0f1")
+            
+            # Crear el formulario con los datos del producto
+            self.crearFormularioEdicion(self.ventanaedicion, producto_nombre, cantidad, precio, fecha)
+        else:
+            print("Selecciona un producto para editar.")
+
+    def crearFormularioEdicion(self, parent, nombreP, cantidad, precio, fecha):
+        form_frame = self.frame(parent, 950, 150, '#ecf0f1')
+        form_frame.pack(side="top", fill="both", expand=True, padx=10, pady=10)
+
+        form_frame.grid_columnconfigure(0, weight=1)
+        form_frame.grid_columnconfigure(1, weight=1)
+
+        menuvista.Label(form_frame, text="Nombre:", bg='#ecf0f1').grid(row=0, column=0, padx=10, pady=5, sticky="e")
+        self.nombre_entry = menuvista.Entry(form_frame, width=30)
+        self.nombre_entry.grid(row=0, column=1, padx=10, pady=5)
+        self.nombre_entry.insert(0, nombreP)  # Poner el valor actual en el campo de entrada
+
+        menuvista.Label(form_frame, text="Cantidad:", bg='#ecf0f1').grid(row=1, column=0, padx=10, pady=5, sticky="e")
+        self.cantidad_entry = menuvista.Entry(form_frame, width=30)
+        self.cantidad_entry.grid(row=1, column=1, padx=10, pady=5)
+        self.cantidad_entry.insert(0, cantidad)
+
+        menuvista.Label(form_frame, text="Precio:", bg='#ecf0f1').grid(row=2, column=0, padx=10, pady=5, sticky="e")
+        self.precio_entry = menuvista.Entry(form_frame, width=30)
+        self.precio_entry.grid(row=2, column=1, padx=10, pady=5)
+        self.precio_entry.insert(0, precio)
+
+        menuvista.Label(form_frame, text="Fecha:", bg='#ecf0f1').grid(row=3, column=0, padx=10, pady=5, sticky="e")
+        self.fecha_entry = menuvista.Entry(form_frame, width=30)
+        self.fecha_entry.grid(row=3, column=1, padx=10, pady=5)
+        self.fecha_entry.insert(0, fecha)
+
+        self.boton = menuvista.Button(form_frame, text="Guardar cambios", command=lambda: self.actualizarProducto(nombreP))
+        self.boton.place(x=230, y=150)
+
+
+    def actualizarProducto(self, nombre_original):
+        nombreP = self.nombre_entry.get()
+        cantidad = self.cantidad_entry.get()
+        precio = self.precio_entry.get()
+        fecha = self.fecha_entry.get()
+
+        if nombreP and cantidad and precio and fecha:
+            modelo_bd = modelo()  
+            actualizado = modelo_bd.actualizar_producto(nombre_original, nombreP, cantidad, precio, fecha)
+
+            if actualizado:
+                print("Producto actualizado correctamente en la base de datos.")
+                self.ventanaedicion.destroy()
+                self.cargarDatos()  # Actualiza la tabla con los nuevos datos
+            else:
+                print("Error al actualizar el producto en la base de datos.")
+        else:
+            print("Por favor, completa todos los campos.")
+
 
     def crearinterface(self):
         self.encabezado()
