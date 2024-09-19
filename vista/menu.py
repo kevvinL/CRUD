@@ -1,7 +1,7 @@
 import tkinter as menuvista
 from vista.vistaInformes import Menu
 from vista.inventario import GestionProductos
-
+from modelo.modelobk import modelo
 
 class menuInterfaz:
     def __init__(self):
@@ -17,7 +17,7 @@ class menuInterfaz:
         self.crearMenu(self.master)
         self.crearCategorias(self.master)
         self.Titulocatalogo(self.master)
-        self.mostrarProductosCategoria1() 
+        self.mostrarProductos() 
 
     def frame(self, parent, width, height, bg):
         frame = menuvista.Frame(parent, width=width, height=height, bg=bg)
@@ -77,10 +77,10 @@ class menuInterfaz:
         CategoriaFrame = self.frame(parent, 950, 50, '#ecf0f1')
         CategoriaFrame.pack(side="top", fill="x")
 
-        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 1", 10, self.mostrarProductosCategoria1)
-        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 2", 190, self.mostrarProductosCategoria2)
-        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 3", 370, self.mostrarProductosCategoria3)
-        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 4", 550, self.mostrarProductosCategoria4)
+        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 1", 10, self.mostrarProductos)
+        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 2", 190, self.mostrarProductos2)
+        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 3", 370, self.mostrarProductos3)
+        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 4", 550, self.mostrarProductos4)
         self.CrearCategoriaBoton(CategoriaFrame, "Inventario", 730 , command=self.inventario)
         return CategoriaFrame
 
@@ -92,21 +92,42 @@ class menuInterfaz:
                                   bd=0, highlightthickness=0, command=command)
         button.place(x=x_position, y=5)
 
-    def mostrarProductosCategoria1(self):
-        self.actualizarProductos([("Pastel de chocolate", "$5000", "Pastel de bizcocho de chocolate con ganache de chocolate", 10, 10), 
-                                  ("Producto 2", "$12", "Descripción del producto 2", 320, 10), 
-                                  ("Producto 3", "$15", "Descripción del producto 3", 630, 10)])
+    def mostrarProductos(self):
+        modelo_bd = modelo()
+        productos = modelo_bd.obtener_productos()  # Obtiene productos de la base de datos
 
-    def mostrarProductosCategoria2(self):
-        self.actualizarProductos([("Producto 4", "$20", "Descripción del producto 4", 10, 10), 
-                                  ("Producto 5", "$25", "Descripción del producto 5", 320, 10)])
+        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170) 
+                            for i, p in enumerate(productos)]  # Calcula las posiciones de cada producto
+        
+        self.actualizarProductos(productos_formato)
 
-    def mostrarProductosCategoria3(self):
-        self.actualizarProductos([("Producto 6", "$30", "Descripción del producto 6", 10, 10)])
 
-    def mostrarProductosCategoria4(self):
-        self.actualizarProductos([("Producto 7", "$35", "Descripción del producto 7", 10, 10), 
-                                  ("Producto 8", "$40", "Descripción del producto 8", 320, 10)])
+    def mostrarProductos2(self):
+        modelo_bd = modelo()
+        productos = modelo_bd.obtener_productos()  # Obtiene productos de la base de datos
+
+        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170) 
+                            for i, p in enumerate(productos)]  # Calcula las posiciones de cada producto
+        
+        self.actualizarProductos(productos_formato)
+
+    def mostrarProductos3(self):
+        modelo_bd = modelo()
+        productos = modelo_bd.obtener_productos()  # Obtiene productos de la base de datos
+
+        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170) 
+                            for i, p in enumerate(productos)]  # Calcula las posiciones de cada producto
+        
+        self.actualizarProductos(productos_formato)
+
+    def mostrarProductos4(self):
+        modelo_bd = modelo()
+        productos = modelo_bd.obtener_productos()  # Obtiene productos de la base de datos
+
+        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170) 
+                            for i, p in enumerate(productos)]  # Calcula las posiciones de cada producto
+        
+        self.actualizarProductos(productos_formato)
 
     def actualizarProductos(self, productos):
         if self.producto_frame:
@@ -118,7 +139,7 @@ class menuInterfaz:
             self.CrearProducto(self.producto_frame, nombre, precio, descripcion, x, y)
 
     def CrearProducto(self, parent, nombre, precio, descripcion, x_position, y_position):
-        producto_frame = menuvista.Frame(parent, width=270, height=160, bg='white', relief='raised', bd=2)
+        producto_frame = menuvista.Frame(parent, width=270, height=200, bg='white', relief='raised', bd=2)
         producto_frame.place(x=x_position, y=y_position)
 
         nombre_label = menuvista.Label(producto_frame, text=nombre, font=("Helvetica", 12, "bold"), bg='white')
@@ -130,8 +151,9 @@ class menuInterfaz:
         descripcion_label = menuvista.Label(producto_frame, text=descripcion, font=("Helvetica", 9), bg='white', wraplength=250)
         descripcion_label.pack(anchor='n')
 
-        agregar_btn = menuvista.Button(producto_frame, text="Agregar", bg='#3498db', fg='white')
+        agregar_btn = menuvista.Button(producto_frame, text="Agregar al carrito", bg='#3498db', fg='white')
         agregar_btn.pack(anchor='s', pady=5)
+
 
     def Titulocatalogo(self, parent):
         CatalogoTituloFrame = self.frame(parent, 950, 50, '#ecf0f1')
