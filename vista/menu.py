@@ -1,21 +1,22 @@
 import tkinter as menuvista
-from vista.vistaInformes import Menu
 from vista.inventario import GestionProductos
 from modelo.modelobk import modelo
 
 class menuInterfaz:
-    def __init__(self):
+    def __init__(self , controlador):
         self.master = menuvista.Tk()
+        self.controlador = controlador
         self.master.title("Menu principal")
         self.master.geometry("1200x800")
         self.master.configure(bg='#f5f5f5')
         self.producto_frame = None
         self.crearinterface()
 
+    
+
     def crearinterface(self):
         self.encabezado()
         self.crearMenu(self.master)
-        self.crearCategorias(self.master)
         self.Titulocatalogo(self.master)
         self.mostrarProductos() 
 
@@ -27,39 +28,31 @@ class menuInterfaz:
     def encabezado(self):
         encabezadoframe = self.frame(self.master, 1200, 100, '#2c3e50')
         encabezadoframe.pack(side="top", fill="x")
-        encabezadolabel = menuvista.Label(encabezadoframe, text="Nombre de la empresa ", font=("Helvetica", 24, "bold"), bg='#2c3e50', fg='white')
+        encabezadolabel = menuvista.Label(encabezadoframe, text="Reposteria sugarCode", font=("Helvetica", 24, "bold"), bg='#2c3e50', fg='white')
         encabezadolabel.pack(pady=20)
         return encabezadoframe
 
     def cerrarSesion(self):
         self.master.destroy()
-        self.abrirInicioSesion()
+        self.controlador.iniciarVista()
 
-    def abrirInicioSesion(self):
-        from vista.inicioSesion import inicioSesionVista
-        login = inicioSesionVista(None)  
-        sesion = login.crearFormulario()
-        contenedor = login.contenedorModelo(sesion)
-        login.vistaInicio(contenedor)
-        sesion.mainloop()
 
-    def informe(self):
-        nueva_ventana = menuvista.Tk()
-        menu_informe = Menu(nueva_ventana)
-        nueva_ventana.mainloop()
+
 
     def crearMenu(self, parent):
         Menuframe = self.frame(parent, 250, 600, '#34495e')
         Menuframe.pack(side="left", fill="y")
 
-        self.CrearBotonMenu(Menuframe, "Apps", 10)
-        self.CrearBotonMenu(Menuframe, "Games", 60)
-        self.CrearBotonMenu(Menuframe, "Movies", 110)
-        self.CrearBotonMenu(Menuframe, "Books", 160)
-        self.CrearBotonMenu(Menuframe, "Newspapers", 210)
+        self.CrearBotonMenu(Menuframe, "Tartas", 10 , self.mostrarProductos)
+        self.CrearBotonMenu(Menuframe, "Galletas", 60 , self.mostrarProductos2)
+        self.CrearBotonMenu(Menuframe, "Cupcakes", 110 , self.mostrarProductos3)
+        self.CrearBotonMenu(Menuframe, "Postres frios", 160, self.mostrarProductos4)
+        self.CrearBotonMenu(Menuframe, "Inventario", 210 , command=self.inventario)
         self.CrearBotonMenu(Menuframe, "Cerrar sesion", 600, command=self.cerrarSesion)
-        self.CrearBotonMenu(Menuframe, "Informe", 500 , command=self.informe)
+        self.CrearBotonMenu(Menuframe, "Informe", 500 , command=lambda:self.controlador.informe())
         return Menuframe
+
+    
 
     def CrearBotonMenu(self, parent, text, y_position, command=None):
         button = menuvista.Button(parent, text=text, width=25, height=2, bg='#34495e', fg='white', 
@@ -73,24 +66,6 @@ class menuInterfaz:
         menu_inventario = GestionProductos(nueva_ventana)
         nueva_ventana.mainloop()
 
-    def crearCategorias(self, parent):
-        CategoriaFrame = self.frame(parent, 950, 50, '#ecf0f1')
-        CategoriaFrame.pack(side="top", fill="x")
-
-        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 1", 10, self.mostrarProductos)
-        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 2", 190, self.mostrarProductos2)
-        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 3", 370, self.mostrarProductos3)
-        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 4", 550, self.mostrarProductos4)
-        self.CrearCategoriaBoton(CategoriaFrame, "Inventario", 730 , command=self.inventario)
-        return CategoriaFrame
-
-
-
-    def CrearCategoriaBoton(self, parent, text, x_position, command=None):
-        button = menuvista.Button(parent, text=text, width=15, height=2, 
-                                  bg='#3498db', fg='white', activebackground='#2980b9',
-                                  bd=0, highlightthickness=0, command=command)
-        button.place(x=x_position, y=5)
 
     def mostrarProductos(self):
         modelo_bd = modelo()

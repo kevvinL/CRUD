@@ -5,6 +5,8 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from vista.inicioSesion import inicioSesionVista
 from modelo.modelobk import modelo 
 from vista.menu import menuInterfaz 
+from vista.vistaInformes import Menu
+import tkinter as menuvista
 
 class controladorInicio:
     def __init__(self):
@@ -31,8 +33,17 @@ class controladorInicio:
         auxFormulario.mainloop()
     
     def iniciarMenu(self):
-        self.menu = menuInterfaz()
+        self.menu = menuInterfaz(controlador=self)
         self.menu.iniciar()
+    
+    def informe(self):
+        nueva_ventana = menuvista.Tk()  # Crear la nueva ventana
+        menu_informe = Menu(nueva_ventana)
+        
+        # Añadir contenido a la nueva ventana (si es necesario)
+        
+        # Mantener la ventana abierta
+        nueva_ventana.mainloop()
 
 controlador = controladorInicio()
 controlador.iniciarVista()
