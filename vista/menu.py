@@ -33,7 +33,11 @@ class menuInterfaz:
 
     def cerrarSesion(self):
         self.master.destroy()
-        self.abrirInicioSesion()
+        
+    #    self.abrirInicioSesion()
+    #self.iniciarMenu que abra de nuevo el mismo menu
+    
+    
 
     def abrirInicioSesion(self):
         from vista.inicioSesion import inicioSesionVista
@@ -44,6 +48,7 @@ class menuInterfaz:
         sesion.mainloop()
 
     def informe(self):
+        #self.iniciarInforme() llamar al controlador 
         nueva_ventana = menuvista.Tk()
         menu_informe = Menu(nueva_ventana)
         nueva_ventana.mainloop()
@@ -69,6 +74,7 @@ class menuInterfaz:
 
 
     def inventario(self):
+        #llamar a self.iniciarInventario()
         nueva_ventana = menuvista.Tk()
         menu_inventario = GestionProductos(nueva_ventana)
         nueva_ventana.mainloop()
