@@ -43,10 +43,10 @@ class Menu:
         CategoriaFrame = self.frame(parent, 950, 50, '#ecf0f1')
         CategoriaFrame.pack(side="top", fill="x")
 
-        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 1", 10)
-        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 2", 190)
-        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 3", 370)
-        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 4", 550)
+        self.CrearCategoriaBoton(CategoriaFrame, "Pasteles y Tartas", 10)
+        self.CrearCategoriaBoton(CategoriaFrame, "Galletas", 190)
+        self.CrearCategoriaBoton(CategoriaFrame, "Postres Frios", 370)
+        self.CrearCategoriaBoton(CategoriaFrame, "Cupcakes", 550)
         self.CrearCategoriaBoton(CategoriaFrame, "Categoría 5", 730)
 
         return CategoriaFrame

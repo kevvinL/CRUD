@@ -27,7 +27,7 @@ class menuInterfaz:
     def encabezado(self):
         encabezadoframe = self.frame(self.master, 1200, 100, '#2c3e50')
         encabezadoframe.pack(side="top", fill="x")
-        encabezadolabel = menuvista.Label(encabezadoframe, text="Nombre de la empresa ", font=("Helvetica", 24, "bold"), bg='#2c3e50', fg='white')
+        encabezadolabel = menuvista.Label(encabezadoframe, text="Reposteria SugarCode ", font=("Helvetica", 24, "bold"), bg='#2c3e50', fg='white')
         encabezadolabel.pack(pady=20)
         return encabezadoframe
 
@@ -77,10 +77,10 @@ class menuInterfaz:
         CategoriaFrame = self.frame(parent, 950, 50, '#ecf0f1')
         CategoriaFrame.pack(side="top", fill="x")
 
-        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 1", 10, self.mostrarProductos)
-        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 2", 190, self.mostrarProductos2)
-        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 3", 370, self.mostrarProductos3)
-        self.CrearCategoriaBoton(CategoriaFrame, "Categoría 4", 550, self.mostrarProductos4)
+        self.CrearCategoriaBoton(CategoriaFrame, "Pasteles y Tartas", 10, self.mostrarProductos)
+        self.CrearCategoriaBoton(CategoriaFrame, "Galletas", 190, self.mostrarProductos2)
+        self.CrearCategoriaBoton(CategoriaFrame, "Postres Frios", 370, self.mostrarProductos3)
+        self.CrearCategoriaBoton(CategoriaFrame, "Cupcakes", 550, self.mostrarProductos4)
         self.CrearCategoriaBoton(CategoriaFrame, "Inventario", 730 , command=self.inventario)
         return CategoriaFrame
 

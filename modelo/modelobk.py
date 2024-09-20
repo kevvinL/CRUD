@@ -26,10 +26,10 @@ class modelo:
                   print(f"Error: {err}")
                   return False
 
-      def inventario(self, nombreP, cantidad, precio, fecha):
+      def inventario(self, nombreP, cantidad, precio, fecha, categoria):
             try:
-                  consulta = "INSERT INTO productos (nombreP, cantidad, precio, fecha) VALUES (%s, %s, %s, %s)"
-                  self.cursor.execute(consulta, (nombreP, cantidad, precio, fecha))
+                  consulta = "INSERT INTO productos (nombreP, cantidad, precio, fecha, categoria) VALUES (%s, %s, %s, %s)"
+                  self.cursor.execute(consulta, (nombreP, cantidad, precio, fecha, categoria))
                   self.conexion.commit()
                   print("Producto insertado correctamente")
                   return True
@@ -39,7 +39,7 @@ class modelo:
 
       def obtener_productos(self):
             try:
-                  consulta = "SELECT nombreP, cantidad, precio, fecha FROM productos"
+                  consulta = "SELECT nombreP, cantidad, precio, fecha, categoria FROM productos"
                   self.cursor.execute(consulta)
                   return self.cursor.fetchall()
             except mysql.connector.Error as err:
@@ -56,9 +56,9 @@ class modelo:
                   print(f"Error: {err}")
                   return False
       
-      def actualizar_producto(self, nombreP, nuevo_nombre, cantidad, precio, fecha):
-            query = "UPDATE productos SET nombreP=%s, cantidad=%s, precio=%s, fecha=%s WHERE nombreP=%s"
-            parametros = (nuevo_nombre, cantidad, precio, fecha, nombreP)
+      def actualizar_producto(self, nombreP, nuevo_nombre, cantidad, precio, fecha, categoria):
+            query = "UPDATE productos SET nombreP=%s, cantidad=%s, precio=%s, fecha=%s, categoria=%s  WHERE nombreP=%s"
+            parametros = (nuevo_nombre, cantidad, precio, fecha, categoria, nombreP)
             try:
                   self.cursor.execute(query, parametros)
                   self.conexion.commit()
