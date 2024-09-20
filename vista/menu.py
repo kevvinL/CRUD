@@ -1,14 +1,14 @@
 import tkinter as menuvista
 from vista.vistaInformes import Menu
 from vista.inventario import GestionProductos
-from modelo.modelobk import modelo
 
 class menuInterfaz:
-    def __init__(self):
+    def __init__(self, controlador):
         self.master = menuvista.Tk()
         self.master.title("Menu principal")
         self.master.geometry("1200x800")
         self.master.configure(bg='#f5f5f5')
+        self.controlador=controlador
         self.producto_frame = None
         self.crearinterface()
 
@@ -17,7 +17,7 @@ class menuInterfaz:
         self.crearMenu(self.master)
         self.crearCategorias(self.master)
         self.Titulocatalogo(self.master)
-        self.mostrarProductos() 
+        self.mostrarProductos()
 
     def frame(self, parent, width, height, bg):
         frame = menuvista.Frame(parent, width=width, height=height, bg=bg)
@@ -33,22 +33,19 @@ class menuInterfaz:
 
     def cerrarSesion(self):
         self.master.destroy()
-        
+        self.controlador.iniciarVista()
+
     #    self.abrirInicioSesion()
     #self.iniciarMenu que abra de nuevo el mismo menu
-    
-    
 
     def abrirInicioSesion(self):
-        from vista.inicioSesion import inicioSesionVista
-        login = inicioSesionVista(None)  
+        login = self.controlador.iniciarVista()
         sesion = login.crearFormulario()
         contenedor = login.contenedorModelo(sesion)
         login.vistaInicio(contenedor)
-        sesion.mainloop()
 
     def informe(self):
-        #self.iniciarInforme() llamar al controlador 
+        #self.iniciarInforme() llamar al controlador
         nueva_ventana = menuvista.Tk()
         menu_informe = Menu(nueva_ventana)
         nueva_ventana.mainloop()
@@ -57,17 +54,17 @@ class menuInterfaz:
         Menuframe = self.frame(parent, 250, 600, '#34495e')
         Menuframe.pack(side="left", fill="y")
 
-        self.CrearBotonMenu(Menuframe, "Apps", 10)
-        self.CrearBotonMenu(Menuframe, "Games", 60)
-        self.CrearBotonMenu(Menuframe, "Movies", 110)
-        self.CrearBotonMenu(Menuframe, "Books", 160)
-        self.CrearBotonMenu(Menuframe, "Newspapers", 210)
+        self.CrearBotonMenu(Menuframe, "Pasteles y Tartas", 10)
+        self.CrearBotonMenu(Menuframe, "Galletas", 60)
+        self.CrearBotonMenu(Menuframe, "Postres Frios", 110)
+        self.CrearBotonMenu(Menuframe, "Cupcakes", 160)
+        self.CrearBotonMenu(Menuframe, "Inventario", 210, command=self.inventario)
         self.CrearBotonMenu(Menuframe, "Cerrar sesion", 600, command=self.cerrarSesion)
         self.CrearBotonMenu(Menuframe, "Informe", 500 , command=self.informe)
         return Menuframe
 
     def CrearBotonMenu(self, parent, text, y_position, command=None):
-        button = menuvista.Button(parent, text=text, width=25, height=2, bg='#34495e', fg='white', 
+        button = menuvista.Button(parent, text=text, width=25, height=2, bg='#34495e', fg='white',
                         activebackground='#2c3e50', activeforeground='white',
                         bd=0, highlightthickness=0 , command=command)
         button.place(x=10, y=y_position)
@@ -75,64 +72,47 @@ class menuInterfaz:
 
     def inventario(self):
         #llamar a self.iniciarInventario()
-        nueva_ventana = menuvista.Tk()
-        menu_inventario = GestionProductos(nueva_ventana)
-        nueva_ventana.mainloop()
-
-    def crearCategorias(self, parent):
-        CategoriaFrame = self.frame(parent, 950, 50, '#ecf0f1')
-        CategoriaFrame.pack(side="top", fill="x")
-
-        self.CrearCategoriaBoton(CategoriaFrame, "Pasteles y Tartas", 10, self.mostrarProductos)
-        self.CrearCategoriaBoton(CategoriaFrame, "Galletas", 190, self.mostrarProductos2)
-        self.CrearCategoriaBoton(CategoriaFrame, "Postres Frios", 370, self.mostrarProductos3)
-        self.CrearCategoriaBoton(CategoriaFrame, "Cupcakes", 550, self.mostrarProductos4)
-        self.CrearCategoriaBoton(CategoriaFrame, "Inventario", 730 , command=self.inventario)
-        return CategoriaFrame
-
+        self.controlador.iniciarInventario()
 
 
     def CrearCategoriaBoton(self, parent, text, x_position, command=None):
-        button = menuvista.Button(parent, text=text, width=15, height=2, 
+        button = menuvista.Button(parent, text=text, width=15, height=2,
                                   bg='#3498db', fg='white', activebackground='#2980b9',
                                   bd=0, highlightthickness=0, command=command)
         button.place(x=x_position, y=5)
 
     def mostrarProductos(self):
-        modelo_bd = modelo()
-        productos = modelo_bd.obtener_productos()
+        productos = self.controlador.mostrarP(self)
 
-        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170) 
+
+        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170)
                             for i, p in enumerate(productos)]
-        
+
         self.actualizarProductos(productos_formato)
 
 
     def mostrarProductos2(self):
-        modelo_bd = modelo()
-        productos = modelo_bd.obtener_productos()
+        productos = self.controlador.mostrarP(self)
 
-        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170) 
+        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170)
                             for i, p in enumerate(productos)]
-        
+
         self.actualizarProductos(productos_formato)
 
     def mostrarProductos3(self):
-        modelo_bd = modelo()
-        productos = modelo_bd.obtener_productos()
+        productos = self.controlador.mostrarP(self)
 
-        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170) 
+        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170)
                             for i, p in enumerate(productos)]
-        
+
         self.actualizarProductos(productos_formato)
 
     def mostrarProductos4(self):
-        modelo_bd = modelo()
-        productos = modelo_bd.obtener_productos()
+        productos = self.controlador.mostrarP(self)
 
-        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170) 
+        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170)
                             for i, p in enumerate(productos)]
-        
+
         self.actualizarProductos(productos_formato)
 
     def actualizarProductos(self, productos):

@@ -1,24 +1,23 @@
 import tkinter as menuvista
 from tkinter import ttk
 from tkinter import messagebox
-from modelo.modelobk import modelo
 
 class GestionProductos:
-    def __init__(self, master):
+    def __init__(self, master, controlador):
         self.master = master
         self.master.title("Gestión de Productos")
         self.master.geometry("1200x800")
         self.master.configure(bg='#f5f5f5')
+        self.controlador=controlador
         self.crearinterface()
         self.cargarDatos()
 
     def cargarDatos(self):
-        modelo_bd = modelo()
-        productos = modelo_bd.obtener_productos()  # Método que devuelve los productos guardados
-        
+        productos = self.controlador.obtenerProductos()  # Método que devuelve los productos guardados
+
         # Limpiar la tabla antes de volver a cargar los datos
         self.productos_table.delete(*self.productos_table.get_children())
-        
+
         for producto in productos:
             nombreP, cantidad, precio, fecha, categoria = producto.values()  # Extrae los valores del diccionario
             self.productos_table.insert("", "end", values=(nombreP, cantidad, precio, fecha, categoria))
@@ -108,8 +107,15 @@ class GestionProductos:
         categoria = self.categoria_entry.get()
 
         if nombreP and cantidad and precio and fecha and categoria:
-            modelo_bd = modelo()  
-            guardado = modelo_bd.inventario(nombreP, cantidad, precio, fecha, categoria)
+            # Crear un diccionario con la información
+            infoProducto = {
+                'nombreP': nombreP,
+                'cantidad': cantidad,
+                'precio': precio,
+                'fecha': fecha,
+                'categoria': categoria
+            }
+            guardado = self.controlador.guardarProducto(infoProducto)
 
             if guardado:
                 print(f"Producto guardado correctamente: {nombreP} en la categoría {categoria}")
@@ -132,9 +138,7 @@ class GestionProductos:
         if selected_item:
             item = self.productos_table.item(selected_item)
             producto_nombre = item['values'][0]
-            
-            modelo_bd = modelo()
-            eliminacion_exitosa = modelo_bd.eliminar_producto(producto_nombre)
+            eliminacion_exitosa = self.controlador.eliminarProducto(producto_nombre)
 
             if eliminacion_exitosa:
                 print("Producto eliminado correctamente de la base de datos.")
@@ -146,18 +150,18 @@ class GestionProductos:
 
     def editarProducto(self):
         selected_item = self.productos_table.selection()
-        
+
         if selected_item:
             # Obtener los datos del producto seleccionado
             item = self.productos_table.item(selected_item)
             producto_nombre, cantidad, precio, fecha, categoria = item['values']
-            
+
             # Abrir la ventana de edición
             self.ventanaedicion = menuvista.Toplevel(self.master)
             self.ventanaedicion.title("Editar producto")
             self.ventanaedicion.geometry("600x300")
             self.ventanaedicion.config(bg="#ecf0f1")
-            
+
             # Crear el formulario con los datos del producto
             self.crearFormularioEdicion(self.ventanaedicion, producto_nombre, cantidad, precio, fecha, categoria)
         else:
@@ -207,8 +211,7 @@ class GestionProductos:
         categoria = self.categoria_entry.get()
 
         if nombreP and cantidad and precio and fecha and categoria:
-            modelo_bd = modelo()  
-            actualizado = modelo_bd.actualizar_producto(nombre_original, nombreP, cantidad, precio, fecha, categoria)
+            actualizado = self.controlador.actualizar_producto(nombre_original, nombreP, cantidad, precio, fecha, categoria)
 
             if actualizado:
                 print("Producto actualizado correctamente en la base de datos.")
