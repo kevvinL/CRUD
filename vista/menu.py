@@ -1,6 +1,7 @@
 import tkinter as menuvista
 from vista.inventario import GestionProductos
 from modelo.modelobk import modelo
+from vista.vistaInformes import Menu
 
 class menuInterfaz:
     def __init__(self , controlador):
@@ -12,14 +13,17 @@ class menuInterfaz:
         self.producto_frame = None
         self.crearinterface()
 
-    
-
     def crearinterface(self):
         self.encabezado()
         self.crearMenu(self.master)
         self.Titulocatalogo(self.master)
         self.mostrarProductos() 
 
+    def mostrarInforme(self):
+        nuevaventana = menuvista.Tk()
+        menuInforme = Menu(nuevaventana)
+        nuevaventana.mainloop()
+    
     def frame(self, parent, width, height, bg):
         frame = menuvista.Frame(parent, width=width, height=height, bg=bg)
         frame.pack_propagate(False)
@@ -37,9 +41,22 @@ class menuInterfaz:
         self.controlador.iniciarVista()
 
 
-
-
     def crearMenu(self, parent):
+        Menuframe = self.frame(parent, 250, 600, '#34495e')
+        Menuframe.pack(side="left", fill="y")
+
+        # Pasamos las categorías como argumentos a los métodos
+        self.CrearBotonMenu(Menuframe, "Tartas", 10, command=lambda: self.mostrarProductos("Tartas"))
+        self.CrearBotonMenu(Menuframe, "Galletas", 60, command=lambda: self.mostrarProductos("Galletas"))
+        self.CrearBotonMenu(Menuframe, "Cupcakes", 110, command=lambda: self.mostrarProductos("Cupcakes"))
+        self.CrearBotonMenu(Menuframe, "Postres frios", 160, command=lambda: self.mostrarProductos("Postres frios"))
+        self.CrearBotonMenu(Menuframe, "Inventario", 210, command=self.inventario)
+        self.CrearBotonMenu(Menuframe, "Cerrar sesión", 600, command=self.cerrarSesion)
+        self.CrearBotonMenu(Menuframe, "Informe", 500, command=lambda: self.controlador.informe())
+        return Menuframe
+
+
+    """def crearMenu(self, parent):
         Menuframe = self.frame(parent, 250, 600, '#34495e')
         Menuframe.pack(side="left", fill="y")
 
@@ -50,9 +67,8 @@ class menuInterfaz:
         self.CrearBotonMenu(Menuframe, "Inventario", 210 , command=self.inventario)
         self.CrearBotonMenu(Menuframe, "Cerrar sesion", 600, command=self.cerrarSesion)
         self.CrearBotonMenu(Menuframe, "Informe", 500 , command=lambda:self.controlador.informe())
-        return Menuframe
+        return Menuframe"""
 
-    
 
     def CrearBotonMenu(self, parent, text, y_position, command=None):
         button = menuvista.Button(parent, text=text, width=25, height=2, bg='#34495e', fg='white', 

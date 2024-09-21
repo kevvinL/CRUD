@@ -9,6 +9,7 @@ class Menu:
         self.master.configure(bg='#f5f5f5')
         self.crearinterface()
     
+    
     def frame(self, parent, width, height, bg):
         frame = menuvista.Frame(parent, width=width, height=height, bg=bg)
         frame.pack_propagate(False)
