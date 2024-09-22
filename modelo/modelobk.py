@@ -37,8 +37,9 @@ class modelo:
                   print(f"Error: {err}")
                   return False
 
-      def obtener_productos(self):
+      def obtener_productos(self, categoria):
             try:
+                  print(categoria, "modelo")
                   consulta = "SELECT nombreP, cantidad, precio, fecha FROM productos"
                   self.cursor.execute(consulta)
                   return self.cursor.fetchall()

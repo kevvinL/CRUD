@@ -43,6 +43,27 @@ class controladorInicio:
     def mostrarProductosPorCategoria(self, categoria):
         if self.menu:
             self.menu.mostrarProductos(categoria)
+    
+    def cerrarMenu(self):
+        if self.menu:
+            self.menu.cerrarSesion()
+            self.iniciarVista()
+    
+    def IniciarInventario(self):
+        if self.menu:
+            self.menu.inventario()
+
+    def filtro(self, categoria):
+        print(categoria)
+        if self.menu:
+            if categoria == "todos":
+                self.productos = self.modelo.obtener_productos()
+            else:
+                self.productos = self.modelo.obtener_productos(categoria)
+            productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170) 
+                            for i, p in enumerate(self.productos)]
+            if productos_formato:
+                self.menu.actualizarProductos(productos_formato)
 
 
 controlador = controladorInicio()

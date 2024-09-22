@@ -38,7 +38,6 @@ class menuInterfaz:
 
     def cerrarSesion(self):
         self.master.destroy()
-        self.controlador.iniciarVista()
 
 
     def crearMenu(self, parent):
@@ -50,8 +49,8 @@ class menuInterfaz:
         self.CrearBotonMenu(Menuframe, "Galletas", 60, command=lambda: self.mostrarProductos("Galletas"))
         self.CrearBotonMenu(Menuframe, "Cupcakes", 110, command=lambda: self.mostrarProductos("Cupcakes"))
         self.CrearBotonMenu(Menuframe, "Postres frios", 160, command=lambda: self.mostrarProductos("Postres frios"))
-        self.CrearBotonMenu(Menuframe, "Inventario", 210, command=self.inventario)
-        self.CrearBotonMenu(Menuframe, "Cerrar sesión", 600, command=self.cerrarSesion)
+        self.CrearBotonMenu(Menuframe, "Inventario", 210, command=lambda:self.controlador.IniciarInventario())
+        self.CrearBotonMenu(Menuframe, "Cerrar sesión", 450, command=lambda:self.controlador.cerrarMenu())
         self.CrearBotonMenu(Menuframe, "Informe", 500, command=lambda: self.controlador.informe())
         return Menuframe
 
