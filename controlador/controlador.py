@@ -5,6 +5,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from vista.inicioSesion import inicioSesionVista
 from modelo.modelobk import modelo 
 from vista.menu import menuInterfaz 
+from vista.inventario import GestionProductos
 
 class controladorInicio:
     def __init__(self):
@@ -51,19 +52,34 @@ class controladorInicio:
     
     def IniciarInventario(self):
         if self.menu:
-            self.menu.inventario()
-
+            self.menu.inventario(controlador=self)
+    
     def filtro(self, categoria):
-        print(categoria)
-        if self.menu:
-            if categoria == "todos":
-                self.productos = self.modelo.obtener_productos()
-            else:
-                self.productos = self.modelo.obtener_productos(categoria)
-            productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170) 
-                            for i, p in enumerate(self.productos)]
-            if productos_formato:
-                self.menu.actualizarProductos(productos_formato)
+        print(categoria, "controlador")
+        self.productos = self.modelo.obtener_productos(categoria)
+        self.menu.mostrarProductos(self.productos)
+    
+    def consultaInventario(self, categoria):
+        productos = self.productos = self.modelo.obtener_productos(categoria)
+        return productos
+    
+    def inventarioClase(self, inventario): #esencial para los eventos del inventario
+        self.inventario = inventario
+    
+    def iniciarCrearProducto(self):
+        self.inventario.abrirVentanaRegistro()
+    
+    def GuardarProducto(self, productoNuevo):
+        if self.inventario:
+            enviar = self.modelo.crearProducto(productoNuevo)
+            self.filtro("todos")
+            return enviar
+    
+    def eliminarProducto(self, eliminar):
+        if self.inventario:
+            eliminado = self.modelo.eliminar_producto(eliminar)
+            self.filtro("todos")
+            return eliminado
 
 
 controlador = controladorInicio()

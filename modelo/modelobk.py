@@ -26,10 +26,10 @@ class modelo:
                   print(f"Error: {err}")
                   return False
 
-      def inventario(self, nombreP, cantidad, precio, fecha):
+      def crearProducto(self, producto):
             try:
                   consulta = "INSERT INTO productos (nombreP, cantidad, precio, fecha) VALUES (%s, %s, %s, %s)"
-                  self.cursor.execute(consulta, (nombreP, cantidad, precio, fecha))
+                  self.cursor.execute(consulta, (producto["nombreP"], producto["cantidad"], producto["precio"], producto["fecha"]))
                   self.conexion.commit()
                   print("Producto insertado correctamente")
                   return True
@@ -37,12 +37,22 @@ class modelo:
                   print(f"Error: {err}")
                   return False
 
-      def obtener_productos(self, categoria):
+      def obtener_productos(self, categoria=None):
             try:
                   print(categoria, "modelo")
-                  consulta = "SELECT nombreP, cantidad, precio, fecha FROM productos"
-                  self.cursor.execute(consulta)
-                  return self.cursor.fetchall()
+                  # Si no hay categoría o la categoría es 'todos', obtener todos los productos
+                  if not categoria or categoria == "todos":
+                        consulta = "SELECT nombreP, cantidad, precio, fecha FROM productos"
+                        self.cursor.execute(consulta)
+                  else:
+                        # De lo contrario, filtrar por categoría
+                        consulta = "SELECT nombreP, cantidad, precio, fecha FROM productos"
+                        self.cursor.execute(consulta)
+                  
+                  productos = self.cursor.fetchall()
+                  print(f"Productos devueltos por la consulta: {productos}")
+                  return productos
+                  #return self.cursor.fetchall()
             except mysql.connector.Error as err:
                   print(f"Error: {err}")
                   return []

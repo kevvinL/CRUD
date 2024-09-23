@@ -1,19 +1,20 @@
 import tkinter as menuvista
 from tkinter import ttk
+from tkinter import messagebox
 from modelo.modelobk import modelo
 
 class GestionProductos:
-    def __init__(self, master):
+    def __init__(self, master, controlador):
         self.master = master
         self.master.title("Gestión de Productos")
         self.master.geometry("1200x800")
         self.master.configure(bg='#f5f5f5')
+        self.controlador = controlador
         self.crearinterface()
         self.cargarDatos()
 
     def cargarDatos(self):
-        modelo_bd = modelo()
-        productos = modelo_bd.obtener_productos()  # Método que devuelve los productos guardados
+        productos = self.controlador.consultaInventario("todos")
         
         # Limpiar la tabla antes de volver a cargar los datos
         self.productos_table.delete(*self.productos_table.get_children())
@@ -38,13 +39,13 @@ class GestionProductos:
         botonframe = self.frame(parent, 950, 150, '#ecf0f1')
         botonframe.pack(side="top", fill="x", pady=10)
 
-        self.registrar = menuvista.Button(botonframe, text="Registrar productos", width=20, height=3, command=self.abrirVentanaRegistro)
+        self.registrar = menuvista.Button(botonframe, text="Crear Producto", width=20, height=3, command=self.controlador.iniciarCrearProducto)
         self.registrar.place(x=500, y=30)
 
-        self.guardar_button = menuvista.Button(botonframe, text="Eliminar", width=20, height=3, command=self.eliminarProducto)
+        self.guardar_button = menuvista.Button(botonframe, text="Eliminar Producto", width=20, height=3, command=self.eliminarProducto)
         self.guardar_button.place(x=300, y=30)
 
-        self.eliminar_button = menuvista.Button(botonframe, text="Editar", width=20, height=3 , command=self.editarProducto)
+        self.eliminar_button = menuvista.Button(botonframe, text="Editar Producto", width=20, height=3 , command=self.editarProducto)
         self.eliminar_button.place(x=700, y=30)
 
     def abrirVentanaRegistro(self):
@@ -98,22 +99,26 @@ class GestionProductos:
         self.productos_table.pack(fill="both", expand=True)
 
     def guardarProducto(self):
-        nombreP = self.nombre_entry.get()
-        cantidad = self.cantidad_entry.get()
-        precio = self.precio_entry.get()
-        fecha = self.fecha_entry.get()
-
-        if nombreP and cantidad and precio and fecha:
-            modelo_bd = modelo()  
-            guardado = modelo_bd.inventario(nombreP, cantidad, precio, fecha)
-
-            if guardado:
+        productoNuevo =  {
+            "nombreP" : self.nombre_entry.get(),
+            "cantidad" : self.cantidad_entry.get(),
+            "precio" : self.precio_entry.get(),
+            "fecha" : self.fecha_entry.get()
+        }
+        
+        if productoNuevo["nombreP"] and productoNuevo["cantidad"] and productoNuevo["precio"] and productoNuevo["fecha"]: 
+            guardado = self.controlador.GuardarProducto(productoNuevo)
+            if guardado == True:
+                messagebox.showinfo("Confirmación", "Creado Correctamente")
                 print("Producto guardado correctamente en la base de datos.")
                 self.limpiarFormulario()
+                self.ventanaregistro.destroy()
                 self.cargarDatos()
             else:
+                messagebox.showinfo("ERROR", "INVALIDO")
                 print("Error al guardar el producto en la base de datos.")
         else:
+            messagebox.showinfo("ERROR", "Por favor, ingrese todos los campos")
             print("Por favor, completa todos los campos.")
 
     def limpiarFormulario(self):
@@ -127,16 +132,18 @@ class GestionProductos:
         if selected_item:
             item = self.productos_table.item(selected_item)
             producto_nombre = item['values'][0]
-            
-            modelo_bd = modelo()
-            eliminacion_exitosa = modelo_bd.eliminar_producto(producto_nombre)
-
-            if eliminacion_exitosa:
+            confirmacion = self.controlador.eliminarProducto(producto_nombre)
+            #modelo_bd = modelo()
+            #eliminacion_exitosa = modelo_bd.eliminar_producto(producto_nombre)
+            if confirmacion == False:
+                messagebox.showinfo("ERROR", "INVALIDO")
+                print("Error al eliminar el producto de la base de datos.")
+            else:
+                messagebox.showinfo("Confirmación", "Eliminado Correctamente")
                 print("Producto eliminado correctamente de la base de datos.")
                 self.productos_table.delete(selected_item)
-            else:
-                print("Error al eliminar el producto de la base de datos.")
         else:
+            messagebox.showinfo("ERROR", "Seleccione un Producto")
             print("Selecciona un producto para eliminar.")
 
     def editarProducto(self):
