@@ -41,9 +41,7 @@ class controladorInicio:
             self.menu.mostrarInforme()
     
     def mostrarProductosPorCategoria(self, categoria):
-        if self.menu:
-            self.menu.mostrarProductos(categoria)
-
+        self.menu.mostrarProductos(categoria)
 
 controlador = controladorInicio()
 controlador.iniciarVista()

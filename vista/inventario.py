@@ -76,6 +76,7 @@ class GestionProductos:
         menuvista.Label(form_frame, text="Fecha:", bg='#ecf0f1').grid(row=3, column=0, padx=10, pady=5, sticky="e")
         self.fecha_entry = menuvista.Entry(form_frame, width=30)
         self.fecha_entry.grid(row=3, column=1, padx=10, pady=5)
+        
 
         self.boton = menuvista.Button(form_frame, text="Guardar", command=self.guardarProducto)
         self.boton.place(x=230, y=150)
