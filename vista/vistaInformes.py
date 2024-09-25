@@ -24,8 +24,8 @@ class Menu:
 
     def CrearCategoriaBoton(self, parent, text, x_position):
         button = menuvista.Button(parent, text=text, width=15, height=2, 
-                           bg='#3498db', fg='white', activebackground='#2980b9',
-                           bd=0, highlightthickness=0)
+                            bg='#3498db', fg='white', activebackground='#2980b9',
+                            bd=0, highlightthickness=0)
         button.place(x=x_position, y=5)
 
     def Titulocatalogo(self, parent):
@@ -73,8 +73,8 @@ class Menu:
 
     def CrearIzquierdaBoton(self, parent, text, x_position):
         button = menuvista.Button(parent, text=text, bg='#2c3e50', fg='white', 
-                           activebackground='#34495e', activeforeground='white',
-                           bd=0, highlightthickness=0)
+                            activebackground='#34495e', activeforeground='white',
+                            bd=0, highlightthickness=0)
         button.place(x=x_position, y=10)
 
     def crearinterface(self):

@@ -1,29 +1,24 @@
+#MENU
 import tkinter as menuvista
 from vista.inventario import GestionProductos
+from modelo.modelobk import modelo
 from vista.vistaInformes import Menu
 
 class menuInterfaz:
-    def __init__(self, rol, controlador):
+    def __init__(self , controlador):
         self.master = menuvista.Tk()
-        self.rolUsuario = rol
         self.controlador = controlador
         self.master.title("Menu principal")
         self.master.geometry("1200x800")
         self.master.configure(bg='#f5f5f5')
         self.producto_frame = None
         self.crearinterface()
-        self.master.after(100, self.iniciarFiltro)
-
-    def iniciarFiltro(self):
-        # Llamamos a la función filtro una vez que todo está inicializado
-        print(self.rolUsuario)
-        self.controlador.filtro("todos")
 
     def crearinterface(self):
         self.encabezado()
         self.crearMenu(self.master)
         self.Titulocatalogo(self.master)
-        #self.controlador.filtro("todos")
+        self.controlador.filtro()
 
     def mostrarInforme(self):
         nuevaventana = menuvista.Tk()
@@ -60,6 +55,21 @@ class menuInterfaz:
         self.CrearBotonMenu(Menuframe, "Informe", 500, command=lambda: self.controlador.informe())
         return Menuframe
 
+
+    """def crearMenu(self, parent):
+        Menuframe = self.frame(parent, 250, 600, '#34495e')
+        Menuframe.pack(side="left", fill="y")
+
+        self.CrearBotonMenu(Menuframe, "Tartas", 10 , self.mostrarProductos)
+        self.CrearBotonMenu(Menuframe, "Galletas", 60 , self.mostrarProductos2)
+        self.CrearBotonMenu(Menuframe, "Cupcakes", 110 , self.mostrarProductos3)
+        self.CrearBotonMenu(Menuframe, "Postres frios", 160, self.mostrarProductos4)
+        self.CrearBotonMenu(Menuframe, "Inventario", 210 , command=self.inventario)
+        self.CrearBotonMenu(Menuframe, "Cerrar sesion", 600, command=self.cerrarSesion)
+        self.CrearBotonMenu(Menuframe, "Informe", 500 , command=lambda:self.controlador.informe())
+        return Menuframe"""
+
+
     def CrearBotonMenu(self, parent, text, y_position, command=None):
         button = menuvista.Button(parent, text=text, width=25, height=2, bg='#34495e', fg='white', 
                         activebackground='#2c3e50', activeforeground='white',
@@ -67,13 +77,44 @@ class menuInterfaz:
         button.place(x=10, y=y_position)
 
 
-    def inventario(self, controlador):
+    def inventario(self):
         nueva_ventana = menuvista.Tk()
-        self.menu_inventario = GestionProductos(nueva_ventana, controlador)
-        self.controlador.inventarioClase(self.menu_inventario)
+        menu_inventario = GestionProductos(nueva_ventana)
         nueva_ventana.mainloop()
 
+
     def mostrarProductos(self, productos):
+        """modelo_bd = modelo()
+        productos = modelo_bd.obtener_productos()"""
+
+        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170) 
+                            for i, p in enumerate(productos)]
+        
+        self.actualizarProductos(productos_formato)
+
+
+    def mostrarProductos2(self):
+        modelo_bd = modelo()
+        productos = modelo_bd.obtener_productos()
+
+        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170) 
+                            for i, p in enumerate(productos)]
+        
+        self.actualizarProductos(productos_formato)
+
+    def mostrarProductos3(self):
+        modelo_bd = modelo()
+        productos = modelo_bd.obtener_productos()
+
+        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170) 
+                            for i, p in enumerate(productos)]
+        
+        self.actualizarProductos(productos_formato)
+
+    def mostrarProductos4(self):
+        modelo_bd = modelo()
+        productos = modelo_bd.obtener_productos()
+
         productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170) 
                             for i, p in enumerate(productos)]
         

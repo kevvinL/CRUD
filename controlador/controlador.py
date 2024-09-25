@@ -5,6 +5,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from vista.inicioSesion import inicioSesionVista
 from modelo.modelobk import modelo 
 from vista.menu import menuInterfaz 
+from vista.inventario import GestionProductos
 
 class controladorInicio:
     def __init__(self):
@@ -17,11 +18,12 @@ class controladorInicio:
             return False
         else:
             usuarioEnviar = self.modelo.inicioSesion(datos)
+            print(usuarioEnviar, "trae de modelo")
             print(f"Usuario: {datos['usuario']}, Contraseña: {datos['contraseña']}")
             
-            if usuarioEnviar == "verificado":
+            if usuarioEnviar["verificado"] == True:
                 self.inicioSesion.sesion.destroy()
-                self.iniciarMenu()
+                self.iniciarMenu(usuarioEnviar["rol"])
             else:
                 return False
 
@@ -32,8 +34,8 @@ class controladorInicio:
         self.inicioSesion.vistaInicio(contenedor)
         auxFormulario.mainloop()
     
-    def iniciarMenu(self):
-        self.menu = menuInterfaz(controlador=self)
+    def iniciarMenu(self, rol):
+        self.menu = menuInterfaz(rol,controlador=self)
         self.menu.iniciar()
     
     def informe(self):
@@ -41,7 +43,45 @@ class controladorInicio:
             self.menu.mostrarInforme()
     
     def mostrarProductosPorCategoria(self, categoria):
-        self.menu.mostrarProductos(categoria)
+        if self.menu:
+            self.menu.mostrarProductos(categoria)
+    
+    def cerrarMenu(self):
+        if self.menu:
+            self.menu.cerrarSesion()
+            self.iniciarVista()
+    
+    def IniciarInventario(self):
+        if self.menu:
+            self.menu.inventario(controlador=self)
+    
+    def filtro(self, categoria):
+        print(categoria, "controlador")
+        self.productos = self.modelo.obtener_productos(categoria)
+        self.menu.mostrarProductos(self.productos)
+    
+    def consultaInventario(self, categoria):
+        productos = self.productos = self.modelo.obtener_productos(categoria)
+        return productos
+    
+    def inventarioClase(self, inventario): #esencial para los eventos del inventario
+        self.inventario = inventario
+    
+    def iniciarCrearProducto(self):
+        self.inventario.abrirVentanaRegistro()
+    
+    def GuardarProducto(self, productoNuevo):
+        if self.inventario:
+            enviar = self.modelo.crearProducto(productoNuevo)
+            self.filtro("todos")
+            return enviar
+    
+    def eliminarProducto(self, eliminar):
+        if self.inventario:
+            eliminado = self.modelo.eliminar_producto(eliminar)
+            self.filtro("todos")
+            return eliminado
+
 
 controlador = controladorInicio()
 controlador.iniciarVista()
