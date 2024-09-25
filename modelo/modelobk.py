@@ -28,7 +28,7 @@ class modelo:
 
       def inventario(self, nombreP, cantidad, precio, fecha, categoria):
             try:
-                  consulta = "INSERT INTO productos (nombreP, cantidad, precio, fecha, categoria) VALUES (%s, %s, %s, %s)"
+                  consulta = "INSERT INTO productos (nombreP, cantidad, precio, fecha, categoria) VALUES (%s, %s, %s, %s, %s)"
                   self.cursor.execute(consulta, (nombreP, cantidad, precio, fecha, categoria))
                   self.conexion.commit()
                   print("Producto insertado correctamente")
@@ -51,11 +51,11 @@ class modelo:
                   consulta = "DELETE FROM productos WHERE nombreP = %s"
                   self.cursor.execute(consulta, (nombreP,))
                   self.conexion.commit()
-                  return self.cursor.rowcount > 0 
+                  return self.cursor.rowcount > 0
             except mysql.connector.Error as err:
                   print(f"Error: {err}")
                   return False
-      
+
       def actualizar_producto(self, nombreP, nuevo_nombre, cantidad, precio, fecha, categoria):
             query = "UPDATE productos SET nombreP=%s, cantidad=%s, precio=%s, fecha=%s, categoria=%s  WHERE nombreP=%s"
             parametros = (nuevo_nombre, cantidad, precio, fecha, categoria, nombreP)
@@ -66,3 +66,14 @@ class modelo:
             except mysql.connector.Error as err:
                   print(f"Error: {err}")
                   return False
+
+      def inventario(self, nombreP, cantidad, precio, fecha, categoria):
+        try:
+            # Consulta SQL para insertar en la base de datos
+            consulta = "INSERT INTO productos (nombreP, cantidad, precio, fecha, categoria) VALUES (%s, %s, %s, %s, %s)"
+            # Ejecutar consulta y retornar True si se guarda correctamente
+            print(f"Insertando {nombreP} en la base de datos")
+            return True
+        except Exception as e:
+            print(f"Error al insertar el producto: {e}")
+            return False
