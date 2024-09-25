@@ -29,8 +29,8 @@ class modelo:
 
       def crearProducto(self, producto):
             try:
-                  consulta = "INSERT INTO productos (nombreP, cantidad, precio, fecha) VALUES (%s, %s, %s, %s)"
-                  self.cursor.execute(consulta, (producto["nombreP"], producto["cantidad"], producto["precio"], producto["fecha"]))
+                  consulta = "INSERT INTO productos (nombreP, cantidad, precio) VALUES (%s, %s, %s)"
+                  self.cursor.execute(consulta, (producto["nombreP"], producto["cantidad"], producto["precio"]))
                   self.conexion.commit()
                   print("Producto insertado correctamente")
                   return True
@@ -43,11 +43,11 @@ class modelo:
                   print(categoria, "modelo")
                   # Si no hay categoría o la categoría es 'todos', obtener todos los productos
                   if not categoria or categoria == "todos":
-                        consulta = "SELECT nombreP, cantidad, precio, fecha FROM productos"
+                        consulta = "SELECT nombreP, cantidad, precio FROM productos"
                         self.cursor.execute(consulta)
                   else:
                         # De lo contrario, filtrar por categoría
-                        consulta = "SELECT nombreP, cantidad, precio, fecha FROM productos"
+                        consulta = "SELECT nombreP, cantidad, precio FROM productos"
                         self.cursor.execute(consulta)
                   
                   productos = self.cursor.fetchall()
@@ -69,7 +69,7 @@ class modelo:
                   return False
       
       def actualizar_producto(self, nombreP, nuevo_nombre, cantidad, precio, fecha):
-            query = "UPDATE productos SET nombreP=%s, cantidad=%s, precio=%s, fecha=%s WHERE nombreP=%s"
+            query = "UPDATE productos SET nombreP=%s, cantidad=%s, precio=%s WHERE nombreP=%s"
             parametros = (nuevo_nombre, cantidad, precio, fecha, nombreP)
             try:
                   self.cursor.execute(query, parametros)
