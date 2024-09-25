@@ -16,9 +16,10 @@ class modelo:
                   consulta = "SELECT * FROM usuarios WHERE gmail = %s AND contraseña = %s"
                   self.cursor.execute(consulta, (datos['usuario'], datos['contraseña']))
                   resultado = self.cursor.fetchone()
-
+                  print(resultado)
                   if resultado:
-                        return "verificado"
+                        necesario = {"rol": resultado["rol"], "verificado": True}
+                        return necesario
                   else:
                         return False
 

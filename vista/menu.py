@@ -3,8 +3,9 @@ from vista.inventario import GestionProductos
 from vista.vistaInformes import Menu
 
 class menuInterfaz:
-    def __init__(self , controlador):
+    def __init__(self, rol, controlador):
         self.master = menuvista.Tk()
+        self.rolUsuario = rol
         self.controlador = controlador
         self.master.title("Menu principal")
         self.master.geometry("1200x800")
@@ -15,6 +16,7 @@ class menuInterfaz:
 
     def iniciarFiltro(self):
         # Llamamos a la función filtro una vez que todo está inicializado
+        print(self.rolUsuario)
         self.controlador.filtro("todos")
 
     def crearinterface(self):

@@ -18,11 +18,12 @@ class controladorInicio:
             return False
         else:
             usuarioEnviar = self.modelo.inicioSesion(datos)
+            print(usuarioEnviar, "trae de modelo")
             print(f"Usuario: {datos['usuario']}, Contraseña: {datos['contraseña']}")
             
-            if usuarioEnviar == "verificado":
+            if usuarioEnviar["verificado"] == True:
                 self.inicioSesion.sesion.destroy()
-                self.iniciarMenu()
+                self.iniciarMenu(usuarioEnviar["rol"])
             else:
                 return False
 
@@ -33,8 +34,8 @@ class controladorInicio:
         self.inicioSesion.vistaInicio(contenedor)
         auxFormulario.mainloop()
     
-    def iniciarMenu(self):
-        self.menu = menuInterfaz(controlador=self)
+    def iniciarMenu(self, rol):
+        self.menu = menuInterfaz(rol,controlador=self)
         self.menu.iniciar()
     
     def informe(self):
