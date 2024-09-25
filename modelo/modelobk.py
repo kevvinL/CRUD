@@ -26,10 +26,10 @@ class modelo:
                   print(f"Error: {err}")
                   return False
 
-      def inventario(self, nombreP, cantidad, precio, fecha, categoria):
+      def crearProducto(self, producto):
             try:
-                  consulta = "INSERT INTO productos (nombreP, cantidad, precio, fecha, categoria) VALUES (%s, %s, %s, %s, %s)"
-                  self.cursor.execute(consulta, (nombreP, cantidad, precio, fecha, categoria))
+                  consulta = "INSERT INTO productos (nombreP, cantidad, precio, fecha) VALUES (%s, %s, %s, %s)"
+                  self.cursor.execute(consulta, (producto["nombreP"], producto["cantidad"], producto["precio"], producto["fecha"]))
                   self.conexion.commit()
                   print("Producto insertado correctamente")
                   return True
@@ -37,11 +37,22 @@ class modelo:
                   print(f"Error: {err}")
                   return False
 
-      def obtener_productos(self):
+      def obtener_productos(self, categoria=None):
             try:
-                  consulta = "SELECT nombreP, cantidad, precio, fecha, categoria FROM productos"
-                  self.cursor.execute(consulta)
-                  return self.cursor.fetchall()
+                  print(categoria, "modelo")
+                  # Si no hay categoría o la categoría es 'todos', obtener todos los productos
+                  if not categoria or categoria == "todos":
+                        consulta = "SELECT nombreP, cantidad, precio, fecha FROM productos"
+                        self.cursor.execute(consulta)
+                  else:
+                        # De lo contrario, filtrar por categoría
+                        consulta = "SELECT nombreP, cantidad, precio, fecha FROM productos"
+                        self.cursor.execute(consulta)
+                  
+                  productos = self.cursor.fetchall()
+                  print(f"Productos devueltos por la consulta: {productos}")
+                  return productos
+                  #return self.cursor.fetchall()
             except mysql.connector.Error as err:
                   print(f"Error: {err}")
                   return []
@@ -51,14 +62,14 @@ class modelo:
                   consulta = "DELETE FROM productos WHERE nombreP = %s"
                   self.cursor.execute(consulta, (nombreP,))
                   self.conexion.commit()
-                  return self.cursor.rowcount > 0
+                  return self.cursor.rowcount > 0 
             except mysql.connector.Error as err:
                   print(f"Error: {err}")
                   return False
-
-      def actualizar_producto(self, nombreP, nuevo_nombre, cantidad, precio, fecha, categoria):
-            query = "UPDATE productos SET nombreP=%s, cantidad=%s, precio=%s, fecha=%s, categoria=%s  WHERE nombreP=%s"
-            parametros = (nuevo_nombre, cantidad, precio, fecha, categoria, nombreP)
+      
+      def actualizar_producto(self, nombreP, nuevo_nombre, cantidad, precio, fecha):
+            query = "UPDATE productos SET nombreP=%s, cantidad=%s, precio=%s, fecha=%s WHERE nombreP=%s"
+            parametros = (nuevo_nombre, cantidad, precio, fecha, nombreP)
             try:
                   self.cursor.execute(query, parametros)
                   self.conexion.commit()
@@ -66,14 +77,13 @@ class modelo:
             except mysql.connector.Error as err:
                   print(f"Error: {err}")
                   return False
-
-      def inventario(self, nombreP, cantidad, precio, fecha, categoria):
-        try:
-            # Consulta SQL para insertar en la base de datos
-            consulta = "INSERT INTO productos (nombreP, cantidad, precio, fecha, categoria) VALUES (%s, %s, %s, %s, %s)"
-            # Ejecutar consulta y retornar True si se guarda correctamente
-            print(f"Insertando {nombreP} en la base de datos")
-            return True
-        except Exception as e:
-            print(f"Error al insertar el producto: {e}")
-            return False
+      
+      def obtenerProductosPorCategoria(self, categoria):
+            # Supongamos que tienes una conexión a la base de datos llamada 'conexion'
+            cursor = self.conexion.cursor()
+            query = "SELECT nombreP, precio, descripcion FROM productos WHERE categoria = ?"
+            cursor.execute(query, (categoria,))
+            productos = cursor.fetchall()
+            # Estructuramos los datos en un diccionario
+            productos_formato = [{"nombreP": row[0], "precio": row[1], "descripcion": row[2]} for row in productos]
+            return productos_formato

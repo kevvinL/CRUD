@@ -59,14 +59,12 @@ class inicioSesionVista:
         
         if datos['usuario'] and datos['contraseña']:
             verificacion = self.controlador.inicioUsuario(datos)
-            if verificacion:
-                self.sesion.destroy()
-                # Abrir el menú principal
-                menu_app = menuInterfaz(verificacion['rol_id'], verificacion['usuario'])
-                menu_app.mostrar_menu()
-                
-            else:
+            if verificacion == False:
                 messagebox.showinfo("Error", "Usuario o contraseña incorrectos")
+            self.sesion.destroy()
+            # Abrir el menú principal
+            menu_app = menuInterfaz(verificacion['rol_id'], verificacion['usuario'])
+            menu_app.mostrar_menu()
         else:
             messagebox.showinfo("Error", "Por favor, ingrese todos los campos")
 

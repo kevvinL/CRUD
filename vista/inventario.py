@@ -1,6 +1,7 @@
 import tkinter as menuvista
 from tkinter import ttk
 from tkinter import messagebox
+from modelo.modelobk import modelo
 
 class GestionProductos:
     def __init__(self, master, controlador):
@@ -8,19 +9,19 @@ class GestionProductos:
         self.master.title("Gestión de Productos")
         self.master.geometry("1200x800")
         self.master.configure(bg='#f5f5f5')
-        self.controlador=controlador
+        self.controlador = controlador
         self.crearinterface()
         self.cargarDatos()
 
     def cargarDatos(self):
-        productos = self.controlador.obtenerProductos()  # Método que devuelve los productos guardados
-
+        productos = self.controlador.consultaInventario("todos")
+        
         # Limpiar la tabla antes de volver a cargar los datos
         self.productos_table.delete(*self.productos_table.get_children())
-
+        
         for producto in productos:
-            nombreP, cantidad, precio, fecha, categoria = producto.values()  # Extrae los valores del diccionario
-            self.productos_table.insert("", "end", values=(nombreP, cantidad, precio, fecha, categoria))
+            nombreP, cantidad, precio, fecha = producto.values()  # Extrae los valores del diccionario
+            self.productos_table.insert("", "end", values=(nombreP, cantidad, precio, fecha))
 
     def frame(self, parent, width, height, bg):
         frame = menuvista.Frame(parent, width=width, height=height, bg=bg)
@@ -38,13 +39,13 @@ class GestionProductos:
         botonframe = self.frame(parent, 950, 150, '#ecf0f1')
         botonframe.pack(side="top", fill="x", pady=10)
 
-        self.registrar = menuvista.Button(botonframe, text="Registrar productos", width=20, height=3, command=self.abrirVentanaRegistro)
+        self.registrar = menuvista.Button(botonframe, text="Crear Producto", width=20, height=3, command=self.controlador.iniciarCrearProducto)
         self.registrar.place(x=500, y=30)
 
-        self.guardar_button = menuvista.Button(botonframe, text="Eliminar", width=20, height=3, command=self.eliminarProducto)
+        self.guardar_button = menuvista.Button(botonframe, text="Eliminar Producto", width=20, height=3, command=self.eliminarProducto)
         self.guardar_button.place(x=300, y=30)
 
-        self.eliminar_button = menuvista.Button(botonframe, text="Editar", width=20, height=3 , command=self.editarProducto)
+        self.eliminar_button = menuvista.Button(botonframe, text="Editar Producto", width=20, height=3 , command=self.editarProducto)
         self.eliminar_button.place(x=700, y=30)
 
     def abrirVentanaRegistro(self):
@@ -89,85 +90,82 @@ class GestionProductos:
         self.productos_table.heading("Cantidad", text="Cantidad")
         self.productos_table.heading("Precio", text="Precio")
         self.productos_table.heading("Fecha", text="Fecha")
-        self.productos_table.heading("Categoría", text="Categoría")
 
         self.productos_table.column("Nombre", width=250)
         self.productos_table.column("Cantidad", width=150)
         self.productos_table.column("Precio", width=150)
         self.productos_table.column("Fecha", width=200)
-        self.productos_table.column("Categoría", width=150)
 
         self.productos_table.pack(fill="both", expand=True)
 
     def guardarProducto(self):
-        nombreP = self.nombre_entry.get()
-        cantidad = self.cantidad_entry.get()
-        precio = self.precio_entry.get()
-        fecha = self.fecha_entry.get()
-        categoria = self.categoria_entry.get()
-
-        if nombreP and cantidad and precio and fecha and categoria:
-            # Crear un diccionario con la información
-            infoProducto = {
-                'nombreP': nombreP,
-                'cantidad': cantidad,
-                'precio': precio,
-                'fecha': fecha,
-                'categoria': categoria
-            }
-            guardado = self.controlador.guardarProducto(infoProducto)
-
-            if guardado:
-                print(f"Producto guardado correctamente: {nombreP} en la categoría {categoria}")
+        productoNuevo =  {
+            "nombreP" : self.nombre_entry.get(),
+            "cantidad" : self.cantidad_entry.get(),
+            "precio" : self.precio_entry.get(),
+            "fecha" : self.fecha_entry.get()
+        }
+        
+        if productoNuevo["nombreP"] and productoNuevo["cantidad"] and productoNuevo["precio"] and productoNuevo["fecha"]: 
+            guardado = self.controlador.GuardarProducto(productoNuevo)
+            if guardado == True:
+                messagebox.showinfo("Confirmación", "Creado Correctamente")
+                print("Producto guardado correctamente en la base de datos.")
                 self.limpiarFormulario()
+                self.ventanaregistro.destroy()
                 self.cargarDatos()
             else:
+                messagebox.showinfo("ERROR", "INVALIDO")
                 print("Error al guardar el producto en la base de datos.")
         else:
-            messagebox.showwarning("Advertencia", "Por favor, completa todos los campos.")
+            messagebox.showinfo("ERROR", "Por favor, ingrese todos los campos")
+            print("Por favor, completa todos los campos.")
 
     def limpiarFormulario(self):
         self.nombre_entry.delete(0, "end")
         self.cantidad_entry.delete(0, "end")
         self.precio_entry.delete(0, "end")
         self.fecha_entry.delete(0, "end")
-        self.categoria_entry.delete(0, menuvista.END)
 
     def eliminarProducto(self):
         selected_item = self.productos_table.selection()
         if selected_item:
             item = self.productos_table.item(selected_item)
             producto_nombre = item['values'][0]
-            eliminacion_exitosa = self.controlador.eliminarProducto(producto_nombre)
-
-            if eliminacion_exitosa:
+            confirmacion = self.controlador.eliminarProducto(producto_nombre)
+            #modelo_bd = modelo()
+            #eliminacion_exitosa = modelo_bd.eliminar_producto(producto_nombre)
+            if confirmacion == False:
+                messagebox.showinfo("ERROR", "INVALIDO")
+                print("Error al eliminar el producto de la base de datos.")
+            else:
+                messagebox.showinfo("Confirmación", "Eliminado Correctamente")
                 print("Producto eliminado correctamente de la base de datos.")
                 self.productos_table.delete(selected_item)
-            else:
-                print("Error al eliminar el producto de la base de datos.")
         else:
+            messagebox.showinfo("ERROR", "Seleccione un Producto")
             print("Selecciona un producto para eliminar.")
 
     def editarProducto(self):
         selected_item = self.productos_table.selection()
-
+        
         if selected_item:
             # Obtener los datos del producto seleccionado
             item = self.productos_table.item(selected_item)
-            producto_nombre, cantidad, precio, fecha, categoria = item['values']
-
+            producto_nombre, cantidad, precio, fecha = item['values']
+            
             # Abrir la ventana de edición
             self.ventanaedicion = menuvista.Toplevel(self.master)
             self.ventanaedicion.title("Editar producto")
             self.ventanaedicion.geometry("600x300")
             self.ventanaedicion.config(bg="#ecf0f1")
-
+            
             # Crear el formulario con los datos del producto
-            self.crearFormularioEdicion(self.ventanaedicion, producto_nombre, cantidad, precio, fecha, categoria)
+            self.crearFormularioEdicion(self.ventanaedicion, producto_nombre, cantidad, precio, fecha)
         else:
             print("Selecciona un producto para editar.")
 
-    def crearFormularioEdicion(self, parent, nombreP, cantidad, precio, fecha, categoria):
+    def crearFormularioEdicion(self, parent, nombreP, cantidad, precio, fecha):
         form_frame = self.frame(parent, 950, 150, '#ecf0f1')
         form_frame.pack(side="top", fill="both", expand=True, padx=10, pady=10)
 
@@ -194,11 +192,6 @@ class GestionProductos:
         self.fecha_entry.grid(row=3, column=1, padx=10, pady=5)
         self.fecha_entry.insert(0, fecha)
 
-        menuvista.Label(form_frame, text="Categoria:", bg='#ecf0f1').grid(row=4, column=0, padx=10, pady=5, sticky="e")
-        self.categoria_entry = menuvista.Entry(form_frame, width=30)
-        self.categoria_entry.grid(row=3, column=1, padx=10, pady=5)
-        self.categoria_entry.insert(0, categoria)
-
         self.boton = menuvista.Button(form_frame, text="Guardar cambios", command=lambda: self.actualizarProducto(nombreP))
         self.boton.place(x=230, y=150)
 
@@ -208,10 +201,10 @@ class GestionProductos:
         cantidad = self.cantidad_entry.get()
         precio = self.precio_entry.get()
         fecha = self.fecha_entry.get()
-        categoria = self.categoria_entry.get()
 
-        if nombreP and cantidad and precio and fecha and categoria:
-            actualizado = self.controlador.actualizar_producto(nombre_original, nombreP, cantidad, precio, fecha, categoria)
+        if nombreP and cantidad and precio and fecha:
+            modelo_bd = modelo()  
+            actualizado = modelo_bd.actualizar_producto(nombre_original, nombreP, cantidad, precio, fecha)
 
             if actualizado:
                 print("Producto actualizado correctamente en la base de datos.")
