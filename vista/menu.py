@@ -72,7 +72,11 @@ class menuInterfaz:
 
     def inventario(self):
         nueva_ventana = menuvista.Tk()
+<<<<<<< Updated upstream
         menu_inventario = GestionProductos(nueva_ventana)
+=======
+        menu_informe = Inventario()
+>>>>>>> Stashed changes
         nueva_ventana.mainloop()
 
     def crearCategorias(self, parent):
