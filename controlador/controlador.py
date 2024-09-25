@@ -43,8 +43,8 @@ class controladorInicio:
             self.menu.mostrarInforme()
     
     def mostrarProductosPorCategoria(self, categoria):
-        if self.menu:
-            self.menu.mostrarProductos(categoria)
+        productos = self.modelo.obtener_productos(categoria)  # Se asegura de no enviar una lista vacia
+        return productos
     
     def cerrarMenu(self):
         if self.menu:
@@ -58,7 +58,7 @@ class controladorInicio:
     def filtro(self, categoria):
         print(categoria, "controlador")
         self.productos = self.modelo.obtener_productos(categoria)
-        self.menu.mostrarProductos(self.productos)
+        return self.productos
     
     def consultaInventario(self, categoria):
         productos = self.productos = self.modelo.obtener_productos(categoria)
