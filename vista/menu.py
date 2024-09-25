@@ -84,8 +84,6 @@ class menuInterfaz:
         self.CrearCategoriaBoton(CategoriaFrame, "Inventario", 730 , command=self.inventario)
         return CategoriaFrame
 
-
-
     def CrearCategoriaBoton(self, parent, text, x_position, command=None):
         button = menuvista.Button(parent, text=text, width=15, height=2, 
                                   bg='#3498db', fg='white', activebackground='#2980b9',
