@@ -1,24 +1,35 @@
 import tkinter as menuvista
-from vista.vistaInformes import Menu
 from vista.inventario import GestionProductos
+from vista.vistaInformes import Menu
 
 class menuInterfaz:
-    def __init__(self, controlador):
+    def __init__(self, rol, controlador):
         self.master = menuvista.Tk()
+        self.rolUsuario = rol
+        self.controlador = controlador
         self.master.title("Menu principal")
         self.master.geometry("1200x800")
         self.master.configure(bg='#f5f5f5')
-        self.controlador=controlador
         self.producto_frame = None
         self.crearinterface()
+        self.master.after(100, self.iniciarFiltro)
+
+    def iniciarFiltro(self):
+        # Llamamos a la función filtro una vez que todo está inicializado
+        print(self.rolUsuario)
+        self.controlador.filtro("todos")
 
     def crearinterface(self):
         self.encabezado()
         self.crearMenu(self.master)
-        self.crearCategorias(self.master)
         self.Titulocatalogo(self.master)
-        self.mostrarProductos("Pasteles y Tartas")
+        #self.controlador.filtro("todos")
 
+    def mostrarInforme(self):
+        nuevaventana = menuvista.Tk()
+        menuInforme = Menu(nuevaventana)
+        nuevaventana.mainloop()
+    
     def frame(self, parent, width, height, bg):
         frame = menuvista.Frame(parent, width=width, height=height, bg=bg)
         frame.pack_propagate(False)
@@ -27,112 +38,45 @@ class menuInterfaz:
     def encabezado(self):
         encabezadoframe = self.frame(self.master, 1200, 100, '#2c3e50')
         encabezadoframe.pack(side="top", fill="x")
-        encabezadolabel = menuvista.Label(encabezadoframe, text="Reposteria SugarCode ", font=("Helvetica", 24, "bold"), bg='#2c3e50', fg='white')
+        encabezadolabel = menuvista.Label(encabezadoframe, text="Reposteria sugarCode", font=("Helvetica", 24, "bold"), bg='#2c3e50', fg='white')
         encabezadolabel.pack(pady=20)
         return encabezadoframe
 
     def cerrarSesion(self):
-        if self.master.winfo_exists():  # Para que al cerrar con la x no genere conflictos con el destroy
-            self.master.destroy()
-        self.controlador.iniciarVista()
+        self.master.destroy()
 
-    #    self.abrirInicioSesion()
-    #self.iniciarMenu que abra de nuevo el mismo menu
-
-    def abrirInicioSesion(self):
-        login = self.controlador.iniciarVista()
-        sesion = login.crearFormulario()
-        contenedor = login.contenedorModelo(sesion)
-        login.vistaInicio(contenedor)
-
-    def informe(self):
-        #self.iniciarInforme() llamar al controlador
-        nueva_ventana = menuvista.Tk()
-        menu_informe = Menu(nueva_ventana)
-        nueva_ventana.mainloop()
 
     def crearMenu(self, parent):
         Menuframe = self.frame(parent, 250, 600, '#34495e')
         Menuframe.pack(side="left", fill="y")
 
-        self.CrearBotonMenu(Menuframe, "Pasteles y Tartas", 10)
-        self.CrearBotonMenu(Menuframe, "Galletas", 60)
-        self.CrearBotonMenu(Menuframe, "Postres Frios", 110)
-        self.CrearBotonMenu(Menuframe, "Cupcakes", 160)
-        self.CrearBotonMenu(Menuframe, "Inventario", 210, command=self.inventario)
-        self.CrearBotonMenu(Menuframe, "Cerrar sesion", 600, command=self.cerrarSesion)
-        self.CrearBotonMenu(Menuframe, "Informe", 500 , command=self.informe)
+        # Pasamos las categorías como argumentos a los métodos
+        self.CrearBotonMenu(Menuframe, "Tartas", 10, command=lambda: self.controlador.filtro("tarta"))
+        self.CrearBotonMenu(Menuframe, "Galletas", 60, command=lambda: self.controlador.filtro("galletas"))
+        self.CrearBotonMenu(Menuframe, "Cupcakes", 110, command=lambda: self.controlador.filtro("cupcakes"))
+        self.CrearBotonMenu(Menuframe, "Postres frios", 160, command=lambda: self.controlador.filtro("postres frios"))
+        self.CrearBotonMenu(Menuframe, "Inventario", 210, command=lambda:self.controlador.IniciarInventario())
+        self.CrearBotonMenu(Menuframe, "Cerrar sesión", 450, command=lambda:self.controlador.cerrarMenu())
+        self.CrearBotonMenu(Menuframe, "Informe", 500, command=lambda: self.controlador.informe())
         return Menuframe
 
     def CrearBotonMenu(self, parent, text, y_position, command=None):
-        button = menuvista.Button(parent, text=text, width=25, height=2, bg='#34495e', fg='white',
+        button = menuvista.Button(parent, text=text, width=25, height=2, bg='#34495e', fg='white', 
                         activebackground='#2c3e50', activeforeground='white',
                         bd=0, highlightthickness=0 , command=command)
         button.place(x=10, y=y_position)
 
 
-    def inventario(self):
+    def inventario(self, controlador):
         nueva_ventana = menuvista.Tk()
-        menu_inventario = GestionProductos(nueva_ventana)
-        menu_informe = inventario()
+        self.menu_inventario = GestionProductos(nueva_ventana, controlador)
+        self.controlador.inventarioClase(self.menu_inventario)
         nueva_ventana.mainloop()
 
-    def crearCategorias(self, parent):
-        CategoriaFrame = self.frame(parent, 950, 50, '#ecf0f1')
-        CategoriaFrame.pack(side="top", fill="x")
-
-        self.CrearCategoriaBoton(CategoriaFrame, "Pasteles y Tartas", 10, self.mostrarProductos)
-        self.CrearCategoriaBoton(CategoriaFrame, "Galletas", 190, self.mostrarProductos2)
-        self.CrearCategoriaBoton(CategoriaFrame, "Postres Frios", 370, self.mostrarProductos3)
-        self.CrearCategoriaBoton(CategoriaFrame, "Cupcakes", 550, self.mostrarProductos4)
-        self.CrearCategoriaBoton(CategoriaFrame, "Inventario", 730 , command=self.inventario)
-        return CategoriaFrame
-
+    def mostrarProductos(self, productos):
+        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170) 
+                            for i, p in enumerate(productos)]
         
-        #llamar a self.iniciarInventario()
-        self.controlador.iniciarInventario()
-
-
-    def CrearCategoriaBoton(self, parent, text, x_position, command=None):
-        button = menuvista.Button(parent, text=text, width=15, height=2,
-                                  bg='#3498db', fg='white', activebackground='#2980b9',
-                                  bd=0, highlightthickness=0, command=command)
-        button.place(x=x_position, y=5)
-
-    def mostrarProductos(self, categoria):
-        productos = self.controlador.mostrarProductosPorCategoria(categoria)
-    
-        if not productos:  # Se asegura que la lista no este vacia
-            print(f"No se encontraron productos para la categoría: {categoria}")
-            return
-
-        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170)
-                            for i, p in enumerate(productos)]
-        self.actualizarProductos(productos_formato)
-
-
-    def mostrarProductos2(self):
-        productos = self.controlador.mostrarProductosPorCategoria(self)
-
-        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170)
-                            for i, p in enumerate(productos)]
-
-        self.actualizarProductos(productos_formato)
-
-    def mostrarProductos3(self):
-        productos = self.controlador.mostrarProductosPorCategoria(self)
-
-        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170)
-                            for i, p in enumerate(productos)]
-
-        self.actualizarProductos(productos_formato)
-
-    def mostrarProductos4(self):
-        productos = self.controlador.mostrarProductosPorCategoria(self)
-
-        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170)
-                            for i, p in enumerate(productos)]
-
         self.actualizarProductos(productos_formato)
 
     def actualizarProductos(self, productos):
