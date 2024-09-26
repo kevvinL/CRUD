@@ -73,14 +73,28 @@ class controladorInicio:
     def GuardarProducto(self, productoNuevo):
         if self.inventario:
             enviar = self.modelo.crearProducto(productoNuevo)
-            self.filtro("todos")
-            return enviar
+            if enviar ==  True:
+                self.filtro("todos")
+                return enviar
+    
+    def iniciarEliminar(self):
+        self.inventario.eliminarProducto()
     
     def eliminarProducto(self, eliminar):
         if self.inventario:
             eliminado = self.modelo.eliminar_producto(eliminar)
             self.filtro("todos")
             return eliminado
+    
+    def iniciarActualizacion(self):
+        self.inventario.editarProducto()
+    
+    def actualizarProducto(self,productoActualizar):
+        if self.inventario:
+            enviar = self.modelo.actualizar_producto(productoActualizar)
+            if enviar ==  True:
+                self.filtro("todos")
+                return enviar
 
 
 controlador = controladorInicio()

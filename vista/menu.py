@@ -23,7 +23,6 @@ class menuInterfaz:
         self.encabezado()
         self.crearMenu(self.master)
         self.Titulocatalogo(self.master)
-        #self.controlador.filtro("todos")
 
     def mostrarInforme(self):
         nuevaventana = menuvista.Tk()
@@ -57,7 +56,8 @@ class menuInterfaz:
         self.CrearBotonMenu(Menuframe, "Postres frios", 160, command=lambda: self.controlador.filtro("postres frios"))
         self.CrearBotonMenu(Menuframe, "Inventario", 210, command=lambda:self.controlador.IniciarInventario())
         self.CrearBotonMenu(Menuframe, "Cerrar sesión", 450, command=lambda:self.controlador.cerrarMenu())
-        self.CrearBotonMenu(Menuframe, "Informe", 500, command=lambda: self.controlador.informe())
+        if self.rolUsuario == "admin":
+            self.CrearBotonMenu(Menuframe, "Informe", 500, command=lambda: self.controlador.informe())
         return Menuframe
 
     def CrearBotonMenu(self, parent, text, y_position, command=None):
