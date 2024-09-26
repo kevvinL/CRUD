@@ -43,8 +43,8 @@ class controladorInicio:
             self.menu.mostrarInforme()
     
     def mostrarProductosPorCategoria(self, categoria):
-        productos = self.modelo.obtener_productos(categoria)  # Se asegura de no enviar una lista vacia
-        return productos
+        if self.menu:
+            self.menu.mostrarProductos(categoria)
     
     def cerrarMenu(self):
         if self.menu:
@@ -58,7 +58,7 @@ class controladorInicio:
     def filtro(self, categoria):
         print(categoria, "controlador")
         self.productos = self.modelo.obtener_productos(categoria)
-        return self.productos
+        self.menu.mostrarProductos(self.productos)
     
     def consultaInventario(self, categoria):
         productos = self.productos = self.modelo.obtener_productos(categoria)
@@ -73,14 +73,29 @@ class controladorInicio:
     def GuardarProducto(self, productoNuevo):
         if self.inventario:
             enviar = self.modelo.crearProducto(productoNuevo)
-            self.filtro("todos")
-            return enviar
+            if enviar ==  True:
+                self.filtro("todos")
+                return enviar
+    
+    def iniciarEliminar(self):
+        self.inventario.eliminarProducto()
     
     def eliminarProducto(self, eliminar):
         if self.inventario:
             eliminado = self.modelo.eliminar_producto(eliminar)
             self.filtro("todos")
             return eliminado
+    
+    def iniciarActualizacion(self):
+        self.inventario.editarProducto()
+    
+    def actualizarProducto(self,productoActualizar):
+        if self.inventario:
+            print("Datos a actualizar:", productoActualizar)
+            enviar = self.modelo.actualizar_producto(productoActualizar)
+            if enviar ==  True:
+                self.filtro("todos")
+                return enviar
 
 
 controlador = controladorInicio()

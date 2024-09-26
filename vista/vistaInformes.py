@@ -51,20 +51,20 @@ class Menu:
 
         menuvista.Label(tableframe, text=titulo, font=("Helvetica", 12, "bold"), bg='white').pack(anchor="w")
         
-        columnas = ("Producto", "Cantidad", "Precio", "Fecha")
+        columnas = ("Producto", "Cantidad", "Precio", "Categoria")
         treeview = ttk.Treeview(tableframe, columns=columnas, show="headings", height=10) 
 
 
         treeview.heading("Producto", text="Producto")
         treeview.heading("Cantidad", text="Cantidad")
         treeview.heading("Precio", text="Precio")
-        treeview.heading("Fecha", text="Fecha")
+        treeview.heading("Categoria", text="Categoria")
 
         # Ajustamos el tamaño de las columnas
         treeview.column("Producto", anchor='center', width=200)
         treeview.column("Cantidad", anchor='center', width=100)
         treeview.column("Precio", anchor='center', width=100)
-        treeview.column("Fecha", anchor='center', width=150)
+        treeview.column("Categoria", anchor='center', width=150)
 
         treeview.pack(fill="both", expand=True)
 

@@ -29,8 +29,8 @@ class modelo:
 
       def crearProducto(self, producto):
             try:
-                  consulta = "INSERT INTO productos (nombreP, cantidad, precio, fecha) VALUES (%s, %s, %s, %s)"
-                  self.cursor.execute(consulta, (producto["nombreP"], producto["cantidad"], producto["precio"], producto["fecha"]))
+                  consulta = "INSERT INTO productos (nombreP, cantidad, precio, categoria) VALUES (%s, %s, %s, %s)"
+                  self.cursor.execute(consulta, (producto["nombreP"], producto["cantidad"], producto["precio"], producto["categoria"]))
                   self.conexion.commit()
                   print("Producto insertado correctamente")
                   return True
@@ -43,11 +43,11 @@ class modelo:
                   print(categoria, "modelo")
                   # Si no hay categoría o la categoría es 'todos', obtener todos los productos
                   if not categoria or categoria == "todos":
-                        consulta = "SELECT nombreP, cantidad, precio, fecha FROM productos"
+                        consulta = "SELECT nombreP, cantidad, precio, categoria FROM productos"
                         self.cursor.execute(consulta)
                   else:
                         # De lo contrario, filtrar por categoría
-                        consulta = "SELECT nombreP, cantidad, precio, fecha FROM productos"
+                        consulta = "SELECT nombreP, cantidad, precio, categoria FROM productos"
                         self.cursor.execute(consulta)
                   
                   productos = self.cursor.fetchall()
@@ -68,11 +68,11 @@ class modelo:
                   print(f"Error: {err}")
                   return False
       
-      def actualizar_producto(self, nombreP, nuevo_nombre, cantidad, precio, fecha):
-            query = "UPDATE productos SET nombreP=%s, cantidad=%s, precio=%s, fecha=%s WHERE nombreP=%s"
-            parametros = (nuevo_nombre, cantidad, precio, fecha, nombreP)
+      def actualizar_producto(self, producto):
+            query = "UPDATE productos SET nombreP=%s, cantidad=%s, precio=%s, categoria=%s WHERE nombreP=%s"
+            producto = (producto["nombreP"], producto["cantidad"], producto["precio"], producto["categoria"], producto["nombre_nuevo"])
             try:
-                  self.cursor.execute(query, parametros)
+                  self.cursor.execute(query, producto)
                   self.conexion.commit()
                   return True
             except mysql.connector.Error as err:
@@ -80,11 +80,10 @@ class modelo:
                   return False
       
       def obtenerProductosPorCategoria(self, categoria):
-            # Supongamos que tienes una conexión a la base de datos llamada 'conexion'
             cursor = self.conexion.cursor()
             query = "SELECT nombreP, precio, descripcion FROM productos WHERE categoria = ?"
             cursor.execute(query, (categoria,))
             productos = cursor.fetchall()
-            # Estructuramos los datos en un diccionario
+            # Los guardamos en el diccionario
             productos_formato = [{"nombreP": row[0], "precio": row[1], "descripcion": row[2]} for row in productos]
             return productos_formato
