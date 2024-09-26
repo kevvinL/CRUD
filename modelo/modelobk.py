@@ -29,8 +29,8 @@ class modelo:
 
       def crearProducto(self, producto):
             try:
-                  consulta = "INSERT INTO productos (nombreP, cantidad, precio) VALUES (%s, %s, %s)"
-                  self.cursor.execute(consulta, (producto["nombreP"], producto["cantidad"], producto["precio"]))
+                  consulta = "INSERT INTO productos (nombreP, cantidad, precio, categoria) VALUES (%s, %s, %s, %s)"
+                  self.cursor.execute(consulta, (producto["nombreP"], producto["cantidad"], producto["precio"], producto["categoria"]))
                   self.conexion.commit()
                   print("Producto insertado correctamente")
                   return True
@@ -43,11 +43,11 @@ class modelo:
                   print(categoria, "modelo")
                   # Si no hay categoría o la categoría es 'todos', obtener todos los productos
                   if not categoria or categoria == "todos":
-                        consulta = "SELECT nombreP, cantidad, precio FROM productos"
+                        consulta = "SELECT nombreP, cantidad, precio , categoria FROM productos"
                         self.cursor.execute(consulta)
                   else:
                         # De lo contrario, filtrar por categoría
-                        consulta = "SELECT nombreP, cantidad, precio FROM productos"
+                        consulta = "SELECT nombreP, cantidad, precio, categoria FROM productos"
                         self.cursor.execute(consulta)
                   
                   productos = self.cursor.fetchall()
@@ -69,8 +69,8 @@ class modelo:
                   return False
       
       def actualizar_producto(self, producto):
-            query = "UPDATE productos SET nombreP=%s, cantidad=%s, precio=%s, fecha=%s WHERE nombreP=%s"
-            producto = (producto["nombre_nuevo"], producto["cantidad"], producto["precio"], producto["fecha"],producto["nombreP"])
+            query = "UPDATE productos SET nombreP=%s, cantidad=%s, precio=%s, categoria=%s WHERE nombreP=%s"
+            producto = (producto["nombre_nuevo"], producto["cantidad"], producto["precio"], producto["categoria"],producto["nombreP"])
             try:
                   self.cursor.execute(query, producto)
                   self.conexion.commit()
