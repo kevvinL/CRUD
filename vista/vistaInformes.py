@@ -100,8 +100,3 @@ class Menu:
         termino = self.buscador_entry.get().lower()
         self.filtrados = [p for p in self.productos if termino in p["Producto"].lower() or termino in p["Categoria"].lower()]
         self.actualizar_tabla(self.filtrados)
-
-if __name__ == "__main__":
-    iniciar = menuvista.Tk()
-    menu = Menu(iniciar)
-    iniciar.mainloop()
