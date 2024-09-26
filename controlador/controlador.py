@@ -56,9 +56,16 @@ class controladorInicio:
             self.menu.inventario(controlador=self)
     
     def filtro(self, categoria):
-        print(categoria, "controlador")
+        print(f"Filtrando productos para la categoría: {categoria}")
         self.productos = self.modelo.obtener_productos(categoria)
+        print(f"Productos obtenidos: {self.productos}")
+        
+        if self.productos is None:
+            print(f"No se encontraron productos para la categoría: {categoria}")
+            self.productos = []  # Asignar una lista vacía si no hay productos
+
         self.menu.mostrarProductos(self.productos)
+
     
     def consultaInventario(self, categoria):
         productos = self.productos = self.modelo.obtener_productos(categoria)
@@ -91,6 +98,7 @@ class controladorInicio:
     
     def actualizarProducto(self,productoActualizar):
         if self.inventario:
+            print("Datos a actualizar:", productoActualizar)
             enviar = self.modelo.actualizar_producto(productoActualizar)
             if enviar ==  True:
                 self.filtro("todos")

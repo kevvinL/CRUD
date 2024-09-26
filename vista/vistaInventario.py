@@ -1,4 +1,4 @@
-import tkinter as vistaProducto
+"""import tkinter as vistaProducto
 from tkinter import ttk
 
 class Inventario:
@@ -115,3 +115,4 @@ class Inventario:
     def editarProducto(self):
         print("Editar Producto - Implementar funcionalidad")
 
+"""

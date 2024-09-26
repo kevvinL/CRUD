@@ -40,6 +40,10 @@ class menuInterfaz:
     def cerrarSesion(self):
         self.master.destroy()
 
+    """def cerrarSesion(self):
+        if self.master.winfo_exists():  # Para que al cerrar con la x no genere conflictos con el destroy
+            self.master.destroy()
+        self.controlador.iniciarVista()"""
 
     def crearMenu(self, parent):
         Menuframe = self.frame(parent, 250, 600, '#34495e')

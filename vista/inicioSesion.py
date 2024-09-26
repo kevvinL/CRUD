@@ -19,7 +19,10 @@ class inicioSesionVista:
     def contenedorModelo (self,datoContenedor):
         contenedor = vistaInicioSesion.Frame(datoContenedor)
         contenedor.config(bg="#396cc0", width=400, height=280)
-        contenedor.pack(padx=50, pady=60, side=vistaInicioSesion.LEFT)
+        
+        contenedor.pack(expand=True)  # Hace que el contenedor se mantenga en el centro
+        contenedor.pack_propagate(0)  # Hace que el contenedor mantenga su tamaño
+        
         return contenedor
 
     def vistaInicio(self, datoContenedor):
@@ -46,8 +49,8 @@ class inicioSesionVista:
         contraseña.place(x=81, y=170, width=240, height=20)
         contraseña.config(bg="#e3e4e9")
         
-        botonInicio = vistaInicioSesion.Button(text= "Iniciar Sesión", font=("Arial", 11), command=self.enviarDatos)
-        botonInicio.place(x=200, y=290, width=95, height= 30)
+        botonInicio = vistaInicioSesion.Button(datoContenedor, text="Iniciar Sesión", font=("Arial", 11), command=self.enviarDatos) #El datoContenedor mantiene el boton dentro de él
+        botonInicio.place(x=150, y=220, width=95, height=30)  
     
     def enviarDatos(self):
         
