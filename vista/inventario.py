@@ -1,7 +1,7 @@
 import tkinter as menuvista
 from tkinter import ttk
 from tkinter import messagebox
-from modelo.modelobk import modelo
+#from modelo.modelobk import modelo
 
 class GestionProductos:
     def __init__(self, master, controlador):
@@ -42,10 +42,10 @@ class GestionProductos:
         self.registrar = menuvista.Button(botonframe, text="Crear Producto", width=20, height=3, command=self.controlador.iniciarCrearProducto)
         self.registrar.place(x=500, y=30)
 
-        self.guardar_button = menuvista.Button(botonframe, text="Eliminar Producto", width=20, height=3, command=self.eliminarProducto)
+        self.guardar_button = menuvista.Button(botonframe, text="Eliminar Producto", width=20, height=3, command=self.controlador.iniciarEliminar)
         self.guardar_button.place(x=300, y=30)
 
-        self.eliminar_button = menuvista.Button(botonframe, text="Editar Producto", width=20, height=3 , command=self.editarProducto)
+        self.eliminar_button = menuvista.Button(botonframe, text="Editar Producto", width=20, height=3 , command=self.controlador.iniciarActualizacion)
         self.eliminar_button.place(x=700, y=30)
 
     def abrirVentanaRegistro(self):
@@ -133,8 +133,6 @@ class GestionProductos:
             item = self.productos_table.item(selected_item)
             producto_nombre = item['values'][0]
             confirmacion = self.controlador.eliminarProducto(producto_nombre)
-            #modelo_bd = modelo()
-            #eliminacion_exitosa = modelo_bd.eliminar_producto(producto_nombre)
             if confirmacion == False:
                 messagebox.showinfo("ERROR", "INVALIDO")
                 print("Error al eliminar el producto de la base de datos.")
@@ -197,22 +195,29 @@ class GestionProductos:
 
 
     def actualizarProducto(self, nombre_original):
-        nombreP = self.nombre_entry.get()
-        cantidad = self.cantidad_entry.get()
-        precio = self.precio_entry.get()
-        fecha = self.fecha_entry.get()
+        productoActualizar =  {
+            "nombre_nuevo": nombre_original,
+            "nombreP" : self.nombre_entry.get(),
+            "cantidad" : self.cantidad_entry.get(),
+            "precio" : self.precio_entry.get(),
+            "fecha" : self.fecha_entry.get()
+        }
 
-        if nombreP and cantidad and precio and fecha:
-            modelo_bd = modelo()  
-            actualizado = modelo_bd.actualizar_producto(nombre_original, nombreP, cantidad, precio, fecha)
+        if productoActualizar["nombre_nuevo"] and productoActualizar["nombreP"] and productoActualizar["cantidad"] and productoActualizar["precio"] and productoActualizar["fecha"]:
+            actualizado = self.controlador.actualizarProducto(productoActualizar) 
+            #modelo_bd = modelo()  
+            #actualizado = modelo_bd.actualizar_producto(nombre_original, productoActualizar)
 
-            if actualizado:
+            if actualizado == True:
+                messagebox.showinfo("Confirmación", "Actualizado Correctamente")
                 print("Producto actualizado correctamente en la base de datos.")
                 self.ventanaedicion.destroy()
                 self.cargarDatos()  # Actualiza la tabla con los nuevos datos
             else:
+                messagebox.showinfo("ERROR", "INVALIDO")
                 print("Error al actualizar el producto en la base de datos.")
         else:
+            messagebox.showinfo("ERROR", "Por favor, ingrese todos los campos")
             print("Por favor, completa todos los campos.")
 
 

@@ -68,11 +68,11 @@ class modelo:
                   print(f"Error: {err}")
                   return False
       
-      def actualizar_producto(self, nombreP, nuevo_nombre, cantidad, precio, fecha):
+      def actualizar_producto(self, producto):
             query = "UPDATE productos SET nombreP=%s, cantidad=%s, precio=%s, fecha=%s WHERE nombreP=%s"
-            parametros = (nuevo_nombre, cantidad, precio, fecha, nombreP)
+            producto = (producto["nombre_nuevo"], producto["cantidad"], producto["precio"], producto["fecha"],producto["nombreP"])
             try:
-                  self.cursor.execute(query, parametros)
+                  self.cursor.execute(query, producto)
                   self.conexion.commit()
                   return True
             except mysql.connector.Error as err:
