@@ -1,5 +1,6 @@
 import tkinter as menuvista
 from tkinter import ttk
+from modelo.modelobk import modelo
 
 class Menu:
     def __init__(self, master):
@@ -7,6 +8,7 @@ class Menu:
         self.master.title("Menu principal")
         self.master.geometry("1200x800")
         self.master.configure(bg='#f5f5f5')
+        self.modelo = modelo()  # Crear una instancia del modelo
         self.crearinterface()
         self.productos = []  # Lista para almacenar los productos
         self.filtrados = []  # Lista para almacenar productos filtrados
@@ -77,14 +79,12 @@ class Menu:
         self.cargar_productos()  # Cargar productos iniciales
 
     def cargar_productos(self):
-        # Simulación de productos más vendidos (esto debería venir de la base de datos)
-        self.productos = [
-            {"Producto": "Tarta de Chocolate", "Cantidad": 120, "Precio": 5000, "Categoria": "Tartas"},
-            {"Producto": "Galletas de Vainilla", "Cantidad": 150, "Precio": 1000, "Categoria": "Galletas"},
-            {"Producto": "Cupcake de Fresa", "Cantidad": 90, "Precio": 2500, "Categoria": "Cupcakes"},
-            {"Producto": "Tarta de Zanahoria", "Cantidad": 110, "Precio": 4500, "Categoria": "Tartas"},
-            {"Producto": "Galletas de Chocolate", "Cantidad": 80, "Precio": 1200, "Categoria": "Galletas"}
-        ]
+        # Obtener productos desde la base de datos
+        self.productos = self.modelo.obtener_productos()  # Cambia a tu método real
+
+        # Ordenar los productos por cantidad de mayor a menor
+        self.productos = sorted(self.productos, key=lambda x: x["cantidad"], reverse=True)
+
         self.actualizar_tabla(self.productos)
 
     def actualizar_tabla(self, productos):
@@ -94,9 +94,9 @@ class Menu:
         
         # Insertar productos en la tabla
         for producto in productos:
-            self.treeview.insert("", "end", values=(producto["Producto"], producto["Cantidad"], producto["Precio"], producto["Categoria"]))
+            self.treeview.insert("", "end", values=(producto["nombreP"], producto["cantidad"], producto["precio"], producto["categoria"]))
 
     def aplicar_filtro(self):
         termino = self.buscador_entry.get().lower()
-        self.filtrados = [p for p in self.productos if termino in p["Producto"].lower() or termino in p["Categoria"].lower()]
+        self.filtrados = [p for p in self.productos if termino in p["nombreP"].lower() or termino in p["categoria"].lower()]
         self.actualizar_tabla(self.filtrados)

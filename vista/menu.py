@@ -17,8 +17,9 @@ class menuInterfaz:
 
     def filtro(self, categoria):
         self.categoria_actual = categoria  # Guardar la categoría seleccionada
-        productos = self.controlador.filtro(categoria)
-        self.mostrarProductos(productos)
+        productos = self.controlador.filtro(categoria)  # Asegúrate de que esto retorne productos
+        if productos:  # Solo mostrar productos si hay resultados
+            self.mostrarProductos(productos)
 
 
     def crearinterface(self):
