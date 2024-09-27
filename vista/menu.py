@@ -16,9 +16,9 @@ class menuInterfaz:
         self.master.after(100, lambda: self.filtro("todos"))
 
     def filtro(self, categoria):
-        self.categoria_actual = categoria  # Guardar la categoría seleccionada
-        productos = self.controlador.filtro(categoria)  # Asegúrate de que esto retorne productos
-        if productos:  # Solo mostrar productos si hay resultados
+        self.categoria_actual = categoria
+        productos = self.controlador.filtro(categoria)
+        if productos:
             self.mostrarProductos(productos)
 
 
