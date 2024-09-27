@@ -50,7 +50,7 @@ class menuInterfaz:
         Menuframe.pack(side="left", fill="y")
 
         # Pasamos las categorías como argumentos a los métodos
-        self.CrearBotonMenu(Menuframe, "Tartas", 10, command=lambda: self.controlador.filtro("tarta"))
+        self.CrearBotonMenu(Menuframe, "Tartas", 10, command=lambda: self.controlador.filtro("tartas"))
         self.CrearBotonMenu(Menuframe, "Galletas", 60, command=lambda: self.controlador.filtro("galletas"))
         self.CrearBotonMenu(Menuframe, "Cupcakes", 110, command=lambda: self.controlador.filtro("cupcakes"))
         self.CrearBotonMenu(Menuframe, "Postres frios", 160, command=lambda: self.controlador.filtro("postres frios"))
