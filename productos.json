@@ -1,0 +1,26 @@
+[
+    {
+        "nombreP": "Pastel de chocolate",
+        "cantidad": 1,
+        "precio": 10000,
+        "categoria": "Tartas"
+    },
+    {
+        "nombreP": "Cupcake de chocolate",
+        "cantidad": 1,
+        "precio": 2000,
+        "categoria": "Cupcakes"
+    },
+    {
+        "nombreP": "Galleta de mani",
+        "cantidad": 1,
+        "precio": 1000,
+        "categoria": "Galletas"
+    },
+    {
+        "nombreP": "Quesillo",
+        "cantidad": 1,
+        "precio": 5000,
+        "categoria": "Postres Fr\u00edos"
+    }
+]

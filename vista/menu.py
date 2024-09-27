@@ -53,10 +53,10 @@ class menuInterfaz:
         Menuframe.pack(side="left", fill="y")
 
         # Pasamos las categorías como argumentos a los métodos
-        self.CrearBotonMenu(Menuframe, "Tartas", 10, command=lambda: self.filtro("tarta"))
-        self.CrearBotonMenu(Menuframe, "Galletas", 60, command=lambda: self.filtro("galletas"))
-        self.CrearBotonMenu(Menuframe, "Cupcakes", 110, command=lambda: self.filtro("cupcakes"))
-        self.CrearBotonMenu(Menuframe, "Postres frios", 160, command=lambda: self.filtro("postres frios"))
+        self.CrearBotonMenu(Menuframe, "Tartas", 10, command=lambda: self.controlador.filtro("tartas"))
+        self.CrearBotonMenu(Menuframe, "Galletas", 60, command=lambda: self.controlador.filtro("galletas"))
+        self.CrearBotonMenu(Menuframe, "Cupcakes", 110, command=lambda: self.controlador.filtro("cupcakes"))
+        self.CrearBotonMenu(Menuframe, "Postres frios", 160, command=lambda: self.controlador.filtro("postres frios"))
         self.CrearBotonMenu(Menuframe, "Inventario", 210, command=lambda:self.controlador.IniciarInventario())
         self.CrearBotonMenu(Menuframe, "Cerrar sesión", 450, command=lambda:self.controlador.cerrarMenu())
         if self.rolUsuario == "admin":

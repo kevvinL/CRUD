@@ -1,3 +1,4 @@
+import json
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
@@ -27,7 +28,17 @@ class controladorInicio:
             else:
                 return False
 
+    def cargarProductosDesdeJSON(self, archivo="productos.json"):
+        if os.path.exists(archivo):
+            with open(archivo, "r") as file:
+                self.productos = json.load(file)
+                print("Productos cargados desde el archivo JSON.")
+        else:
+            self.productos = []
+            print("No se encontró un archivo JSON, inicializando lista vacia.")
+
     def iniciarVista(self):
+        self.cargarProductosDesdeJSON()
         self.inicioSesion = inicioSesionVista(controlador=self)
         auxFormulario = self.inicioSesion.crearFormulario()
         contenedor = self.inicioSesion.contenedorModelo(auxFormulario)
@@ -77,11 +88,17 @@ class controladorInicio:
     def iniciarCrearProducto(self):
         self.inventario.abrirVentanaRegistro()
     
+    def guardarProductosEnJSON(self, archivo="productos.json"):
+        with open(archivo, "w") as file:
+            json.dump(self.productos, file, indent=4)
+            print("Productos guardados en el archivo JSON.")
+
     def GuardarProducto(self, productoNuevo):
         if self.inventario:
             enviar = self.modelo.crearProducto(productoNuevo)
             if enviar ==  True:
                 self.filtro("todos")
+                self.guardarProductosEnJSON()
                 return enviar
     
     def iniciarEliminar(self):
@@ -91,6 +108,7 @@ class controladorInicio:
         if self.inventario:
             eliminado = self.modelo.eliminar_producto(eliminar)
             self.filtro("todos")
+            self.guardarProductosEnJSON()
             return eliminado
     
     def iniciarActualizacion(self):
@@ -102,6 +120,7 @@ class controladorInicio:
             enviar = self.modelo.actualizar_producto(productoActualizar)
             if enviar ==  True:
                 self.filtro("todos")
+                self.guardarProductosEnJSON()
                 return enviar
 
 

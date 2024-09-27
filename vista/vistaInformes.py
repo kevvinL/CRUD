@@ -1,14 +1,13 @@
 import tkinter as menuvista
 from tkinter import ttk
-from modelo.modelobk import modelo
 
 class Menu:
-    def __init__(self, master):
+    def __init__(self, master , controlador):
         self.master = master
         self.master.title("Menu principal")
         self.master.geometry("1200x800")
         self.master.configure(bg='#f5f5f5')
-        self.modelo = modelo()  # Crear una instancia del modelo
+        self.controlador = controlador
         self.crearinterface()
         self.productos = []  # Lista para almacenar los productos
         self.filtrados = []  # Lista para almacenar productos filtrados
@@ -40,10 +39,9 @@ class Menu:
         self.filtro_frame = menuvista.Frame(ProductoFrame, bg='#ecf0f1')
         self.filtro_frame.pack(side="top", fill="x", padx=10, pady=5)
 
-        self.buscador_entry = menuvista.Entry(self.filtro_frame, width=40)
-        self.buscador_entry.pack(side="left", padx=5)
 
-        buscar_btn = menuvista.Button(self.filtro_frame, text="Buscar", bg='#3498db', fg='white', command=self.aplicar_filtro)
+
+        buscar_btn = menuvista.Button(self.filtro_frame, text="Generar informe", bg='#3498db', fg='white', command=self.aplicar_filtro)
         buscar_btn.pack(side="left", padx=5)
 
         self.treeview = self.CrearTabla(ProductoFrame, "Más Vendidos", 10, 50)
@@ -95,8 +93,3 @@ class Menu:
         # Insertar productos en la tabla
         for producto in productos:
             self.treeview.insert("", "end", values=(producto["nombreP"], producto["cantidad"], producto["precio"], producto["categoria"]))
-
-    def aplicar_filtro(self):
-        termino = self.buscador_entry.get().lower()
-        self.filtrados = [p for p in self.productos if termino in p["nombreP"].lower() or termino in p["categoria"].lower()]
-        self.actualizar_tabla(self.filtrados)
