@@ -1,6 +1,7 @@
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+import json
 
 from vista.inicioSesion import inicioSesionVista
 from modelo.modelobk import modelo 
@@ -24,11 +25,11 @@ class controladorInicio:
             print(usuarioEnviar, "trae de modelo")
             print(f"Usuario: {datos['usuario']}, Contraseña: {datos['contraseña']}")
             
-            if usuarioEnviar["verificado"] == True:
+            if usuarioEnviar["verificado"] == False:
+                return False 
+            else:
                 self.inicioSesion.sesion.destroy()
                 self.iniciarMenu(usuarioEnviar["rol"])
-            else:
-                return False
 
     def iniciarVista(self):
         self.inicioSesion = inicioSesionVista(controlador=self)
@@ -41,9 +42,19 @@ class controladorInicio:
         self.menu = menuInterfaz(rol,controlador=self)
         self.menu.iniciar()
     
+    def cargarProductosDesdeJSON(self, archivo="productos.json"):
+        if os.path.exists(archivo):
+            with open(archivo, "r") as file:
+                self.productos = json.load(file)
+                print("Productos cargados desde el archivo JSON.")
+        else:
+            self.productos = []
+            print("Creando Archivo json.")
+    
     def informe(self):
         if self.menu:
-            self.menu.mostrarInforme()
+            self.cargarProductosDesdeJSON()
+            self.menu.mostrarInforme(controlador=self)
     
     def mostrarProductosPorCategoria(self, categoria):
         if self.menu:
@@ -80,6 +91,10 @@ class controladorInicio:
     def iniciarCrearProducto(self):
         self.inventario.abrirVentanaRegistro()
     
+    def iniciarGuardarPro(self):
+        if self.inventario:
+            self.inventario.guardarProducto()
+    
     def GuardarProducto(self, productoNuevo):
         if self.inventario:
             enviar = self.modelo.crearProducto(productoNuevo)
@@ -106,6 +121,15 @@ class controladorInicio:
             if enviar ==  True:
                 self.filtro("todos")
                 return enviar
+    
+    def ProductosInformes(self, categoria):
+        self.productos = self.modelo.obtener_productos(categoria)
+        print(f"Productos obtenidos: {self.productos}")
+        return self.productos
+    
+    def generarInformes(self):
+        pass
+        #self.
 
 
 controlador = controladorInicio()

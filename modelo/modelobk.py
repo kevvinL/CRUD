@@ -5,7 +5,7 @@ class modelo:
             self.conexion = mysql.connector.connect(
                   host="localhost",
                   user="root",
-                  port=3306,
+                  port=17116,
                   password="",
                   database="negocio"
             )
@@ -19,9 +19,9 @@ class modelo:
                   print(resultado)
                   if resultado:
                         necesario = {"rol": resultado["rol"], "verificado": True}
-                        return necesario
                   else:
-                        return False
+                        necesario = {"verificado": False}
+                  return necesario
 
             except mysql.connector.Error as err:
                   print(f"Error: {err}")
@@ -80,12 +80,3 @@ class modelo:
             except mysql.connector.Error as err:
                   print(f"Error: {err}")
                   return False
-      
-      def obtenerProductosPorCategoria(self, categoria):
-            cursor = self.conexion.cursor()
-            query = "SELECT nombreP, precio, descripcion FROM productos WHERE categoria = ?"
-            cursor.execute(query, (categoria,))
-            productos = cursor.fetchall()
-            # Los guardamos en el diccionario
-            productos_formato = [{"nombreP": row[0], "precio": row[1], "descripcion": row[2]} for row in productos]
-            return productos_formato

@@ -80,7 +80,7 @@ class GestionProductos:
         self.categoria_var.current(0)  # Establece "Seleccionar" como valor inicial
         self.categoria_var.grid(row=3, column=1, padx=10, pady=5)
 
-        self.boton = menuvista.Button(form_frame, text="Guardar", command=self.guardarProducto)
+        self.boton = menuvista.Button(form_frame, text="Guardar", command=self.controlador.iniciarGuardarPro)
         self.boton.place(x=230, y=250)
 
     def crearTabla(self, parent):
