@@ -88,10 +88,7 @@ class controladorInicio:
     def iniciarCrearProducto(self):
         self.inventario.abrirVentanaRegistro()
     
-    def guardarProductosEnJSON(self, archivo="productos.json"):
-        with open(archivo, "w") as file:
-            json.dump(self.productos, file, indent=4)
-            print("Productos guardados en el archivo JSON.")
+    
 
     def GuardarProducto(self, productoNuevo):
         if self.inventario:
