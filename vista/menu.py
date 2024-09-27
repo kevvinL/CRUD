@@ -11,15 +11,11 @@ class menuInterfaz:
         self.master.geometry("1200x800")
         self.master.configure(bg='#f5f5f5')
         self.producto_frame = None
-        self.categoria_actual = None  # Para mantener la categoría seleccionada
         self.crearinterface()
-        self.master.after(100, lambda: self.filtro("todos"))
+        self.master.after(100, self.iniciarFiltro)
 
-    def filtro(self, categoria):
-        self.categoria_actual = categoria  # Guardar la categoría seleccionada
-        productos = self.controlador.filtro(categoria)  # Asegúrate de que esto retorne productos
-        if productos:  # Solo mostrar productos si hay resultados
-            self.mostrarProductos(productos)
+    def iniciarFiltro(self):
+        self.controlador.filtro("todos")  
 
 
     def crearinterface(self):
@@ -47,16 +43,15 @@ class menuInterfaz:
     def cerrarSesion(self):
         self.master.destroy()
 
-
     def crearMenu(self, parent):
         Menuframe = self.frame(parent, 250, 600, '#34495e')
         Menuframe.pack(side="left", fill="y")
 
-        # Pasamos las categorías como argumentos a los métodos
-        self.CrearBotonMenu(Menuframe, "Tartas", 10, command=lambda: self.filtro("tarta"))
-        self.CrearBotonMenu(Menuframe, "Galletas", 60, command=lambda: self.filtro("galletas"))
-        self.CrearBotonMenu(Menuframe, "Cupcakes", 110, command=lambda: self.filtro("cupcakes"))
-        self.CrearBotonMenu(Menuframe, "Postres frios", 160, command=lambda: self.filtro("postres frios"))
+        # Pasamos las categorías como argumentos
+        self.CrearBotonMenu(Menuframe, "Tartas", 10, command=lambda: self.controlador.filtro("tartas"))
+        self.CrearBotonMenu(Menuframe, "Galletas", 60, command=lambda: self.controlador.filtro("galletas"))
+        self.CrearBotonMenu(Menuframe, "Cupcakes", 110, command=lambda: self.controlador.filtro("cupcakes"))
+        self.CrearBotonMenu(Menuframe, "Postres frios", 160, command=lambda: self.controlador.filtro("postres frios"))
         self.CrearBotonMenu(Menuframe, "Inventario", 210, command=lambda:self.controlador.IniciarInventario())
         self.CrearBotonMenu(Menuframe, "Cerrar sesión", 450, command=lambda:self.controlador.cerrarMenu())
         if self.rolUsuario == "admin":
@@ -77,7 +72,7 @@ class menuInterfaz:
         nueva_ventana.mainloop()
 
     def mostrarProductos(self, productos):
-        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170) 
+        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Categoria: {p['categoria']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170) 
                             for i, p in enumerate(productos)]
         
         self.actualizarProductos(productos_formato)

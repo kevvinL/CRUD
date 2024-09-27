@@ -49,6 +49,7 @@ class modelo:
                         # Filtrar productos por categoría específica
                         consulta = "SELECT nombreP, cantidad, precio, categoria FROM productos WHERE categoria = %s"
                         self.cursor.execute(consulta, (categoria,))  # Pasar la categoría como parámetro
+                        print(consulta)
                   
                   productos = self.cursor.fetchall()
                   print(f"Productos devueltos por la consulta: {productos}")

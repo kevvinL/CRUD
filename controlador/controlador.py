@@ -5,13 +5,16 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from vista.inicioSesion import inicioSesionVista
 from modelo.modelobk import modelo 
 from vista.menu import menuInterfaz 
-from vista.inventario import GestionProductos
 
 class controladorInicio:
     def __init__(self):
         self.modelo = modelo()
         self.inicioSesion = None
         self.menu = None
+    
+    def enviosDatos(self):
+        if self.inicioSesion:
+            self.inicioSesion.enviarDatos()
     
     def inicioUsuario(self, datos):
         if not datos['usuario'] or not datos['contraseña']:
