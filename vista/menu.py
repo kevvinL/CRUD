@@ -1,6 +1,7 @@
 import tkinter as menuvista
 from vista.inventario import GestionProductos
 from vista.vistaInformes import Menu
+from tkinter import messagebox
 
 class menuInterfaz:
     def __init__(self, rol, controlador):
@@ -104,12 +105,13 @@ class menuInterfaz:
         descripcion_label = menuvista.Label(producto_frame, text=descripcion, font=("Helvetica", 10), bg='white', fg='#7f8c8d', wraplength=260, justify='left')
         descripcion_label.pack(anchor='n', pady=5)
 
-        agregar_btn = menuvista.Button(producto_frame, text="Agregar al carrito", bg='#3498db', fg='white', activebackground='#2980b9', relief='raised')
+        agregar_btn = menuvista.Button(producto_frame, text="Agregar al carrito", bg='#3498db', fg='white', activebackground='#2980b9', relief='raised', command=self.mensaje)
         agregar_btn.pack(anchor='s', pady=10)
 
         producto_frame.config(relief="groove", bd=2)
 
-
+    def mensaje(self):
+            messagebox.showinfo("Alerta", "Producto agregado al carrito")
 
     def Titulocatalogo(self, parent):
         CatalogoTituloFrame = self.frame(parent, 950, 50, '#ecf0f1')
