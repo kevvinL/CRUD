@@ -38,7 +38,7 @@ class controladorInicio:
                 print("Productos cargados desde el archivo JSON.")
         else:
             self.productos = []
-            print("No se encontró un archivo JSON, inicializando lista vacia.")
+            print("Creando Archivo json.")
 
     def iniciarVista(self):
         self.cargarProductosDesdeJSON()
