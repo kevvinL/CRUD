@@ -41,22 +41,24 @@ class modelo:
       def obtener_productos(self, categoria=None):
             try:
                   print(categoria, "modelo")
-                  # Si no hay categoría o la categoría es 'todos', obtener todos los productos
                   if not categoria or categoria == "todos":
+                        # Obtener todos los productos si la categoría es "todos" o no se especifica
                         consulta = "SELECT nombreP, cantidad, precio, categoria FROM productos"
                         self.cursor.execute(consulta)
                   else:
-                        # De lo contrario, filtrar por categoría
-                        consulta = "SELECT nombreP, cantidad, precio, categoria FROM productos"
-                        self.cursor.execute(consulta)
+                        # Filtrar productos por categoría específica
+                        consulta = "SELECT nombreP, cantidad, precio, categoria FROM productos WHERE categoria = %s"
+                        self.cursor.execute(consulta, (categoria,))  # Pasar la categoría como parámetro
+                        print(consulta)
                   
                   productos = self.cursor.fetchall()
                   print(f"Productos devueltos por la consulta: {productos}")
                   return productos
-                  #return self.cursor.fetchall()
+            
             except mysql.connector.Error as err:
                   print(f"Error: {err}")
                   return []
+
 
       def eliminar_producto(self, nombreP):
             try:

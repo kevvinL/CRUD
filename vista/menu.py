@@ -15,9 +15,8 @@ class menuInterfaz:
         self.master.after(100, self.iniciarFiltro)
 
     def iniciarFiltro(self):
-        # Llamamos a la función filtro una vez que todo está inicializado
-        print(self.rolUsuario)
-        self.controlador.filtro("todos")
+        self.controlador.filtro("todos")  
+
 
     def crearinterface(self):
         self.encabezado()
@@ -44,12 +43,11 @@ class menuInterfaz:
     def cerrarSesion(self):
         self.master.destroy()
 
-
     def crearMenu(self, parent):
         Menuframe = self.frame(parent, 250, 600, '#34495e')
         Menuframe.pack(side="left", fill="y")
 
-        # Pasamos las categorías como argumentos a los métodos
+        # Pasamos las categorías como argumentos
         self.CrearBotonMenu(Menuframe, "Tartas", 10, command=lambda: self.controlador.filtro("tartas"))
         self.CrearBotonMenu(Menuframe, "Galletas", 60, command=lambda: self.controlador.filtro("galletas"))
         self.CrearBotonMenu(Menuframe, "Cupcakes", 110, command=lambda: self.controlador.filtro("cupcakes"))
@@ -74,7 +72,7 @@ class menuInterfaz:
         nueva_ventana.mainloop()
 
     def mostrarProductos(self, productos):
-        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Descripción: {p['nombreP']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170) 
+        productos_formato = [(p['nombreP'], f"${p['precio']}", f"Categoria: {p['categoria']}", 10 + (i % 3) * 320, 10 + (i // 3) * 170) 
                             for i, p in enumerate(productos)]
         
         self.actualizarProductos(productos_formato)

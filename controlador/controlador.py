@@ -6,13 +6,16 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from vista.inicioSesion import inicioSesionVista
 from modelo.modelobk import modelo 
 from vista.menu import menuInterfaz 
-from vista.inventario import GestionProductos
 
 class controladorInicio:
     def __init__(self):
         self.modelo = modelo()
         self.inicioSesion = None
         self.menu = None
+    
+    def enviosDatos(self):
+        if self.inicioSesion:
+            self.inicioSesion.enviarDatos()
     
     def inicioUsuario(self, datos):
         if not datos['usuario'] or not datos['contraseña']:
@@ -67,9 +70,16 @@ class controladorInicio:
             self.menu.inventario(controlador=self)
     
     def filtro(self, categoria):
-        print(categoria, "controlador")
+        print(f"Filtrando productos para la categoría: {categoria}")
         self.productos = self.modelo.obtener_productos(categoria)
+        print(f"Productos obtenidos: {self.productos}")
+        
+        if self.productos is None:
+            print(f"No se encontraron productos para la categoría: {categoria}")
+            self.productos = []  # Asignar una lista vacía si no hay productos
+
         self.menu.mostrarProductos(self.productos)
+
     
     def consultaInventario(self, categoria):
         productos = self.productos = self.modelo.obtener_productos(categoria)
