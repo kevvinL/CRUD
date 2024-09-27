@@ -19,9 +19,9 @@ class modelo:
                   print(resultado)
                   if resultado:
                         necesario = {"rol": resultado["rol"], "verificado": True}
-                        return necesario
                   else:
-                        return False
+                        necesario = {"verificado": False}
+                  return necesario
 
             except mysql.connector.Error as err:
                   print(f"Error: {err}")

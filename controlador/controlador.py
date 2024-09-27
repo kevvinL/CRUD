@@ -22,11 +22,11 @@ class controladorInicio:
             print(usuarioEnviar, "trae de modelo")
             print(f"Usuario: {datos['usuario']}, Contraseña: {datos['contraseña']}")
             
-            if usuarioEnviar["verificado"] == True:
+            if usuarioEnviar["verificado"] == False:
+                return False
+            else:
                 self.inicioSesion.sesion.destroy()
                 self.iniciarMenu(usuarioEnviar["rol"])
-            else:
-                return False
 
     def cargarProductosDesdeJSON(self, archivo="productos.json"):
         if os.path.exists(archivo):
@@ -88,7 +88,10 @@ class controladorInicio:
     def iniciarCrearProducto(self):
         self.inventario.abrirVentanaRegistro()
     
-    
+    def guardarProductosEnJSON(self, archivo="productos.json"):
+        with open(archivo, "w") as file:
+            json.dump(self.productos, file, indent=4)
+            print("Productos guardados en el archivo JSON.")
 
     def GuardarProducto(self, productoNuevo):
         if self.inventario:

@@ -1,7 +1,7 @@
 import tkinter as vistaInicioSesion
 from tkinter import messagebox
-
 from vista.menu import menuInterfaz
+
 class inicioSesionVista:
     def __init__(self, controlador):
         self.controlador = controlador

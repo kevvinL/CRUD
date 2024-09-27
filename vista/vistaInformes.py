@@ -1,6 +1,5 @@
 import tkinter as menuvista
 from tkinter import ttk
-import json
 
 class Menu:
     def __init__(self, master , controlador):
@@ -48,11 +47,6 @@ class Menu:
         self.treeview = self.CrearTabla(ProductoFrame, "Más Vendidos", 10, 50)
 
         return ProductoFrame
-
-    def guardarProductosEnJSON(self, archivo="productos.json"):
-        with open(archivo, "w") as file:
-            json.dump(self.productos, file, indent=4)
-            print("Productos guardados en el archivo JSON.")
 
     def CrearTabla(self, parent, titulo, x_position, y_position):
         tableframe = menuvista.Frame(parent, width=1000, height=500, bg='white', bd=1, relief=menuvista.RAISED)
