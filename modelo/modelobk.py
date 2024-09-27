@@ -50,11 +50,10 @@ class modelo:
                         consulta = "SELECT nombreP, cantidad, precio, categoria FROM productos WHERE categoria = %s"
                         self.cursor.execute(consulta, (categoria,))  # Pasar la categoría como parámetro
                         print(consulta)
-                  
                   productos = self.cursor.fetchall()
                   print(f"Productos devueltos por la consulta: {productos}")
                   return productos
-            
+
             except mysql.connector.Error as err:
                   print(f"Error: {err}")
                   return []
@@ -65,11 +64,11 @@ class modelo:
                   consulta = "DELETE FROM productos WHERE nombreP = %s"
                   self.cursor.execute(consulta, (nombreP,))
                   self.conexion.commit()
-                  return self.cursor.rowcount > 0 
+                  return self.cursor.rowcount > 0
             except mysql.connector.Error as err:
                   print(f"Error: {err}")
                   return False
-      
+
       def actualizar_producto(self, producto):
             query = "UPDATE productos SET nombreP=%s, cantidad=%s, precio=%s, categoria=%s WHERE nombreP=%s"
             producto = (producto["nombreP"], producto["cantidad"], producto["precio"], producto["categoria"], producto["nombre_nuevo"])
@@ -80,12 +79,3 @@ class modelo:
             except mysql.connector.Error as err:
                   print(f"Error: {err}")
                   return False
-      
-      def obtenerProductosPorCategoria(self, categoria):
-            cursor = self.conexion.cursor()
-            query = "SELECT nombreP, precio, descripcion FROM productos WHERE categoria = ?"
-            cursor.execute(query, (categoria,))
-            productos = cursor.fetchall()
-            # Los guardamos en el diccionario
-            productos_formato = [{"nombreP": row[0], "precio": row[1], "descripcion": row[2]} for row in productos]
-            return productos_formato
