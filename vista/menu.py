@@ -15,6 +15,7 @@ class menuInterfaz:
         self.crearinterface()
         self.master.after(100, self.iniciarFiltro)
 
+
     def iniciarFiltro(self):
         self.controlador.filtro("todos")  
 

@@ -2,10 +2,9 @@ import json
 import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-import json
 
 from vista.inicioSesion import inicioSesionVista
-from modelo.modelobk import modelo 
+from modelo.modelobk import modelo
 from vista.menu import menuInterfaz 
 
 class controladorInicio:
@@ -31,6 +30,12 @@ class controladorInicio:
             else:
                 self.inicioSesion.sesion.destroy()
                 self.iniciarMenu(usuarioEnviar["rol"])
+
+    def cerrarMenu(self):
+        if self.menu:
+            self.menu.cerrarSesion()
+            self.modelo.cerrar_conexion()
+            self.iniciarVista()
 
     def iniciarVista(self):
         self.cargarProductosDesdeJSON()
