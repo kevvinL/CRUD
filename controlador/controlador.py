@@ -122,14 +122,48 @@ class controladorInicio:
                 self.filtro("todos")
                 return enviar
     
+    def informesClase(self, informes): #esencial para los eventos de informes
+        self.informes = informes
+    
     def ProductosInformes(self, categoria):
         self.productos = self.modelo.obtener_productos(categoria)
         print(f"Productos obtenidos: {self.productos}")
+        
         return self.productos
     
-    def generarInformes(self):
-        pass
-        #self.
+    def guardarInforme(self):
+        try:
+            # Cargar productos desde el archivo JSON
+            with open("productos.json", "r") as json_file:
+                productos = json.load(json_file)
+
+            # Generar el informe en el archivo .txt
+            with open("informeProductos.txt", "w") as file:
+                # Titulo del archivo
+                file.write("Informe de Productos\n")
+                file.write("=====================\n\n")
+
+                # Revisa que tenga productos disponibles
+                if productos:
+                    for producto in productos:
+                        file.write(f"Nombre: {producto['nombreP']}\n")
+                        file.write(f"Cantidad: {producto['cantidad']}\n")
+                        file.write(f"Precio: {producto['precio']}\n")
+                        file.write(f"Categoria: {producto['categoria']}\n")
+                        file.write("-------------------------------\n")
+                    print("Informe generado exitosamente.")
+                    
+                    mensaje = {"confirmacion": "creado", "mensaje":"Informe creado correctamente"}
+                    self.informes.confirmacion(mensaje)
+                else:
+                    file.write("No hay productos disponibles en el inventario.\n")
+                    print("No hay productos para incluir en el informe.")
+                    mensaje = {"confirmacion": "fallido", "mensaje":"Error al crear el informe"}
+                    self.informes.confirmacion(mensaje)
+        except Exception as e:
+            print(f"Error al guardar el informe: {e}")
+            mensaje = {"confirmacion": "fallido", "mensaje":"Error al guardar el informe"}
+            self.informes.confirmacion(mensaje)
 
 
 controlador = controladorInicio()

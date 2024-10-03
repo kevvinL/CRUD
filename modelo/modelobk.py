@@ -5,7 +5,7 @@ class modelo:
             self.conexion = mysql.connector.connect(
                   host="localhost",
                   user="root",
-                  port=17116,
+                  port=3306,
                   password="",
                   database="negocio"
             )

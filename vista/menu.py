@@ -24,7 +24,8 @@ class menuInterfaz:
 
     def mostrarInforme(self, controlador):
         nuevaventana = menuvista.Tk()
-        menuInforme = Menu(nuevaventana, controlador)
+        self.menuInforme = Menu(nuevaventana, controlador)
+        self.controlador.informesClase(self.menuInforme)
         nuevaventana.mainloop()
     
     def frame(self, parent, width, height, bg):
