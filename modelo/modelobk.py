@@ -49,6 +49,7 @@ class modelo:
                         # Filtrar productos por categoría específica
                         consulta = "SELECT nombreP, cantidad, precio, categoria FROM productos WHERE categoria = %s"
                         self.cursor.execute(consulta, (categoria,))  # Pasar la categoría como parámetro
+                        print(consulta)
                   
                   productos = self.cursor.fetchall()
                   print(f"Productos devueltos por la consulta: {productos}")
@@ -79,12 +80,3 @@ class modelo:
             except mysql.connector.Error as err:
                   print(f"Error: {err}")
                   return False
-      
-      def obtenerProductosPorCategoria(self, categoria):
-            cursor = self.conexion.cursor()
-            query = "SELECT nombreP, precio, descripcion FROM productos WHERE categoria = ?"
-            cursor.execute(query, (categoria,))
-            productos = cursor.fetchall()
-            # Los guardamos en el diccionario
-            productos_formato = [{"nombreP": row[0], "precio": row[1], "descripcion": row[2]} for row in productos]
-            return productos_formato

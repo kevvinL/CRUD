@@ -49,12 +49,10 @@ class inicioSesionVista:
         contraseña.place(x=81, y=170, width=240, height=20)
         contraseña.config(bg="#e3e4e9")
         
-        botonInicio = vistaInicioSesion.Button(datoContenedor, text="Iniciar Sesión", font=("Arial", 11), command=self.enviarDatos) #El datoContenedor mantiene el boton dentro de él
+        botonInicio = vistaInicioSesion.Button(datoContenedor, text="Iniciar Sesión", font=("Arial", 11), command= self.controlador.enviosDatos) #El datoContenedor mantiene el boton dentro de él
         botonInicio.place(x=150, y=220, width=95, height=30)  
     
     def enviarDatos(self):
-        
-        
         datos = {
             'usuario': self.entryUser.get(),
             'contraseña': self.entryContraseña.get()
@@ -64,10 +62,6 @@ class inicioSesionVista:
             verificacion = self.controlador.inicioUsuario(datos)
             if verificacion == False:
                 messagebox.showinfo("Error", "Usuario o contraseña incorrectos")
-            #self.sesion.destroy()
-            # Abrir el menú principal
-            #menu_app = menuInterfaz(verificacion['rol_id'], verificacion['usuario'])
-            #menu_app.mostrar_menu()
         else:
             messagebox.showinfo("Error", "Por favor, ingrese todos los campos")
 

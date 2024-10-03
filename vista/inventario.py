@@ -1,7 +1,6 @@
 import tkinter as menuvista
 from tkinter import ttk
 from tkinter import messagebox
-# from modelo.modelobk import modelo
 
 class GestionProductos:
     def __init__(self, master, controlador):
@@ -9,7 +8,7 @@ class GestionProductos:
         self.master.title("Gestión de Productos")
         self.master.geometry("1200x800")
         self.master.configure(bg='#f5f5f5')
-        self.controlador = controlador  # Asumiendo que el controlador se pasa aquí
+        self.controlador = controlador  
         self.crearinterface()
         self.cargarDatos()
 
@@ -39,13 +38,13 @@ class GestionProductos:
         botonframe = self.frame(parent, 950, 150, '#ecf0f1')
         botonframe.pack(side="top", fill="x", pady=10)
 
-        self.registrar = menuvista.Button(botonframe, text="Crear Producto", width=20, height=3, command=self.abrirVentanaRegistro)
+        self.registrar = menuvista.Button(botonframe, text="Crear Producto", width=20, height=3, command=self.controlador.iniciarCrearProducto)
         self.registrar.place(x=500, y=30)
 
-        self.eliminar_button = menuvista.Button(botonframe, text="Eliminar Producto", width=20, height=3, command=self.eliminarProducto)
+        self.eliminar_button = menuvista.Button(botonframe, text="Eliminar Producto", width=20, height=3, command=self.controlador.iniciarEliminar)
         self.eliminar_button.place(x=300, y=30)
 
-        self.editar_button = menuvista.Button(botonframe, text="Editar Producto", width=20, height=3, command=self.editarProducto)
+        self.editar_button = menuvista.Button(botonframe, text="Editar Producto", width=20, height=3, command=self.controlador.iniciarActualizacion)
         self.editar_button.place(x=700, y=30)
 
     def abrirVentanaRegistro(self):
@@ -81,7 +80,7 @@ class GestionProductos:
         self.categoria_var.current(0)  # Establece "Seleccionar" como valor inicial
         self.categoria_var.grid(row=3, column=1, padx=10, pady=5)
 
-        self.boton = menuvista.Button(form_frame, text="Guardar", command=self.guardarProducto)
+        self.boton = menuvista.Button(form_frame, text="Guardar", command=self.controlador.iniciarGuardarPro)
         self.boton.place(x=230, y=250)
 
     def crearTabla(self, parent):
@@ -197,14 +196,15 @@ class GestionProductos:
 
     def actualizarProducto(self, nombre_original):
         productoActualizar = {
-            "nombre_nuevo": self.nombre_entry.get(),
-            "cantidad": self.cantidad_entry.get(),
-            "precio": self.precio_entry.get(),
+            "nombre_nuevo": nombre_original,
+            "nombreP" : self.nombre_entry.get(),
+            "cantidad" : self.cantidad_entry.get(),
+            "precio" : self.precio_entry.get(),
             "categoria": self.categoria_var.get()
         }
 
         if productoActualizar["nombre_nuevo"] and productoActualizar["cantidad"] and productoActualizar["precio"] and productoActualizar["categoria"]:
-            actualizado = self.controlador.actualizarProducto(nombre_original, productoActualizar)
+            actualizado = self.controlador.actualizarProducto(productoActualizar)
             if actualizado:
                 messagebox.showinfo("Confirmación", "Producto actualizado correctamente")
                 print("Producto actualizado correctamente en la base de datos.")
