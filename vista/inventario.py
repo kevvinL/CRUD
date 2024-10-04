@@ -8,16 +8,16 @@ class GestionProductos:
         self.master.title("Gestión de Productos")
         self.master.geometry("1200x800")
         self.master.configure(bg='#f5f5f5')
-        self.controlador = controlador  
+        self.controlador = controlador
         self.crearinterface()
         self.cargarDatos()
 
     def cargarDatos(self):
         productos = self.controlador.consultaInventario("todos")
-        
+
         # Limpiar la tabla antes de volver a cargar los datos
         self.productos_table.delete(*self.productos_table.get_children())
-        
+
         for producto in productos:
             nombreP, cantidad, precio, categoria = producto.values()  # Extrae los valores del diccionario
             self.productos_table.insert("", "end", values=(nombreP, cantidad, precio, categoria))
@@ -107,7 +107,7 @@ class GestionProductos:
             "precio": self.precio_entry.get(),
             "categoria": self.categoria_var.get()
         }
-        
+
         if productoNuevo["nombreP"] and productoNuevo["cantidad"] and productoNuevo["precio"] and productoNuevo["categoria"] != "Seleccionar":
             guardado = self.controlador.GuardarProducto(productoNuevo)  # Llamada a la función del controlador
             if guardado:
@@ -150,12 +150,12 @@ class GestionProductos:
         if selected_item:
             item = self.productos_table.item(selected_item)
             producto_nombre, cantidad, precio, categoria = item['values']
-            
+
             self.ventanaedicion = menuvista.Toplevel(self.master)
             self.ventanaedicion.title("Editar producto")
             self.ventanaedicion.geometry("600x300")
             self.ventanaedicion.config(bg="#ecf0f1")
-            
+
             self.crearFormularioEdicion(self.ventanaedicion, producto_nombre, cantidad, precio, categoria)
         else:
             messagebox.showinfo("ERROR", "Seleccione un producto para editar")
@@ -187,7 +187,7 @@ class GestionProductos:
 
         self.categoria_var = ttk.Combobox(form_frame, values=["Seleccionar", "Tartas", "Galletas", "Cupcakes", "Postres Fríos"], state="readonly")
         self.categoria_var.grid(row=3, column=1, padx=10, pady=5)
-        
+
         if categoria in self.categoria_var["values"]:
             self.categoria_var.set(categoria)
 
