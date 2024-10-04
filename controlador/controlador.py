@@ -12,6 +12,7 @@ class controladorInicio:
         self.modelo = modelo()
         self.inicioSesion = None
         self.menu = None
+        self.productosObte = []
     
     def enviosDatos(self):
         if self.inicioSesion:
@@ -45,12 +46,24 @@ class controladorInicio:
     def cargarProductosDesdeJSON(self, archivo="productos.json"):
         if os.path.exists(archivo):
             with open(archivo, "r") as file:
-                self.productos = json.load(file)
-                print("Productos cargados desde el archivo JSON.")
+                producto = json.load(file)
+                if not producto:  # Si el archivo está vacío
+                    self.producto = self.productosObte
+                    print("Archivo JSON vacío, creando productos por defecto.")
+                    self.guardarProductosEnJSON()
+                else:
+                    self.producto = producto
+                    print("Productos cargados desde JSON.")
         else:
-            self.productos = []
-            print("Creando Archivo json.")
-    
+            self.producto = self.productosObte
+            print("Archivo JSON no encontrado, creando archivo.")
+            self.guardarProductosEnJSON()
+
+    def guardarProductosEnJSON(self, archivo="productos.json"):
+        with open(archivo, "w") as file:
+            json.dump(self.productos, file)
+        print("Productos guardados en JSON.")
+
     def informe(self):
         if self.menu:
             self.cargarProductosDesdeJSON()
@@ -77,7 +90,7 @@ class controladorInicio:
         if self.productos is None:
             print(f"No se encontraron productos para la categoría: {categoria}")
             self.productos = []  # Asignar una lista vacía si no hay productos
-
+        
         self.menu.mostrarProductos(self.productos)
 
     
@@ -128,41 +141,43 @@ class controladorInicio:
     def ProductosInformes(self, categoria):
         self.productos = self.modelo.obtener_productos(categoria)
         print(f"Productos obtenidos: {self.productos}")
-        
         return self.productos
+    
+    def asignarProductos(self, productos):
+        self.productosObte = productos
     
     def guardarInforme(self):
         try:
-            # Cargar productos desde el archivo JSON
+        # Cargar productos desde el archivo JSON
             with open("productos.json", "r") as json_file:
                 productos = json.load(json_file)
-
+            
+            if not productos:
+                print("No hay productos para incluir en el informe.")
+                mensaje = {"confirmacion": "fallido", "mensaje": "No hay productos en el inventario"}
+                self.informes.confirmacion(mensaje)
+                return
+            
             # Generar el informe en el archivo .txt
             with open("informeProductos.txt", "w") as file:
                 # Titulo del archivo
                 file.write("Informe de Productos\n")
                 file.write("=====================\n\n")
 
-                # Revisa que tenga productos disponibles
-                if productos:
-                    for producto in productos:
-                        file.write(f"Nombre: {producto['nombreP']}\n")
-                        file.write(f"Cantidad: {producto['cantidad']}\n")
-                        file.write(f"Precio: {producto['precio']}\n")
-                        file.write(f"Categoria: {producto['categoria']}\n")
-                        file.write("-------------------------------\n")
-                    print("Informe generado exitosamente.")
-                    
-                    mensaje = {"confirmacion": "creado", "mensaje":"Informe creado correctamente"}
-                    self.informes.confirmacion(mensaje)
-                else:
-                    file.write("No hay productos disponibles en el inventario.\n")
-                    print("No hay productos para incluir en el informe.")
-                    mensaje = {"confirmacion": "fallido", "mensaje":"Error al crear el informe"}
-                    self.informes.confirmacion(mensaje)
+                # Revisar que tenga productos disponibles
+                for producto in productos:
+                    file.write(f"Nombre: {producto['nombreP']}\n")
+                    file.write(f"Cantidad: {producto['cantidad']}\n")
+                    file.write(f"Precio: {producto['precio']}\n")
+                    file.write(f"Categoria: {producto['categoria']}\n")
+                    file.write("-------------------------------\n")
+                print("Informe generado exitosamente.")
+                
+                mensaje = {"confirmacion": "creado", "mensaje": "Informe creado correctamente"}
+                self.informes.confirmacion(mensaje)
         except Exception as e:
             print(f"Error al guardar el informe: {e}")
-            mensaje = {"confirmacion": "fallido", "mensaje":"Error al guardar el informe"}
+            mensaje = {"confirmacion": "fallido", "mensaje": "Error al guardar el informe"}
             self.informes.confirmacion(mensaje)
 
 

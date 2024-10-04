@@ -76,16 +76,15 @@ class Menu:
         self.cargar_productos()  # Cargar productos iniciales
 
     def cargar_productos(self):
-        # Obtener productos desde la base de datos
         self.productos = self.controlador.ProductosInformes("todos")
-        print(self.productos, "informes")
-        #self.modelo.obtener_productos()  # Cambia a tu método real
-        
-        # Ordenar los productos por cantidad de mayor a menor
-        self.productos = sorted(self.productos, key=lambda x: x["cantidad"], reverse=True)
-        
-        self.actualizar_tabla(self.productos)
-
+        print(self.productos, "informes")  # Para verificar el contenido cargado
+        if not self.productos:
+            print("No hay productos para incluir en el informe.")
+        else:
+            # Ordenar y actualizar tabla
+            self.productos = sorted(self.productos, key=lambda x: x["cantidad"], reverse=True)
+            self.controlador.asignarProductos(self.productos)
+            self.actualizar_tabla(self.productos)
 
     def actualizar_tabla(self, productos):
         # Limpiar tabla antes de actualizar
