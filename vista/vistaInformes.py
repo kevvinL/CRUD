@@ -1,14 +1,15 @@
 import tkinter as menuvista
 from tkinter import ttk
-from modelo.modelobk import modelo
+from tkinter import messagebox
+import json
 
 class Menu:
-    def __init__(self, master):
+    def __init__(self, master, controlador):
         self.master = master
-        self.master.title("Menu principal")
+        self.controlador = controlador
+        self.master.title("Informes")
         self.master.geometry("1200x800")
         self.master.configure(bg='#f5f5f5')
-        self.modelo = modelo()  # Crear una instancia del modelo
         self.crearinterface()
         self.productos = []  # Lista para almacenar los productos
         self.filtrados = []  # Lista para almacenar productos filtrados
@@ -36,15 +37,12 @@ class Menu:
         ProductoFrame = self.frame(parent, 950, 600, '#ecf0f1')  # Agrandar la tabla a 600px de alto
         ProductoFrame.pack(side="top", fill="both", expand=True)
 
-        # Agregar campo de búsqueda y botón de filtrar
+        # Agregar boton de generar informe
         self.filtro_frame = menuvista.Frame(ProductoFrame, bg='#ecf0f1')
         self.filtro_frame.pack(side="top", fill="x", padx=10, pady=5)
 
-        self.buscador_entry = menuvista.Entry(self.filtro_frame, width=40)
-        self.buscador_entry.pack(side="left", padx=5)
-
-        buscar_btn = menuvista.Button(self.filtro_frame, text="Buscar", bg='#3498db', fg='white', command=self.aplicar_filtro)
-        buscar_btn.pack(side="left", padx=5)
+        generarInforme = menuvista.Button(self.filtro_frame, text="Generar Informe", bg='#3498db', fg='white', command=self.guardarInforme)
+        generarInforme.pack(side="left", padx=5)
 
         self.treeview = self.CrearTabla(ProductoFrame, "Más Vendidos", 10, 50)
 
@@ -80,13 +78,45 @@ class Menu:
 
     def cargar_productos(self):
         # Obtener productos desde la base de datos
-        self.productos = self.modelo.obtener_productos()  # Cambia a tu método real
+        self.productos = self.controlador.consultaInventario("todos")
+        print(self.productos, "informes")
+        #self.modelo.obtener_productos()  # Cambia a tu método real
 
         # Ordenar los productos por cantidad de mayor a menor
         self.productos = sorted(self.productos, key=lambda x: x["cantidad"], reverse=True)
 
         self.actualizar_tabla(self.productos)
 
+    def guardarInforme(self):
+        try:
+            # Cargar productos desde el archivo JSON
+            with open("productos.json", "r") as json_file:
+                productos = json.load(json_file)
+
+            # Generar el informe en el archivo .txt
+            with open("informeProductos.txt", "w") as file:
+                # Titulo del archivo
+                file.write("Informe de Productos\n")
+                file.write("=====================\n\n")
+
+                # Revisa que tenga productos disponibles
+                if productos:
+                    for producto in productos:
+                        file.write(f"Nombre: {producto['nombreP']}\n")
+                        file.write(f"Cantidad: {producto['cantidad']}\n")
+                        file.write(f"Precio: {producto['precio']}\n")
+                        file.write(f"Categoria: {producto['categoria']}\n")
+                        file.write("-------------------------------\n")
+                    print("Informe generado exitosamente.")
+                    messagebox.showinfo("Confirmación", "Informe creado correctamente")
+                else:
+                    file.write("No hay productos disponibles en el inventario.\n")
+                    print("No hay productos para incluir en el informe.")
+                    messagebox.showerror("ERROR", "Error al crear el informe")
+        except Exception as e:
+            print(f"Error al guardar el informe: {e}")
+            messagebox.showerror("ERROR", "Error al guardar el informe")
+    
     def actualizar_tabla(self, productos):
         # Limpiar tabla antes de actualizar
         for row in self.treeview.get_children():
@@ -95,8 +125,3 @@ class Menu:
         # Insertar productos en la tabla
         for producto in productos:
             self.treeview.insert("", "end", values=(producto["nombreP"], producto["cantidad"], producto["precio"], producto["categoria"]))
-
-    def aplicar_filtro(self):
-        termino = self.buscador_entry.get().lower()
-        self.filtrados = [p for p in self.productos if termino in p["nombreP"].lower() or termino in p["categoria"].lower()]
-        self.actualizar_tabla(self.filtrados)

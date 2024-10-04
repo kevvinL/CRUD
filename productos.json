@@ -28,5 +28,11 @@
         "cantidad": 1,
         "precio": 12000,
         "categoria": "Tartas"
+    },
+    {
+        "nombreP": "Galleta de Chispas de Chocolate",
+        "cantidad": 4,
+        "precio": 2000,
+        "categoria": "Galletas"
     }
 ]

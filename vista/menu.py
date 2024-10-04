@@ -23,9 +23,9 @@ class menuInterfaz:
         self.crearMenu(self.master)
         self.Titulocatalogo(self.master)
 
-    def mostrarInforme(self):
+    def mostrarInforme(self, controlador):
         nuevaventana = menuvista.Tk()
-        menuInforme = Menu(nuevaventana)
+        menuInforme = Menu(nuevaventana, controlador)
         nuevaventana.mainloop()
     
     def frame(self, parent, width, height, bg):

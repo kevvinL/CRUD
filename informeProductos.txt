@@ -1,0 +1,33 @@
+Informe de Productos
+=====================
+
+Nombre: Pastel de chocolate
+Cantidad: 1
+Precio: 10000
+Categoria: Tartas
+-------------------------------
+Nombre: Cupcake de chocolate
+Cantidad: 1
+Precio: 2000
+Categoria: Cupcakes
+-------------------------------
+Nombre: Galleta de mani
+Cantidad: 1
+Precio: 1000
+Categoria: Galletas
+-------------------------------
+Nombre: Quesillo
+Cantidad: 1
+Precio: 5000
+Categoria: Postres Fríos
+-------------------------------
+Nombre: Torta de Limon
+Cantidad: 1
+Precio: 12000
+Categoria: Tartas
+-------------------------------
+Nombre: Galleta de Chispas de Chocolate
+Cantidad: 4
+Precio: 2000
+Categoria: Galletas
+-------------------------------

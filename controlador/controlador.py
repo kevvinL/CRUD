@@ -25,11 +25,11 @@ class controladorInicio:
             print(usuarioEnviar, "trae de modelo")
             print(f"Usuario: {datos['usuario']}, Contraseña: {datos['contraseña']}")
             
-            if usuarioEnviar["verificado"] == True:
+            if usuarioEnviar["verificado"] == False:
+                return False 
+            else:
                 self.inicioSesion.sesion.destroy()
                 self.iniciarMenu(usuarioEnviar["rol"])
-            else:
-                return False
 
     def cargarProductosDesdeJSON(self, archivo="productos.json"):
         if os.path.exists(archivo):
@@ -41,7 +41,6 @@ class controladorInicio:
             print("Creando Archivo json.")
 
     def iniciarVista(self):
-        self.cargarProductosDesdeJSON()
         self.inicioSesion = inicioSesionVista(controlador=self)
         auxFormulario = self.inicioSesion.crearFormulario()
         contenedor = self.inicioSesion.contenedorModelo(auxFormulario)
@@ -54,7 +53,8 @@ class controladorInicio:
     
     def informe(self):
         if self.menu:
-            self.menu.mostrarInforme()
+            self.cargarProductosDesdeJSON()
+            self.menu.mostrarInforme(controlador=self)
     
     def mostrarProductosPorCategoria(self, categoria):
         if self.menu:
