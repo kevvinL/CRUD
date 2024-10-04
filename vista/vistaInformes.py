@@ -77,16 +77,16 @@ class Menu:
 
     def cargar_productos(self):
         self.productos = self.controlador.ProductosInformes("todos")
-        print(self.productos, "informes")  # Para verificar el contenido cargado
         if not self.productos:
             print("No hay productos para incluir en el informe.")
         else:
             # Ordenar y actualizar tabla
             self.productos = sorted(self.productos, key=lambda x: x["cantidad"], reverse=True)
+            print(self.productos)
             self.controlador.asignarProductos(self.productos)
-            self.actualizar_tabla(self.productos)
+            self.actualizarTabla(self.productos)
 
-    def actualizar_tabla(self, productos):
+    def actualizarTabla(self, productos):
         # Limpiar tabla antes de actualizar
         for row in self.treeview.get_children():
             self.treeview.delete(row)

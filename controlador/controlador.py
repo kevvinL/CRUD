@@ -23,9 +23,6 @@ class controladorInicio:
             return False
         else:
             usuarioEnviar = self.modelo.inicioSesion(datos)
-            print(usuarioEnviar, "trae de modelo")
-            print(f"Usuario: {datos['usuario']}, Contraseña: {datos['contraseña']}")
-            
             if usuarioEnviar["verificado"] == False:
                 return False 
             else:
@@ -77,25 +74,20 @@ class controladorInicio:
         if self.menu:
             self.menu.cerrarSesion()
             self.iniciarVista()
+            self.modelo.cerrarConexion()
     
     def IniciarInventario(self):
         if self.menu:
             self.menu.inventario(controlador=self)
     
     def filtro(self, categoria):
-        print(f"Filtrando productos para la categoría: {categoria}")
-        self.productos = self.modelo.obtener_productos(categoria)
-        print(f"Productos obtenidos: {self.productos}")
-        
+        self.productos = self.modelo.obtenerProductos(categoria)        
         if self.productos is None:
-            print(f"No se encontraron productos para la categoría: {categoria}")
             self.productos = []  # Asignar una lista vacía si no hay productos
-        
         self.menu.mostrarProductos(self.productos)
 
-    
     def consultaInventario(self, categoria):
-        productos = self.productos = self.modelo.obtener_productos(categoria)
+        productos = self.productos = self.modelo.obtenerProductos(categoria)
         return productos
     
     def inventarioClase(self, inventario): #esencial para los eventos del inventario
@@ -120,7 +112,7 @@ class controladorInicio:
     
     def eliminarProducto(self, eliminar):
         if self.inventario:
-            eliminado = self.modelo.eliminar_producto(eliminar)
+            eliminado = self.modelo.eliminarProducto(eliminar)
             self.filtro("todos")
             return eliminado
     
@@ -129,8 +121,7 @@ class controladorInicio:
     
     def actualizarProducto(self,productoActualizar):
         if self.inventario:
-            print("Datos a actualizar:", productoActualizar)
-            enviar = self.modelo.actualizar_producto(productoActualizar)
+            enviar = self.modelo.actualizarProducto(productoActualizar)
             if enviar ==  True:
                 self.filtro("todos")
                 return enviar
@@ -139,8 +130,7 @@ class controladorInicio:
         self.informes = informes
     
     def ProductosInformes(self, categoria):
-        self.productos = self.modelo.obtener_productos(categoria)
-        print(f"Productos obtenidos: {self.productos}")
+        self.productos = self.modelo.obtenerProductos(categoria)
         return self.productos
     
     def asignarProductos(self, productos):
@@ -153,7 +143,6 @@ class controladorInicio:
                 productos = json.load(json_file)
             
             if not productos:
-                print("No hay productos para incluir en el informe.")
                 mensaje = {"confirmacion": "fallido", "mensaje": "No hay productos en el inventario"}
                 self.informes.confirmacion(mensaje)
                 return

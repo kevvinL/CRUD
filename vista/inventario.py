@@ -38,14 +38,17 @@ class GestionProductos:
         botonframe = self.frame(parent, 950, 150, '#ecf0f1')
         botonframe.pack(side="top", fill="x", pady=10)
 
-        self.registrar = menuvista.Button(botonframe, text="Crear Producto", width=20, height=3, command=self.controlador.iniciarCrearProducto)
+        self.registrar = menuvista.Button(botonframe, text="Crear Producto", width=20, height=3 ,command=self.controlador.iniciarCrearProducto)
         self.registrar.place(x=500, y=30)
+        self.registrar.configure(bg="#7da5cd")
 
         self.eliminar_button = menuvista.Button(botonframe, text="Eliminar Producto", width=20, height=3, command=self.controlador.iniciarEliminar)
         self.eliminar_button.place(x=300, y=30)
+        self.eliminar_button.configure(bg="#7da5cd")
 
         self.editar_button = menuvista.Button(botonframe, text="Editar Producto", width=20, height=3, command=self.controlador.iniciarActualizacion)
         self.editar_button.place(x=700, y=30)
+        self.editar_button.configure(bg="#7da5cd")
 
     def abrirVentanaRegistro(self):
         self.ventanaregistro = menuvista.Toplevel(self.master)
@@ -112,7 +115,6 @@ class GestionProductos:
             guardado = self.controlador.GuardarProducto(productoNuevo)  # Llamada a la función del controlador
             if guardado:
                 messagebox.showinfo("Confirmación", "Creado Correctamente")
-                print("Producto guardado correctamente en la base de datos.")
                 self.limpiarFormulario()
                 self.ventanaregistro.destroy()
                 self.cargarDatos()
@@ -121,7 +123,6 @@ class GestionProductos:
                 print("Error al guardar el producto en la base de datos.")
         else:
             messagebox.showinfo("ERROR", "Por favor, complete todos los campos.")
-            print("Por favor, completa todos los campos.")
 
     def limpiarFormulario(self):
         self.nombre_entry.delete(0, "end")
@@ -136,14 +137,12 @@ class GestionProductos:
             confirmacion = self.controlador.eliminarProducto(producto_nombre)
             if confirmacion:
                 messagebox.showinfo("Confirmación", "Producto eliminado correctamente")
-                print("Producto eliminado correctamente de la base de datos.")
                 self.productos_table.delete(selected_item)
             else:
                 messagebox.showinfo("ERROR", "No se pudo eliminar el producto.")
                 print("Error al eliminar el producto de la base de datos.")
         else:
             messagebox.showinfo("ERROR", "Seleccione un producto")
-            print("Selecciona un producto para eliminar.")
 
     def editarProducto(self):
         selected_item = self.productos_table.selection()
@@ -159,7 +158,6 @@ class GestionProductos:
             self.crearFormularioEdicion(self.ventanaedicion, producto_nombre, cantidad, precio, categoria)
         else:
             messagebox.showinfo("ERROR", "Seleccione un producto para editar")
-            print("Selecciona un producto para editar.")
 
     def crearFormularioEdicion(self, parent, nombreP, cantidad, precio, categoria):
         form_frame = self.frame(parent, 950, 150, '#ecf0f1')
@@ -207,7 +205,6 @@ class GestionProductos:
             actualizado = self.controlador.actualizarProducto(productoActualizar)
             if actualizado:
                 messagebox.showinfo("Confirmación", "Producto actualizado correctamente")
-                print("Producto actualizado correctamente en la base de datos.")
                 self.ventanaedicion.destroy()
                 self.cargarDatos()
             else:
@@ -215,7 +212,6 @@ class GestionProductos:
                 print("Error al actualizar el producto en la base de datos.")
         else:
             messagebox.showinfo("ERROR", "Por favor, complete todos los campos.")
-            print("Por favor, completa todos los campos.")
 
     def crearinterface(self):
         self.encabezado()
