@@ -1,0 +1,18 @@
+Informe de Productos
+=====================
+
+Nombre: mofin vainilla
+Cantidad: 1
+Precio: 1000
+Categoria: Cupcakes
+-------------------------------
+Nombre: pastel
+Cantidad: 10
+Precio: 2500
+Categoria: Tartas
+-------------------------------
+Nombre: flan
+Cantidad: 4
+Precio: 2000
+Categoria: Postres Fríos
+-------------------------------
